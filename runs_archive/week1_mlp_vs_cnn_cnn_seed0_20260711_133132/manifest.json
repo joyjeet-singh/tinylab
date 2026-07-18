@@ -1,0 +1,32 @@
+{
+  "run_name": "week1_mlp_vs_cnn_cnn_seed0_20260711_133132",
+  "config": {
+    "experiment": "week1_mlp_vs_cnn",
+    "model": {
+      "name": "cnn",
+      "channels": [
+        32,
+        64
+      ]
+    },
+    "data": {
+      "dataset": "cifar10",
+      "train_size": 5000,
+      "test_size": 1000,
+      "data_seed": 42
+    },
+    "training": {
+      "epochs": 5,
+      "batch_size": 128,
+      "learning_rate": 0.001,
+      "optimizer": "adam"
+    },
+    "seed": 0
+  },
+  "git_commit": "4b8c562c84f6f828b2ed1ac74ff36b11652a2df2",
+  "torch_version": "2.2.2",
+  "python_version": "3.11.15",
+  "train_indices_sha256": "50b7fe412907410f45f1a650757192b8e3fad59bdb2890b411af2a63c396ec7b",
+  "test_indices_sha256": "919c8cdef76448496808189d31757cdc5d950a571cc3634c12900f28abddd15f",
+  "started_at": "2026-07-11T13:31:33.581724"
+}

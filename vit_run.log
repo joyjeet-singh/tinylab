@@ -1,0 +1,9 @@
+epoch 0: pred 20.85273  bell 40.581  spread 0.46090
+epoch 1: pred 15.62472  bell 37.136  spread 0.51790
+epoch 2: pred 9.63030  bell 32.510  spread 0.49365
+epoch 3: pred 1.85553  bell 16.520  spread 0.42884
+epoch 4: pred 0.59901  bell 9.502  spread 0.38060
+epoch 5: pred 2.28159  bell 18.589  spread 0.44068
+epoch 6: pred 1.59757  bell 15.591  spread 0.40459
+epoch 7: pred 15.91898  bell 38.836  spread 0.37201
+wrote runs/toy_lewm_vit_toy_lewm_vit_seed0_20260716_165324

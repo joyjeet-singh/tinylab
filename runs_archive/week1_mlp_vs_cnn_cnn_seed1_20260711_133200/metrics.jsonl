@@ -1,0 +1,26 @@
+{"kind": "train", "epoch": 0, "step": 10, "loss": 2.18337, "t": 1783756923.431712}
+{"kind": "train", "epoch": 0, "step": 20, "loss": 2.023592, "t": 1783756924.560363}
+{"kind": "train", "epoch": 0, "step": 30, "loss": 1.862074, "t": 1783756925.6747499}
+{"kind": "train", "epoch": 0, "step": 40, "loss": 1.982238, "t": 1783756926.6995788}
+{"kind": "eval", "epoch": 0, "step": 40, "test_accuracy": 0.387, "t": 1783756927.2587252}
+{"kind": "train", "epoch": 1, "step": 50, "loss": 1.621447, "t": 1783756928.390047}
+{"kind": "train", "epoch": 1, "step": 60, "loss": 1.711538, "t": 1783756929.497426}
+{"kind": "train", "epoch": 1, "step": 70, "loss": 1.694369, "t": 1783756930.602192}
+{"kind": "train", "epoch": 1, "step": 80, "loss": 1.205628, "t": 1783756931.6536682}
+{"kind": "eval", "epoch": 1, "step": 80, "test_accuracy": 0.437, "t": 1783756932.213543}
+{"kind": "train", "epoch": 2, "step": 90, "loss": 1.492082, "t": 1783756933.3523421}
+{"kind": "train", "epoch": 2, "step": 100, "loss": 1.650383, "t": 1783756934.455081}
+{"kind": "train", "epoch": 2, "step": 110, "loss": 1.377772, "t": 1783756935.5585432}
+{"kind": "train", "epoch": 2, "step": 120, "loss": 1.746076, "t": 1783756936.574603}
+{"kind": "eval", "epoch": 2, "step": 120, "test_accuracy": 0.506, "t": 1783756937.138571}
+{"kind": "train", "epoch": 3, "step": 130, "loss": 1.299419, "t": 1783756938.274085}
+{"kind": "train", "epoch": 3, "step": 140, "loss": 1.327275, "t": 1783756939.381491}
+{"kind": "train", "epoch": 3, "step": 150, "loss": 1.24757, "t": 1783756940.487999}
+{"kind": "train", "epoch": 3, "step": 160, "loss": 0.981788, "t": 1783756941.5037591}
+{"kind": "eval", "epoch": 3, "step": 160, "test_accuracy": 0.517, "t": 1783756942.117059}
+{"kind": "train", "epoch": 4, "step": 170, "loss": 1.235222, "t": 1783756943.253122}
+{"kind": "train", "epoch": 4, "step": 180, "loss": 1.246526, "t": 1783756944.380608}
+{"kind": "train", "epoch": 4, "step": 190, "loss": 1.072682, "t": 1783756945.503061}
+{"kind": "train", "epoch": 4, "step": 200, "loss": 1.498536, "t": 1783756946.535157}
+{"kind": "eval", "epoch": 4, "step": 200, "test_accuracy": 0.535, "t": 1783756947.117356}
+{"kind": "done", "total_steps": 200, "t": 1783756947.117464}

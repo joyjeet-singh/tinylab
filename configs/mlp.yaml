@@ -1,0 +1,16 @@
+# Recipe card: MLP arm of the week-1 pipeline test
+experiment: week1_mlp_vs_cnn
+model:
+  name: mlp
+  hidden_sizes: [256, 128]   # two hidden layers
+data:
+  dataset: cifar10
+  train_size: 5000
+  test_size: 1000
+  data_seed: 42              # fixed for ALL runs: same images every time
+training:
+  epochs: 5
+  batch_size: 128
+  learning_rate: 0.001
+  optimizer: adam
+seed: 0                      # default; overridden per run (0, 1, 2)

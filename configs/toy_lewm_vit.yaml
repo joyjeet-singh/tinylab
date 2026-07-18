@@ -1,0 +1,58 @@
+# Toy LeWM with the REAL ViT-Tiny encoder at 32px.
+#
+# Purpose: test the parts most likely to break on the rented box -- ViT wiring,
+# patch geometry, position embeddings, CLS handling, the projector at 192 dims,
+# and SIGReg on a 192-dim cloud -- while staying cheap enough to train properly
+# overnight on a laptop.
+#
+# The ONLY remaining deviations from the reference are image size (32 vs 224)
+# and patch size (4 vs 14, forced by the image size). Both give 64 tokens vs
+# 256. Everything else below matches the reference exactly.
+experiment: toy_lewm_vit
+
+model:
+  name: toy_lewm_vit
+  encoder: vit              # <- the real thing, not the CNN stand-in
+  img_size: 32              # DEVIATION: reference 224
+  patch_size: 4             # DEVIATION: reference 14 (forced by img_size)
+  enc_depth: 12             # reference
+  enc_heads: 3              # reference
+  embed_dim: 192            # reference (was 64 in the CNN toy)
+  action_dim: 2
+  history_size: 3           # repo config (paper says 1 for TwoRoom -- conflict)
+  depth: 6                  # reference
+  heads: 16                 # reference
+  dim_head: 64              # reference
+  mlp_dim: 2048             # reference
+  proj_hidden: 2048         # reference
+  dropout: 0.1              # reference
+  enc_width: 32             # unused when encoder: vit
+
+data:
+  h5_path: toy_tworoom.h5
+  frameskip: 5
+  train_split: 0.9
+  data_seed: 42
+
+training:
+  epochs: 8
+  batch_size: 16            # DEVIATION: reference 128. See note below.
+  learning_rate: 0.00005    # reference
+  weight_decay: 0.001       # reference
+  num_preds: 1
+  grad_clip: 1.0
+  log_every: 10
+
+# NOTE ON BATCH SIZE: 16 is a laptop concession, and it is NOT free. SIGReg is
+# a statistical test computed ACROSS the batch, so a smaller batch makes the
+# bell-curve check noisier. Expect a worse bell score than the CNN toy got at
+# batch 64. This is a known, recorded deviation -- not a mystery to debug.
+
+loss:
+  sigreg_weight: 0.09       # reference
+  sigreg_kwargs:
+    knots: 17               # reference
+    num_proj: 1024          # reference (full, unlike the CNN toy's 512)
+
+requirements_file: requirements.txt
+seed: 0

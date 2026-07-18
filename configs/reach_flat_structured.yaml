@@ -1,0 +1,25 @@
+# Reachability -- flat-encoder arm, structured reasoning step.
+# The two flat arms are the first milestone: does the structured step's
+# extrapolation edge (and lower seed-to-seed wobble) show up on the clean harness?
+experiment: reach_flat_vs_gnn
+model:
+  name: flat_structured          # arm identity (folder name + scorekeeper grouping)
+  encoder: flat              # flat | gnn
+  reasoning: structured          # plain | structured
+  width: 128
+  layers: 2
+data:
+  n_nodes: 32
+  train_distances: [1, 2, 3, 4, 5]
+  test_distances: [6, 7, 8, 9, 10, 11, 12]
+  n_train: 4000
+  n_test: 2000
+  data_seed: 42              # identical across arms -> same questions -> fair test
+training:
+  epochs: 15
+  batch_size: 128
+  learning_rate: 0.003
+  max_train_loops: 6         # loops sampled up to this each batch, so each loop learns one hop
+  eval_loops: 12             # give enough loops at test time to reach far targets
+  frontier_weight: 0.5
+seed: 0

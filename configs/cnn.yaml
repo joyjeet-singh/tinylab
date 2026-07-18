@@ -1,0 +1,16 @@
+# Recipe card: CNN arm of the week-1 pipeline test
+experiment: week1_mlp_vs_cnn
+model:
+  name: cnn
+  channels: [32, 64]         # filters per conv block
+data:
+  dataset: cifar10
+  train_size: 5000
+  test_size: 1000
+  data_seed: 42
+training:
+  epochs: 5
+  batch_size: 128
+  learning_rate: 0.001
+  optimizer: adam
+seed: 0

@@ -1,0 +1,10 @@
+# Recipe card: REINFORCE on CartPole (week 2, part A)
+experiment: week2_reinforce
+env: CartPole-v1
+model:
+  hidden: [128]
+training:
+  episodes: 1500
+  gamma: 0.99          # discount: trust near consequences more than distant ones
+  learning_rate: 0.01
+seed: 0                # default; overridden per run (0, 1, 2)

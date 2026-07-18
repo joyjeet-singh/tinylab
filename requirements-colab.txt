@@ -1,0 +1,50 @@
+# requirements-colab.txt
+#
+# The Colab (GPU) environment. Companion to requirements.txt, which is the
+# Mac/CPU pin (torch 2.2.2, capped by the 2017 MacBook + Python 3.11).
+#
+# Why the two files differ, and why that's fine:
+#   The Mac pin is a hardware limitation, not a scientific choice. Colab ships
+#   its own CUDA-matched torch build, and forcing a different version is the
+#   fastest way to break a session. So torch is deliberately NOT pinned here.
+#   Record which requirements file a run used in its manifest, so any result
+#   can be traced back to the environment that produced it.
+#
+# Usage in Colab:
+#   !pip install -q -r requirements-colab.txt
+#
+# NOTE: torch / torchvision are intentionally absent. Use Colab's preinstalled
+# GPU build. Verify it before running anything:
+#   import torch; print(torch.__version__, torch.cuda.is_available())
+
+# --- core (shared with the Mac pin) ---------------------------------------
+numpy>=1.26,<2.0
+pyyaml>=6.0
+certifi
+
+# --- KV-cache compression probe (Week 1 pre-registration) -----------------
+# kvpress: NVIDIA's unified harness -- 30+ compression methods behind one API.
+# Pin the exact version at first run and record it in the manifest; the
+# pre-registration commits us to an unmodified harness at a pinned commit.
+# Leaving it unpinned here ONLY until the leaderboard entry is chosen; replace
+# with kvpress==<version> before the first logged run.
+kvpress
+
+# transformers: kvpress attaches as hooks onto HF models. Version must be
+# compatible with the pinned kvpress release -- check its requirements first.
+transformers>=4.44
+accelerate
+datasets
+sentencepiece
+protobuf
+
+# flash-attn is NOT listed: it needs a long source build on Colab and often
+# fails. kvpress runs without it. Only add it if a chosen method demands it,
+# and record that decision as a pre-registration amendment.
+
+# --- analysis / plotting --------------------------------------------------
+pandas
+matplotlib
+
+# planning diagnostics: the linear position probe (toy_plan.py)
+scikit-learn
