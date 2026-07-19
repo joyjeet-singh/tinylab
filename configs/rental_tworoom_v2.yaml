@@ -1,0 +1,68 @@
+# Rental card v2: real TwoRoom data at FULL REFERENCE RESOLUTION (224px).
+# Supersedes the 32px variant card after the first real-data forward exposed the
+# resolution mismatch (model 32 vs native 224 frames). Decision 2026-07-19: with
+# GPU hardware the laptop concession is unnecessary -- run the reference config
+# and make this a true reproduction. No resize code exists or is needed: the
+# loader delivers native 224 frames, and the model now expects them.
+#
+# CHANGES vs configs/toy_lewm_vit.yaml (the overnight-validated 32px card):
+#   1. data.h5_path:         toy_tworoom.h5 -> /dev/shm/data/tworoom.h5
+#                            (real 12 GB file, RAM-staged; md5 120e4327f4f2cf64b74928ca5bfca719)
+#   2. training.batch_size:  16 -> 128   (reference)
+#   3. training.num_workers: ADDED, 16   (Gate C knee; loader path identical at 224 --
+#                            the benchmark already read native 224 frames)
+#   4. training.epochs:      8 -> 10    (paper App. E)
+#   5. model.img_size:       32 -> 224  (reference -- laptop concession removed)
+#   6. model.patch_size:     4 -> 14   (reference -- was forced by img_size 32)
+#   7. experiment + model.name renamed (provenance only)
+#
+# NET EFFECT: this card now matches the reference training configuration.
+# Remaining recorded conflicts (pre-existing, documented, unchanged):
+#   - history_size: 3 (repo) vs 1 (paper) -- standing rule: repo is the reference
+#   - epochs: 10 per paper App. E vs repo max_epochs 100
+# GATES BEFORE FULL RUN on the box: resume equivalence on THIS card (0.000e+00),
+# then 50-step timed burst; abort if projected cost exceeds ~$15-20.
+experiment: rental_tworoom_vit224
+
+model:
+  name: rental_tworoom_vit224
+  encoder: vit              # <- the real thing, not the CNN stand-in
+  img_size: 224             # reference
+  patch_size: 14            # reference
+  enc_depth: 12             # reference
+  enc_heads: 3              # reference
+  embed_dim: 192            # reference (was 64 in the CNN toy)
+  action_dim: 2
+  history_size: 3           # repo config (paper says 1 for TwoRoom -- conflict)
+  depth: 6                  # reference
+  heads: 16                 # reference
+  dim_head: 64              # reference
+  mlp_dim: 2048             # reference
+  proj_hidden: 2048         # reference
+  dropout: 0.1              # reference
+  enc_width: 32             # unused when encoder: vit
+
+data:
+  h5_path: /dev/shm/data/tworoom.h5
+  frameskip: 5
+  train_split: 0.9
+  data_seed: 42
+
+training:
+  epochs: 10                # paper App. E
+  batch_size: 128           # reference
+  learning_rate: 0.00005    # reference
+  weight_decay: 0.001       # reference
+  num_preds: 1
+  grad_clip: 1.0
+  log_every: 10
+  num_workers: 16           # Gate C knee on the rental class (script default: 0)
+
+loss:
+  sigreg_weight: 0.09       # reference
+  sigreg_kwargs:
+    knots: 17               # reference
+    num_proj: 1024          # reference (full, unlike the CNN toy's 512)
+
+requirements_file: requirements.txt
+seed: 0
