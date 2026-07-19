@@ -115,6 +115,8 @@ def lewm_step(model, sigreg, batch, ctx_len, n_preds, lambd):
     the encoder is actively pulled toward making summaries easy to predict.
     That makes collapse MORE tempting, which is exactly why SIGReg matters.
     """
+    dev = next(model.parameters()).device
+    batch = {k: (v.to(dev) if torch.is_tensor(v) else v) for k, v in batch.items()}
     batch["action"] = torch.nan_to_num(batch["action"], 0.0)
     out = model.encode(batch)
     emb, act_emb = out["emb"], out["act_emb"]
@@ -168,6 +170,8 @@ def save_ckpt(path: Path, model, opt, step: int, epoch: int,
         "epoch": epoch,
         "pos_in_epoch": pos_in_epoch,
         "torch_rng_state": torch.get_rng_state(),
+        "cuda_rng_state": (torch.cuda.get_rng_state_all()
+                           if torch.cuda.is_available() else None),
     }, path)
 
 
@@ -235,7 +239,7 @@ def probe_r2(model, h5_path: str, n: int = 300, seed: int = 0):
         model.eval()
         embs = []
         for s in range(0, len(picks), 64):
-            out = model.encode({"pixels": x[s:s + 64].unsqueeze(1)})
+            out = model.encode({"pixels": x[s:s + 64].unsqueeze(1).to(next(model.parameters()).device)})
             embs.append(out["emb"][:, 0].cpu().numpy())
         if was_training:
             model.train()
@@ -288,7 +292,10 @@ def main():
                     patch_size=m.get("patch_size", 4),
                     enc_depth=m.get("enc_depth", 12),
                     enc_heads=m.get("enc_heads", 3))
-    sigreg = SIGReg(**cfg["loss"]["sigreg_kwargs"])
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = model.to(device)
+    print(f"device: {device}", flush=True)
+    sigreg = SIGReg(**cfg["loss"]["sigreg_kwargs"]).to(device)
     opt = torch.optim.AdamW(model.parameters(), lr=t["learning_rate"],
                             weight_decay=t["weight_decay"])
 
@@ -305,6 +312,8 @@ def main():
         # set_seed() above reset it to the beginning; without this, resumed
         # steps replay the dropout masks the first steps already saw.
         torch.set_rng_state(ck["torch_rng_state"])
+        if ck.get("cuda_rng_state") is not None and torch.cuda.is_available():
+            torch.cuda.set_rng_state_all(ck["cuda_rng_state"])
         log_f = open(run_dir / "metrics.jsonl", "a")
 
         def log(rec):
