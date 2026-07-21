@@ -1,0 +1,66 @@
+# phase1_run1.yaml -- Phase 1, Run 1: the bundle-first SCREENING run.
+# Derived from rental_tworoom_v2.yaml (the reference reproduction config) with the
+# FOUR convergence levers changed together. Pre-registered as a SCREENING run in
+# prereg/prereg_phase1_convergence.md -- a bundled result is NOT a reproduction
+# finding until ablated (on success) or reported as NULL (on failure).
+#
+# CHANGES vs rental_tworoom_v2.yaml (everything else IDENTICAL):
+#   1. training.learning_rate : 5e-5 -> 1e-5    (loss oscillated w/o descending = LR too high)
+#   2. loss.sigreg_weight     : 0.09 -> 0.045   (SIGReg over-provisioned; spread held 135x, no collapse risk)
+#   3. model.history_size     : 3    -> 1       (paper's stated TwoRoom value; resolves paper-vs-repo conflict)
+#   4. training.epochs        : 10   -> 10      (KEPT; paper App. E, paper-faithful)
+#   5. experiment/name renamed for provenance (distinct run folder + manifest)
+#
+# Same verified apparatus: img 224 / patch 14 / batch 128 / seed 0, GPU device patch,
+# bit-identical resume gate, HF data pull to /dev/shm, retrieval-first (prove SSH pull
+# BEFORE launch, pull+md5 BEFORE destroy). Single GPU >=40 GB VRAM (~$6, ~10 h).
+#
+# PRIMARY metric after the run: dump_latents.py -> View-3 step-0 latent error.
+#   STRONG <15 (proceed to ablations) | PARTIAL 15-40 (inconclusive) | NULL >55 (stop, if loss settled).
+# Convergence gate: do NOT score a NULL unless the loss actually settled (last-3-epoch
+# variance << 0.49-2.07). SECONDARY: planner beats random on the same 50 eps/seed.
+
+experiment: phase1_run1_bundle
+
+model:
+  name: phase1_run1_bundle
+  encoder: vit
+  img_size: 224            # reference (unchanged)
+  patch_size: 14           # reference (unchanged)
+  enc_depth: 12
+  enc_heads: 3
+  embed_dim: 192
+  action_dim: 2
+  history_size: 1          # CHANGED 3 -> 1 (paper's TwoRoom value)
+  depth: 6
+  heads: 16
+  dim_head: 64
+  mlp_dim: 2048
+  proj_hidden: 2048
+  dropout: 0.1
+  enc_width: 32            # unused when encoder: vit
+
+data:
+  h5_path: /dev/shm/data/tworoom.h5
+  frameskip: 5
+  train_split: 0.9
+  data_seed: 42
+
+training:
+  epochs: 10               # KEPT (paper App. E)
+  batch_size: 128          # reference
+  learning_rate: 0.00001   # CHANGED 5e-5 -> 1e-5
+  weight_decay: 0.001      # reference
+  num_preds: 1
+  grad_clip: 1.0
+  log_every: 10
+  num_workers: 16          # Gate C knee on the rental class
+
+loss:
+  sigreg_weight: 0.045     # CHANGED 0.09 -> 0.045
+  sigreg_kwargs:
+    knots: 17              # reference
+    num_proj: 1024         # reference
+
+requirements_file: requirements.txt
+seed: 0
