@@ -1,0 +1,78 @@
+# phase1_run2.yaml -- Phase 1, Run 2: the DECIDER run.
+# Derived from phase1_run1.yaml with ONE change: a cosine LR schedule.
+#
+# WHY (the evidence, not a guess): Run 1 (constant LR 1e-5) descended cleanly
+# 43.6 -> 2.59 by epoch 7, then DESTABILIZED to 6.14 / 13.26 by epoch 9. A constant
+# LR that can REACH the minimum but not HOLD it is the classic case for a decay
+# schedule: keep the early step size that produced the descent, shrink it late where
+# Run 1 fell apart. Base LR stays 1e-5 (the value that demonstrably reached 2.59) --
+# lowering the base AND decaying would risk not reaching the minimum inside the
+# 10-epoch budget, so it is deliberately ONE change.
+#
+# CHANGES vs phase1_run1.yaml:
+#   1. training.lr_schedule : ADDED, "cosine"  (requires patch_run2_schedule_and_ckpt.py)
+#   2. training.lr_min      : ADDED, 1e-7      (cosine floor; near-zero late steps)
+#   everything else IDENTICAL to Run 1 (LR 1e-5, SIGReg 0.045, history 1, epochs 10,
+#   img 224, patch 14, batch 128, seed 0).
+#
+# ALSO REQUIRED (same patch): ckpt_best.pt written on best epoch pred_loss. Run 1's
+# saved checkpoint was its DESTABILIZED epoch-9 state (pred 13.26), not its best
+# epoch-7 model (2.59) -- we evaluated the wrong frame. Run 2 must be evaluated on
+# ckpt_best.pt, with ckpt.pt (final) reported alongside for honesty.
+#
+# EVALUATION PLAN (all free on Mac, on ckpt_best.pt):
+#   dump_latents.py -> View 1 (geometry, before/after panel, shared basis RULE)
+#                   -> View 2 (error map: still uniform? ratio vs 0.93 baseline)
+#                   -> View 3 (step-0 latent error = PRIMARY metric)
+#                   -> toy_plan planner + --random (secondary)
+# NOTE on cross-run comparison: the latent space RESCALED between the original run
+# and Run 1 (mean real per-step latent movement 5.07 -> 17.25), so error/step-size
+# RATIOS are NOT comparable across runs. Compare step-0 error against the SAME run's
+# real-step scale, and compare qualitative shape (flat-high vs descending).
+
+experiment: phase1_run2_cosine
+
+model:
+  name: phase1_run2_cosine
+  encoder: vit
+  img_size: 224
+  patch_size: 14
+  enc_depth: 12
+  enc_heads: 3
+  embed_dim: 192
+  action_dim: 2
+  history_size: 1          # unchanged from Run 1 (paper's TwoRoom value)
+  depth: 6
+  heads: 16
+  dim_head: 64
+  mlp_dim: 2048
+  proj_hidden: 2048
+  dropout: 0.1
+  enc_width: 32
+
+data:
+  h5_path: /dev/shm/data/tworoom.h5
+  frameskip: 5
+  train_split: 0.9
+  data_seed: 42
+
+training:
+  epochs: 10               # unchanged (paper App. E)
+  batch_size: 128
+  learning_rate: 0.00001   # unchanged base (1e-5 -- the LR that reached 2.59)
+  lr_schedule: cosine      # ADDED -- the single change in Run 2
+  lr_min: 0.0000001        # ADDED -- cosine floor (1e-7)
+  weight_decay: 0.001
+  num_preds: 1
+  grad_clip: 1.0
+  log_every: 10
+  num_workers: 16
+
+loss:
+  sigreg_weight: 0.045     # unchanged from Run 1
+  sigreg_kwargs:
+    knots: 17
+    num_proj: 1024
+
+requirements_file: requirements.txt
+seed: 0
