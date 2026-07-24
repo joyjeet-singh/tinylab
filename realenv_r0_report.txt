@@ -1,0 +1,49 @@
+
+======================================================================
+R0.1  install + which environment TwoRoom-v1 actually is
+======================================================================
+stable_worldmodel version: unknown
+registered class: TwoRoomEnv from /Users/joyjeetsingh/Downloads/tinylab - vast/.venv/lib/python3.11/site-packages/stable_worldmodel/envs/two_room/env.py
+  wall_pos = 112.0
+action space: Box(-1.0, 1.0, (2,), float32)
+
+======================================================================
+R0.2  what the variation space does across resets
+======================================================================
+door settings after reset(seed=k), plus agent radius/speed:
+  seed 0: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+  seed 1: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+  seed 2: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+  seed 3: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+  seed 4: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+  seed 5: door={'number': 1, 'size': [14, 14, 14], 'position': [49, 49, 49]}  agent={'radius': [7.0], 'speed': [5.0]}
+READ: if door values CHANGE across seeds, the eval must pin the
+dataset's layout before frames are on-manifold. Compare door
+position/size against the values detected FROM THE DATA by
+eval_wall_scoring (door y 38.4-61.9 at 224 scale, wall x 111.2).
+
+======================================================================
+R0.3  render grid (env, several seeds) vs real frames
+======================================================================
+env render shape/dtype: (224, 224, 3) uint8
+wrote realenv_r0_eyeball.png -- LOOK AT IT: border ticks, door,
+dot size/softness, wall thickness.
+
+======================================================================
+R0.4  domain guard: env renders vs the training latent cloud
+======================================================================
+env render -> nearest real latent : median 5.81  mean 7.01
+real -> nearest other real        : median 2.57
+centroid distance                 : 4.12
+
+YARDSTICKS: the toy fixture scored 61.03 against real spacing 2.43
+(25x off-manifold) and every planner number it produced was an
+artifact. READ:
+  env->real ~ real spacing  : env frames are ON the training
+    manifold even with default variations -> full green light.
+  env->real elevated but << 61 : close; likely the sampled door /
+    agent-radius mismatch -> pin the dataset's layout (R1) and
+    re-run this guard; expect it to drop to ~spacing.
+  env->real ~ 61 : the installed env version does not produce
+    the dataset's visual style -- STOP; a version/config hunt is
+    needed before any planning number can mean anything.

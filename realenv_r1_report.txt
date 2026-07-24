@@ -1,0 +1,53 @@
+
+======================================================================
+R1.1  registered env constants + conventions
+======================================================================
+  IMG_SIZE = 224
+  BORDER_SIZE = 14
+  DOT_STD = 7.0
+  WALL_CENTER = 112
+  WALL_WIDTH_DEFAULT = 10
+  MAX_SPEED = 10.5
+  door position/size/number: [49, 49, 49] [14, 14, 14] (size = half-extent in pixels) 1
+  agent radius/speed: 7.0 5.0
+  success rule in step(): terminated = distance_to_target < 16.0
+  conventions verified in container: pos = (x=column, y=row),
+  no flip; displacement per step = action x speed, exact;
+  target NOT rendered (render_target False).
+
+======================================================================
+R1.2  frame reconstruction at recorded positions
+======================================================================
+  pixel MAE (0-255 scale): median 0.00  max 0.00   over 12 frames
+  dot-center offset (px) : median 0.00  max 0.00
+  READ: MAE near 0 and dot offset ~0-1 px = the env IS the
+  dataset's renderer. A constant small MAE with 0 dot offset
+  = micro style difference (e.g. dot softness) -- quantified
+  in latent terms by R1.4.
+  wrote realenv_r1_reconstruction.png
+
+======================================================================
+R1.3  dynamics replay against recorded trajectories
+======================================================================
+  one-step replay (200 transitions): median 0.000  p90 0.000  max 0.000  (file units; median real move is ~6.2)
+  compounding replay (5 episodes, 40 steps from the start):
+    ep  155: drift at step 1/10/20/40 = 0.00 / 0.00 / 0.00 / 0.00
+    ep  371: drift at step 1/10/20/40 = 0.00 / 0.00 / 0.00 / 0.00
+    ep   25: drift at step 1/10/20/40 = 0.00 / 0.00 / 0.00 / 0.00
+    ep  283: drift at step 1/10/20/40 = 0.00 / 0.00 / 0.00 / 0.00
+    ep  290: drift at step 1/10/20/40 = 0.00 / 0.00 / 0.00 / 0.00
+  READ: one-step median ~0 = same dynamics. Compounding drift
+  growing only at wall contacts = collision-detail difference;
+  growing everywhere = a speed/convention mismatch (STOP).
+
+======================================================================
+R1.4  matched-position domain guard (the true rendering residual)
+======================================================================
+  paired ||z_real - z_env|| at same position: median 0.01  mean 0.01  max 0.04
+  scale references: real cloud spacing (NN, from R0) ~2.6; random-pair distance within real: 16.96; one-step prediction error: ~5.7
+  READ: paired median <= ~2.6 -> env frames are the training
+  frames for the encoder's purposes; R0's 5.81 was coverage, and
+  R2 (the planner run) is fully green-lit. Paired ~5-8 -> a real
+  but one-step-sized rendering residual; R2 still proceeds, with
+  this number stated as a known offset. Paired >> 10 -> stop and
+  find the rendering difference in the R1.2 diff panels first.
