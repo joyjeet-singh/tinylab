@@ -355,15 +355,6 @@ def main():
             opt, T_max=t["epochs"], eta_min=t.get("lr_min", 0.0))
         print(f"lr_schedule: cosine  base={t['learning_rate']} "
               f"eta_min={t.get('lr_min', 0.0)} T_max={t['epochs']}", flush=True)
-    # optional LR schedule (Run 2): cosine decay over the planned epochs.
-    # Run 1 reached its minimum then destabilized under a constant LR; decaying
-    # the step size late holds the minimum without slowing the early descent.
-    sched = None
-    if t.get("lr_schedule") == "cosine":
-        sched = torch.optim.lr_scheduler.CosineAnnealingLR(
-            opt, T_max=t["epochs"], eta_min=t.get("lr_min", 0.0))
-        print(f"lr_schedule: cosine  base={t['learning_rate']} "
-              f"eta_min={t.get('lr_min', 0.0)} T_max={t['epochs']}", flush=True)
 
     # -- resume, or start fresh ------------------------------------------
     start_step, start_epoch, start_pos = 0, 0, 0
@@ -463,16 +454,6 @@ def main():
             save_ckpt(run_dir / "ckpt_best.pt", model, opt, step, epoch + 1, 0)
             log({"kind": "best_ckpt", "epoch": epoch, "pred_loss": _pl,
                  "step0_err": s0["step0_err"]})
-            print(f"  (new best pred {_pl:.5f} -> ckpt_best.pt)", flush=True)
-        if sched is not None:
-            sched.step()
-        # keep the BEST-loss model too: Run 1's final checkpoint was its worst
-        # (pred 13.26) while its best (2.59) was overwritten and lost.
-        _pl = ev.get("pred_loss")
-        if _pl is not None and _pl < globals().get("_best_pred", float("inf")):
-            globals()["_best_pred"] = _pl
-            save_ckpt(run_dir / "ckpt_best.pt", model, opt, step, epoch + 1, 0)
-            log({"kind": "best_ckpt", "epoch": epoch, "pred_loss": _pl})
             print(f"  (new best pred {_pl:.5f} -> ckpt_best.pt)", flush=True)
         if sched is not None:
             sched.step()

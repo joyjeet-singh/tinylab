@@ -330,10 +330,15 @@ def main():
             print("       published explanation for LeWM's 87% on TwoRoom.")
 
     print()
-    print("  Reference LeWM scores 87% on the REAL TwoRoom (PLDM/DINO-WM: 97-100).")
-    print("  This is the TOY world with a CNN encoder -- the number here is NOT")
-    print("  comparable to 87 and is not a result. It only tells us the planning")
-    print("  loop works end to end before we pay for compute.")
+    _m = json.loads((run_dir / "manifest.json").read_text())["config"]
+    print("  Reference LeWM reports 87% on the REAL TwoRoom env (PLDM/DINO-WM: 97-100).")
+    print(f"  THIS eval runs in the synthetic ToyTwoRoom simulator, encoded by the")
+    print(f"  run's own {_m['model'].get('encoder', 'cnn')} encoder at "
+          f"{_m['model'].get('img_size', 32)}px (trained on {Path(_m['data']['h5_path']).name}).")
+    print("  If training data was the real tworoom.h5, numbers here include a")
+    print("  train->eval RENDERING-DOMAIN GAP and are not comparable to 87.")
+    print("  Success criteria: success_radius=3.0, budget 50 env steps, start and")
+    print("  goal sampled in opposite rooms.")
 
     tag = "random" if args.random else "cem"
     (run_dir / f"plan_eval_{tag}.json").write_text(json.dumps(out, indent=2))
