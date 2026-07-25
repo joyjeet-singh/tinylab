@@ -79,10 +79,6 @@ def main():
     p.add_argument("--random", action="store_true",
                    help="random-action control instead of the planner")
     p.add_argument("--seed", type=int, default=42)
-    p.add_argument("--episodes", default=None,
-                   help="JSON file from make_balanced_episode_set.py: use a "
-                        "committed, auditable episode list instead of random "
-                        "sampling")
     p.add_argument("--unsafe-skip-guard", action="store_true",
                    help="mechanics testing ONLY; recorded loudly in outputs")
     args = p.parse_args()
@@ -177,28 +173,11 @@ def main():
 
     # ---- episode sampling: replayed trajectories --------------------------
     rng = np.random.default_rng(args.seed)
-    meta = None
-    if args.episodes:
-        spec = json.loads(Path(args.episodes).read_text())
-        file_off = int(spec.get("goal_offset", args.goal_offset))
-        if file_off != args.goal_offset:
-            raise SystemExit(
-                f"episode file was built for goal_offset {file_off} but "
-                f"--goal-offset is {args.goal_offset}; refusing to mix them")
-        eps = np.array([int(r["episode"]) for r in spec["episodes"]])
-        meta = [{"geometry": r.get("geometry"), "pair_id": r.get("pair_id")}
-                for r in spec["episodes"]]
-        say(f"episode set: {args.episodes} "
-            f"({spec.get('n_pairs')} matched pairs, "
-            f"selection: {spec.get('selection', 'n/a')})")
     with h5py.File(h5_path, "r") as f:
         off = np.asarray(f["ep_offset"][:])
         ln = np.asarray(f["ep_len"][:])
-        if meta is None:
-            ok = np.where(ln > args.goal_offset)[0]
-            eps = rng.choice(ok, size=min(args.num_eval, len(ok)),
-                             replace=False)
-            meta = [{} for _ in eps]
+        ok = np.where(ln > args.goal_offset)[0]
+        eps = rng.choice(ok, size=min(args.num_eval, len(ok)), replace=False)
         starts, goals = [], []
         for e in eps:
             starts.append(np.asarray(f["pos_agent"][off[e]], dtype=np.float32))
@@ -272,7 +251,7 @@ def main():
                         "steps": int(steps), "final_dist": round(dist, 2),
                         "start_goal_dist": round(sg, 2),
                         "trivial_start": bool(trivial),
-                        "plans": int(plans), **meta[i]})
+                        "plans": int(plans)})
         say(f"  ep {i+1:2d}/{len(eps)} (#{int(e):5d}): "
             f"{'REACHED' if success else 'missed '} in {steps:2d} steps, "
             f"final dist {dist:6.1f}, start-goal {sg:6.1f}"
