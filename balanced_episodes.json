@@ -1,0 +1,1334 @@
+{
+  "goal_offset": 100,
+  "seed": 11,
+  "caliper": 6.0,
+  "n_pairs": 110,
+  "power": 0.824,
+  "assumed_rates": [
+    0.64,
+    0.44
+  ],
+  "selection": "one-to-one caliper matching on start-goal distance; blind to model and outcome",
+  "episodes": [
+    {
+      "episode": 1883,
+      "geometry": "cross",
+      "pair_id": 0,
+      "sel_dist": 156.35
+    },
+    {
+      "episode": 7288,
+      "geometry": "same",
+      "pair_id": 0,
+      "sel_dist": 156.25
+    },
+    {
+      "episode": 2374,
+      "geometry": "cross",
+      "pair_id": 1,
+      "sel_dist": 70.67
+    },
+    {
+      "episode": 2385,
+      "geometry": "same",
+      "pair_id": 1,
+      "sel_dist": 70.67
+    },
+    {
+      "episode": 2274,
+      "geometry": "cross",
+      "pair_id": 2,
+      "sel_dist": 180.16
+    },
+    {
+      "episode": 3149,
+      "geometry": "same",
+      "pair_id": 2,
+      "sel_dist": 180.46
+    },
+    {
+      "episode": 27,
+      "geometry": "cross",
+      "pair_id": 3,
+      "sel_dist": 85.65
+    },
+    {
+      "episode": 9223,
+      "geometry": "same",
+      "pair_id": 3,
+      "sel_dist": 85.71
+    },
+    {
+      "episode": 5067,
+      "geometry": "cross",
+      "pair_id": 4,
+      "sel_dist": 117.28
+    },
+    {
+      "episode": 8328,
+      "geometry": "same",
+      "pair_id": 4,
+      "sel_dist": 117.29
+    },
+    {
+      "episode": 1145,
+      "geometry": "cross",
+      "pair_id": 5,
+      "sel_dist": 125.83
+    },
+    {
+      "episode": 8692,
+      "geometry": "same",
+      "pair_id": 5,
+      "sel_dist": 125.8
+    },
+    {
+      "episode": 8373,
+      "geometry": "cross",
+      "pair_id": 6,
+      "sel_dist": 75.45
+    },
+    {
+      "episode": 1213,
+      "geometry": "same",
+      "pair_id": 6,
+      "sel_dist": 75.45
+    },
+    {
+      "episode": 6065,
+      "geometry": "cross",
+      "pair_id": 7,
+      "sel_dist": 113.21
+    },
+    {
+      "episode": 9756,
+      "geometry": "same",
+      "pair_id": 7,
+      "sel_dist": 113.22
+    },
+    {
+      "episode": 1515,
+      "geometry": "cross",
+      "pair_id": 8,
+      "sel_dist": 98.04
+    },
+    {
+      "episode": 2426,
+      "geometry": "same",
+      "pair_id": 8,
+      "sel_dist": 98.04
+    },
+    {
+      "episode": 9136,
+      "geometry": "cross",
+      "pair_id": 9,
+      "sel_dist": 105.64
+    },
+    {
+      "episode": 2119,
+      "geometry": "same",
+      "pair_id": 9,
+      "sel_dist": 105.61
+    },
+    {
+      "episode": 4784,
+      "geometry": "cross",
+      "pair_id": 10,
+      "sel_dist": 124.85
+    },
+    {
+      "episode": 8538,
+      "geometry": "same",
+      "pair_id": 10,
+      "sel_dist": 124.86
+    },
+    {
+      "episode": 7127,
+      "geometry": "cross",
+      "pair_id": 11,
+      "sel_dist": 155.69
+    },
+    {
+      "episode": 4064,
+      "geometry": "same",
+      "pair_id": 11,
+      "sel_dist": 155.58
+    },
+    {
+      "episode": 1056,
+      "geometry": "cross",
+      "pair_id": 12,
+      "sel_dist": 136.52
+    },
+    {
+      "episode": 3416,
+      "geometry": "same",
+      "pair_id": 12,
+      "sel_dist": 136.44
+    },
+    {
+      "episode": 9024,
+      "geometry": "cross",
+      "pair_id": 13,
+      "sel_dist": 81.26
+    },
+    {
+      "episode": 3819,
+      "geometry": "same",
+      "pair_id": 13,
+      "sel_dist": 81.21
+    },
+    {
+      "episode": 4281,
+      "geometry": "cross",
+      "pair_id": 14,
+      "sel_dist": 168.17
+    },
+    {
+      "episode": 8573,
+      "geometry": "same",
+      "pair_id": 14,
+      "sel_dist": 168.16
+    },
+    {
+      "episode": 570,
+      "geometry": "cross",
+      "pair_id": 15,
+      "sel_dist": 101.28
+    },
+    {
+      "episode": 52,
+      "geometry": "same",
+      "pair_id": 15,
+      "sel_dist": 101.23
+    },
+    {
+      "episode": 5754,
+      "geometry": "cross",
+      "pair_id": 16,
+      "sel_dist": 115.45
+    },
+    {
+      "episode": 683,
+      "geometry": "same",
+      "pair_id": 16,
+      "sel_dist": 115.39
+    },
+    {
+      "episode": 2346,
+      "geometry": "cross",
+      "pair_id": 17,
+      "sel_dist": 105.86
+    },
+    {
+      "episode": 4769,
+      "geometry": "same",
+      "pair_id": 17,
+      "sel_dist": 105.87
+    },
+    {
+      "episode": 674,
+      "geometry": "cross",
+      "pair_id": 18,
+      "sel_dist": 93.02
+    },
+    {
+      "episode": 849,
+      "geometry": "same",
+      "pair_id": 18,
+      "sel_dist": 93.01
+    },
+    {
+      "episode": 7134,
+      "geometry": "cross",
+      "pair_id": 19,
+      "sel_dist": 144.44
+    },
+    {
+      "episode": 575,
+      "geometry": "same",
+      "pair_id": 19,
+      "sel_dist": 144.44
+    },
+    {
+      "episode": 990,
+      "geometry": "cross",
+      "pair_id": 20,
+      "sel_dist": 101.53
+    },
+    {
+      "episode": 6277,
+      "geometry": "same",
+      "pair_id": 20,
+      "sel_dist": 101.63
+    },
+    {
+      "episode": 1018,
+      "geometry": "cross",
+      "pair_id": 21,
+      "sel_dist": 147.32
+    },
+    {
+      "episode": 8423,
+      "geometry": "same",
+      "pair_id": 21,
+      "sel_dist": 147.33
+    },
+    {
+      "episode": 3906,
+      "geometry": "cross",
+      "pair_id": 22,
+      "sel_dist": 97.13
+    },
+    {
+      "episode": 4923,
+      "geometry": "same",
+      "pair_id": 22,
+      "sel_dist": 97.08
+    },
+    {
+      "episode": 9346,
+      "geometry": "cross",
+      "pair_id": 23,
+      "sel_dist": 127.33
+    },
+    {
+      "episode": 7345,
+      "geometry": "same",
+      "pair_id": 23,
+      "sel_dist": 127.28
+    },
+    {
+      "episode": 8827,
+      "geometry": "cross",
+      "pair_id": 24,
+      "sel_dist": 54.88
+    },
+    {
+      "episode": 4945,
+      "geometry": "same",
+      "pair_id": 24,
+      "sel_dist": 54.88
+    },
+    {
+      "episode": 9841,
+      "geometry": "cross",
+      "pair_id": 25,
+      "sel_dist": 149.85
+    },
+    {
+      "episode": 1536,
+      "geometry": "same",
+      "pair_id": 25,
+      "sel_dist": 149.84
+    },
+    {
+      "episode": 8878,
+      "geometry": "cross",
+      "pair_id": 26,
+      "sel_dist": 93.75
+    },
+    {
+      "episode": 5032,
+      "geometry": "same",
+      "pair_id": 26,
+      "sel_dist": 93.54
+    },
+    {
+      "episode": 4490,
+      "geometry": "cross",
+      "pair_id": 27,
+      "sel_dist": 121.65
+    },
+    {
+      "episode": 6241,
+      "geometry": "same",
+      "pair_id": 27,
+      "sel_dist": 121.63
+    },
+    {
+      "episode": 4056,
+      "geometry": "cross",
+      "pair_id": 28,
+      "sel_dist": 51.33
+    },
+    {
+      "episode": 4842,
+      "geometry": "same",
+      "pair_id": 28,
+      "sel_dist": 51.03
+    },
+    {
+      "episode": 2919,
+      "geometry": "cross",
+      "pair_id": 29,
+      "sel_dist": 78.71
+    },
+    {
+      "episode": 9337,
+      "geometry": "same",
+      "pair_id": 29,
+      "sel_dist": 78.73
+    },
+    {
+      "episode": 7974,
+      "geometry": "cross",
+      "pair_id": 30,
+      "sel_dist": 75.74
+    },
+    {
+      "episode": 9892,
+      "geometry": "same",
+      "pair_id": 30,
+      "sel_dist": 75.72
+    },
+    {
+      "episode": 3365,
+      "geometry": "cross",
+      "pair_id": 31,
+      "sel_dist": 98.29
+    },
+    {
+      "episode": 1164,
+      "geometry": "same",
+      "pair_id": 31,
+      "sel_dist": 98.27
+    },
+    {
+      "episode": 2546,
+      "geometry": "cross",
+      "pair_id": 32,
+      "sel_dist": 115.76
+    },
+    {
+      "episode": 7650,
+      "geometry": "same",
+      "pair_id": 32,
+      "sel_dist": 115.76
+    },
+    {
+      "episode": 7708,
+      "geometry": "cross",
+      "pair_id": 33,
+      "sel_dist": 90.08
+    },
+    {
+      "episode": 4623,
+      "geometry": "same",
+      "pair_id": 33,
+      "sel_dist": 90.08
+    },
+    {
+      "episode": 6606,
+      "geometry": "cross",
+      "pair_id": 34,
+      "sel_dist": 152.54
+    },
+    {
+      "episode": 5568,
+      "geometry": "same",
+      "pair_id": 34,
+      "sel_dist": 152.56
+    },
+    {
+      "episode": 2190,
+      "geometry": "cross",
+      "pair_id": 35,
+      "sel_dist": 130.12
+    },
+    {
+      "episode": 2489,
+      "geometry": "same",
+      "pair_id": 35,
+      "sel_dist": 130.1
+    },
+    {
+      "episode": 9699,
+      "geometry": "cross",
+      "pair_id": 36,
+      "sel_dist": 89.19
+    },
+    {
+      "episode": 680,
+      "geometry": "same",
+      "pair_id": 36,
+      "sel_dist": 89.16
+    },
+    {
+      "episode": 280,
+      "geometry": "cross",
+      "pair_id": 37,
+      "sel_dist": 143.81
+    },
+    {
+      "episode": 1847,
+      "geometry": "same",
+      "pair_id": 37,
+      "sel_dist": 143.81
+    },
+    {
+      "episode": 7551,
+      "geometry": "cross",
+      "pair_id": 38,
+      "sel_dist": 86.25
+    },
+    {
+      "episode": 6791,
+      "geometry": "same",
+      "pair_id": 38,
+      "sel_dist": 86.28
+    },
+    {
+      "episode": 8678,
+      "geometry": "cross",
+      "pair_id": 39,
+      "sel_dist": 57.96
+    },
+    {
+      "episode": 85,
+      "geometry": "same",
+      "pair_id": 39,
+      "sel_dist": 57.61
+    },
+    {
+      "episode": 1126,
+      "geometry": "cross",
+      "pair_id": 40,
+      "sel_dist": 126.77
+    },
+    {
+      "episode": 1361,
+      "geometry": "same",
+      "pair_id": 40,
+      "sel_dist": 126.79
+    },
+    {
+      "episode": 9635,
+      "geometry": "cross",
+      "pair_id": 41,
+      "sel_dist": 128.57
+    },
+    {
+      "episode": 4563,
+      "geometry": "same",
+      "pair_id": 41,
+      "sel_dist": 128.65
+    },
+    {
+      "episode": 2594,
+      "geometry": "cross",
+      "pair_id": 42,
+      "sel_dist": 136.5
+    },
+    {
+      "episode": 8470,
+      "geometry": "same",
+      "pair_id": 42,
+      "sel_dist": 136.42
+    },
+    {
+      "episode": 9844,
+      "geometry": "cross",
+      "pair_id": 43,
+      "sel_dist": 94.59
+    },
+    {
+      "episode": 2696,
+      "geometry": "same",
+      "pair_id": 43,
+      "sel_dist": 94.56
+    },
+    {
+      "episode": 4180,
+      "geometry": "cross",
+      "pair_id": 44,
+      "sel_dist": 144.83
+    },
+    {
+      "episode": 8169,
+      "geometry": "same",
+      "pair_id": 44,
+      "sel_dist": 144.82
+    },
+    {
+      "episode": 9394,
+      "geometry": "cross",
+      "pair_id": 45,
+      "sel_dist": 158.98
+    },
+    {
+      "episode": 5087,
+      "geometry": "same",
+      "pair_id": 45,
+      "sel_dist": 159.05
+    },
+    {
+      "episode": 5314,
+      "geometry": "cross",
+      "pair_id": 46,
+      "sel_dist": 155.3
+    },
+    {
+      "episode": 2566,
+      "geometry": "same",
+      "pair_id": 46,
+      "sel_dist": 155.32
+    },
+    {
+      "episode": 4135,
+      "geometry": "cross",
+      "pair_id": 47,
+      "sel_dist": 100.36
+    },
+    {
+      "episode": 6223,
+      "geometry": "same",
+      "pair_id": 47,
+      "sel_dist": 100.41
+    },
+    {
+      "episode": 5749,
+      "geometry": "cross",
+      "pair_id": 48,
+      "sel_dist": 161.96
+    },
+    {
+      "episode": 8184,
+      "geometry": "same",
+      "pair_id": 48,
+      "sel_dist": 162.05
+    },
+    {
+      "episode": 4721,
+      "geometry": "cross",
+      "pair_id": 49,
+      "sel_dist": 154.03
+    },
+    {
+      "episode": 1724,
+      "geometry": "same",
+      "pair_id": 49,
+      "sel_dist": 154.02
+    },
+    {
+      "episode": 5539,
+      "geometry": "cross",
+      "pair_id": 50,
+      "sel_dist": 165.49
+    },
+    {
+      "episode": 9554,
+      "geometry": "same",
+      "pair_id": 50,
+      "sel_dist": 165.62
+    },
+    {
+      "episode": 3913,
+      "geometry": "cross",
+      "pair_id": 51,
+      "sel_dist": 83.15
+    },
+    {
+      "episode": 4676,
+      "geometry": "same",
+      "pair_id": 51,
+      "sel_dist": 83.17
+    },
+    {
+      "episode": 7380,
+      "geometry": "cross",
+      "pair_id": 52,
+      "sel_dist": 85.54
+    },
+    {
+      "episode": 4260,
+      "geometry": "same",
+      "pair_id": 52,
+      "sel_dist": 85.56
+    },
+    {
+      "episode": 3519,
+      "geometry": "cross",
+      "pair_id": 53,
+      "sel_dist": 132.0
+    },
+    {
+      "episode": 9406,
+      "geometry": "same",
+      "pair_id": 53,
+      "sel_dist": 132.03
+    },
+    {
+      "episode": 4297,
+      "geometry": "cross",
+      "pair_id": 54,
+      "sel_dist": 93.43
+    },
+    {
+      "episode": 8597,
+      "geometry": "same",
+      "pair_id": 54,
+      "sel_dist": 93.41
+    },
+    {
+      "episode": 8324,
+      "geometry": "cross",
+      "pair_id": 55,
+      "sel_dist": 152.96
+    },
+    {
+      "episode": 1183,
+      "geometry": "same",
+      "pair_id": 55,
+      "sel_dist": 152.91
+    },
+    {
+      "episode": 6852,
+      "geometry": "cross",
+      "pair_id": 56,
+      "sel_dist": 164.3
+    },
+    {
+      "episode": 6668,
+      "geometry": "same",
+      "pair_id": 56,
+      "sel_dist": 164.39
+    },
+    {
+      "episode": 2218,
+      "geometry": "cross",
+      "pair_id": 57,
+      "sel_dist": 145.98
+    },
+    {
+      "episode": 8363,
+      "geometry": "same",
+      "pair_id": 57,
+      "sel_dist": 145.98
+    },
+    {
+      "episode": 1608,
+      "geometry": "cross",
+      "pair_id": 58,
+      "sel_dist": 128.86
+    },
+    {
+      "episode": 5797,
+      "geometry": "same",
+      "pair_id": 58,
+      "sel_dist": 128.91
+    },
+    {
+      "episode": 9693,
+      "geometry": "cross",
+      "pair_id": 59,
+      "sel_dist": 166.21
+    },
+    {
+      "episode": 9456,
+      "geometry": "same",
+      "pair_id": 59,
+      "sel_dist": 166.22
+    },
+    {
+      "episode": 7668,
+      "geometry": "cross",
+      "pair_id": 60,
+      "sel_dist": 121.77
+    },
+    {
+      "episode": 3996,
+      "geometry": "same",
+      "pair_id": 60,
+      "sel_dist": 121.71
+    },
+    {
+      "episode": 203,
+      "geometry": "cross",
+      "pair_id": 61,
+      "sel_dist": 144.9
+    },
+    {
+      "episode": 5190,
+      "geometry": "same",
+      "pair_id": 61,
+      "sel_dist": 144.89
+    },
+    {
+      "episode": 9546,
+      "geometry": "cross",
+      "pair_id": 62,
+      "sel_dist": 109.27
+    },
+    {
+      "episode": 4193,
+      "geometry": "same",
+      "pair_id": 62,
+      "sel_dist": 109.3
+    },
+    {
+      "episode": 854,
+      "geometry": "cross",
+      "pair_id": 63,
+      "sel_dist": 171.13
+    },
+    {
+      "episode": 627,
+      "geometry": "same",
+      "pair_id": 63,
+      "sel_dist": 171.17
+    },
+    {
+      "episode": 8441,
+      "geometry": "cross",
+      "pair_id": 64,
+      "sel_dist": 133.55
+    },
+    {
+      "episode": 3174,
+      "geometry": "same",
+      "pair_id": 64,
+      "sel_dist": 133.55
+    },
+    {
+      "episode": 5649,
+      "geometry": "cross",
+      "pair_id": 65,
+      "sel_dist": 133.05
+    },
+    {
+      "episode": 6304,
+      "geometry": "same",
+      "pair_id": 65,
+      "sel_dist": 133.03
+    },
+    {
+      "episode": 1176,
+      "geometry": "cross",
+      "pair_id": 66,
+      "sel_dist": 149.21
+    },
+    {
+      "episode": 446,
+      "geometry": "same",
+      "pair_id": 66,
+      "sel_dist": 149.22
+    },
+    {
+      "episode": 9986,
+      "geometry": "cross",
+      "pair_id": 67,
+      "sel_dist": 102.63
+    },
+    {
+      "episode": 7452,
+      "geometry": "same",
+      "pair_id": 67,
+      "sel_dist": 102.57
+    },
+    {
+      "episode": 8386,
+      "geometry": "cross",
+      "pair_id": 68,
+      "sel_dist": 152.73
+    },
+    {
+      "episode": 7375,
+      "geometry": "same",
+      "pair_id": 68,
+      "sel_dist": 152.78
+    },
+    {
+      "episode": 3418,
+      "geometry": "cross",
+      "pair_id": 69,
+      "sel_dist": 151.55
+    },
+    {
+      "episode": 5614,
+      "geometry": "same",
+      "pair_id": 69,
+      "sel_dist": 151.62
+    },
+    {
+      "episode": 8022,
+      "geometry": "cross",
+      "pair_id": 70,
+      "sel_dist": 147.76
+    },
+    {
+      "episode": 2234,
+      "geometry": "same",
+      "pair_id": 70,
+      "sel_dist": 147.76
+    },
+    {
+      "episode": 350,
+      "geometry": "cross",
+      "pair_id": 71,
+      "sel_dist": 132.13
+    },
+    {
+      "episode": 941,
+      "geometry": "same",
+      "pair_id": 71,
+      "sel_dist": 132.1
+    },
+    {
+      "episode": 726,
+      "geometry": "cross",
+      "pair_id": 72,
+      "sel_dist": 119.91
+    },
+    {
+      "episode": 1634,
+      "geometry": "same",
+      "pair_id": 72,
+      "sel_dist": 119.9
+    },
+    {
+      "episode": 4890,
+      "geometry": "cross",
+      "pair_id": 73,
+      "sel_dist": 100.47
+    },
+    {
+      "episode": 2966,
+      "geometry": "same",
+      "pair_id": 73,
+      "sel_dist": 100.48
+    },
+    {
+      "episode": 8139,
+      "geometry": "cross",
+      "pair_id": 74,
+      "sel_dist": 153.36
+    },
+    {
+      "episode": 456,
+      "geometry": "same",
+      "pair_id": 74,
+      "sel_dist": 153.34
+    },
+    {
+      "episode": 6883,
+      "geometry": "cross",
+      "pair_id": 75,
+      "sel_dist": 102.91
+    },
+    {
+      "episode": 6470,
+      "geometry": "same",
+      "pair_id": 75,
+      "sel_dist": 102.88
+    },
+    {
+      "episode": 4918,
+      "geometry": "cross",
+      "pair_id": 76,
+      "sel_dist": 135.07
+    },
+    {
+      "episode": 4818,
+      "geometry": "same",
+      "pair_id": 76,
+      "sel_dist": 135.08
+    },
+    {
+      "episode": 2261,
+      "geometry": "cross",
+      "pair_id": 77,
+      "sel_dist": 113.77
+    },
+    {
+      "episode": 4993,
+      "geometry": "same",
+      "pair_id": 77,
+      "sel_dist": 113.77
+    },
+    {
+      "episode": 4058,
+      "geometry": "cross",
+      "pair_id": 78,
+      "sel_dist": 158.2
+    },
+    {
+      "episode": 584,
+      "geometry": "same",
+      "pair_id": 78,
+      "sel_dist": 158.23
+    },
+    {
+      "episode": 3358,
+      "geometry": "cross",
+      "pair_id": 79,
+      "sel_dist": 114.55
+    },
+    {
+      "episode": 5929,
+      "geometry": "same",
+      "pair_id": 79,
+      "sel_dist": 114.51
+    },
+    {
+      "episode": 4323,
+      "geometry": "cross",
+      "pair_id": 80,
+      "sel_dist": 92.44
+    },
+    {
+      "episode": 4935,
+      "geometry": "same",
+      "pair_id": 80,
+      "sel_dist": 92.57
+    },
+    {
+      "episode": 1681,
+      "geometry": "cross",
+      "pair_id": 81,
+      "sel_dist": 103.55
+    },
+    {
+      "episode": 9912,
+      "geometry": "same",
+      "pair_id": 81,
+      "sel_dist": 103.53
+    },
+    {
+      "episode": 5891,
+      "geometry": "cross",
+      "pair_id": 82,
+      "sel_dist": 164.28
+    },
+    {
+      "episode": 9352,
+      "geometry": "same",
+      "pair_id": 82,
+      "sel_dist": 164.12
+    },
+    {
+      "episode": 5960,
+      "geometry": "cross",
+      "pair_id": 83,
+      "sel_dist": 127.18
+    },
+    {
+      "episode": 9065,
+      "geometry": "same",
+      "pair_id": 83,
+      "sel_dist": 127.23
+    },
+    {
+      "episode": 5045,
+      "geometry": "cross",
+      "pair_id": 84,
+      "sel_dist": 143.99
+    },
+    {
+      "episode": 5200,
+      "geometry": "same",
+      "pair_id": 84,
+      "sel_dist": 144.0
+    },
+    {
+      "episode": 7455,
+      "geometry": "cross",
+      "pair_id": 85,
+      "sel_dist": 99.55
+    },
+    {
+      "episode": 6557,
+      "geometry": "same",
+      "pair_id": 85,
+      "sel_dist": 99.54
+    },
+    {
+      "episode": 1718,
+      "geometry": "cross",
+      "pair_id": 86,
+      "sel_dist": 145.73
+    },
+    {
+      "episode": 2803,
+      "geometry": "same",
+      "pair_id": 86,
+      "sel_dist": 145.74
+    },
+    {
+      "episode": 1433,
+      "geometry": "cross",
+      "pair_id": 87,
+      "sel_dist": 67.27
+    },
+    {
+      "episode": 7395,
+      "geometry": "same",
+      "pair_id": 87,
+      "sel_dist": 67.25
+    },
+    {
+      "episode": 2515,
+      "geometry": "cross",
+      "pair_id": 88,
+      "sel_dist": 131.55
+    },
+    {
+      "episode": 9606,
+      "geometry": "same",
+      "pair_id": 88,
+      "sel_dist": 131.53
+    },
+    {
+      "episode": 7544,
+      "geometry": "cross",
+      "pair_id": 89,
+      "sel_dist": 117.3
+    },
+    {
+      "episode": 582,
+      "geometry": "same",
+      "pair_id": 89,
+      "sel_dist": 117.26
+    },
+    {
+      "episode": 3741,
+      "geometry": "cross",
+      "pair_id": 90,
+      "sel_dist": 125.39
+    },
+    {
+      "episode": 4516,
+      "geometry": "same",
+      "pair_id": 90,
+      "sel_dist": 125.4
+    },
+    {
+      "episode": 8044,
+      "geometry": "cross",
+      "pair_id": 91,
+      "sel_dist": 82.45
+    },
+    {
+      "episode": 5695,
+      "geometry": "same",
+      "pair_id": 91,
+      "sel_dist": 82.44
+    },
+    {
+      "episode": 8751,
+      "geometry": "cross",
+      "pair_id": 92,
+      "sel_dist": 126.35
+    },
+    {
+      "episode": 7840,
+      "geometry": "same",
+      "pair_id": 92,
+      "sel_dist": 126.35
+    },
+    {
+      "episode": 7865,
+      "geometry": "cross",
+      "pair_id": 93,
+      "sel_dist": 68.45
+    },
+    {
+      "episode": 9626,
+      "geometry": "same",
+      "pair_id": 93,
+      "sel_dist": 68.44
+    },
+    {
+      "episode": 9887,
+      "geometry": "cross",
+      "pair_id": 94,
+      "sel_dist": 161.82
+    },
+    {
+      "episode": 3469,
+      "geometry": "same",
+      "pair_id": 94,
+      "sel_dist": 161.72
+    },
+    {
+      "episode": 9925,
+      "geometry": "cross",
+      "pair_id": 95,
+      "sel_dist": 94.38
+    },
+    {
+      "episode": 9210,
+      "geometry": "same",
+      "pair_id": 95,
+      "sel_dist": 94.47
+    },
+    {
+      "episode": 5939,
+      "geometry": "cross",
+      "pair_id": 96,
+      "sel_dist": 124.73
+    },
+    {
+      "episode": 9808,
+      "geometry": "same",
+      "pair_id": 96,
+      "sel_dist": 124.71
+    },
+    {
+      "episode": 8503,
+      "geometry": "cross",
+      "pair_id": 97,
+      "sel_dist": 119.84
+    },
+    {
+      "episode": 9750,
+      "geometry": "same",
+      "pair_id": 97,
+      "sel_dist": 119.84
+    },
+    {
+      "episode": 8933,
+      "geometry": "cross",
+      "pair_id": 98,
+      "sel_dist": 131.29
+    },
+    {
+      "episode": 9555,
+      "geometry": "same",
+      "pair_id": 98,
+      "sel_dist": 131.29
+    },
+    {
+      "episode": 9321,
+      "geometry": "cross",
+      "pair_id": 99,
+      "sel_dist": 95.18
+    },
+    {
+      "episode": 9007,
+      "geometry": "same",
+      "pair_id": 99,
+      "sel_dist": 95.19
+    },
+    {
+      "episode": 2941,
+      "geometry": "cross",
+      "pair_id": 100,
+      "sel_dist": 146.64
+    },
+    {
+      "episode": 8240,
+      "geometry": "same",
+      "pair_id": 100,
+      "sel_dist": 146.6
+    },
+    {
+      "episode": 4820,
+      "geometry": "cross",
+      "pair_id": 101,
+      "sel_dist": 76.33
+    },
+    {
+      "episode": 2774,
+      "geometry": "same",
+      "pair_id": 101,
+      "sel_dist": 76.25
+    },
+    {
+      "episode": 3964,
+      "geometry": "cross",
+      "pair_id": 102,
+      "sel_dist": 125.67
+    },
+    {
+      "episode": 6779,
+      "geometry": "same",
+      "pair_id": 102,
+      "sel_dist": 125.69
+    },
+    {
+      "episode": 8886,
+      "geometry": "cross",
+      "pair_id": 103,
+      "sel_dist": 151.16
+    },
+    {
+      "episode": 4161,
+      "geometry": "same",
+      "pair_id": 103,
+      "sel_dist": 151.12
+    },
+    {
+      "episode": 1715,
+      "geometry": "cross",
+      "pair_id": 104,
+      "sel_dist": 82.68
+    },
+    {
+      "episode": 7797,
+      "geometry": "same",
+      "pair_id": 104,
+      "sel_dist": 82.65
+    },
+    {
+      "episode": 2687,
+      "geometry": "cross",
+      "pair_id": 105,
+      "sel_dist": 95.3
+    },
+    {
+      "episode": 8201,
+      "geometry": "same",
+      "pair_id": 105,
+      "sel_dist": 95.25
+    },
+    {
+      "episode": 4450,
+      "geometry": "cross",
+      "pair_id": 106,
+      "sel_dist": 67.13
+    },
+    {
+      "episode": 7996,
+      "geometry": "same",
+      "pair_id": 106,
+      "sel_dist": 67.24
+    },
+    {
+      "episode": 964,
+      "geometry": "cross",
+      "pair_id": 107,
+      "sel_dist": 121.38
+    },
+    {
+      "episode": 7901,
+      "geometry": "same",
+      "pair_id": 107,
+      "sel_dist": 121.38
+    },
+    {
+      "episode": 3024,
+      "geometry": "cross",
+      "pair_id": 108,
+      "sel_dist": 125.51
+    },
+    {
+      "episode": 2284,
+      "geometry": "same",
+      "pair_id": 108,
+      "sel_dist": 125.5
+    },
+    {
+      "episode": 540,
+      "geometry": "cross",
+      "pair_id": 109,
+      "sel_dist": 143.12
+    },
+    {
+      "episode": 3137,
+      "geometry": "same",
+      "pair_id": 109,
+      "sel_dist": 143.15
+    }
+  ]
+}
