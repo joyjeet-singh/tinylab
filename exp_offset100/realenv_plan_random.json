@@ -1,0 +1,474 @@
+{
+  "tag": "random",
+  "guard": {
+    "status": "pass",
+    "paired_median": 0.013486909214407206
+  },
+  "results": [
+    {
+      "episode": 4022,
+      "success": false,
+      "steps": 50,
+      "final_dist": 129.84,
+      "start_goal_dist": 105.45,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 5113,
+      "success": false,
+      "steps": 50,
+      "final_dist": 148.28,
+      "start_goal_dist": 139.16,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4514,
+      "success": false,
+      "steps": 50,
+      "final_dist": 101.78,
+      "start_goal_dist": 118.64,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 925,
+      "success": false,
+      "steps": 50,
+      "final_dist": 112.7,
+      "start_goal_dist": 86.75,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 9999,
+      "success": false,
+      "steps": 50,
+      "final_dist": 163.23,
+      "start_goal_dist": 169.84,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 9702,
+      "success": false,
+      "steps": 50,
+      "final_dist": 67.94,
+      "start_goal_dist": 72.23,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 6399,
+      "success": false,
+      "steps": 50,
+      "final_dist": 96.28,
+      "start_goal_dist": 84.67,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7000,
+      "success": false,
+      "steps": 50,
+      "final_dist": 101.37,
+      "start_goal_dist": 87.71,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 2745,
+      "success": false,
+      "steps": 50,
+      "final_dist": 123.97,
+      "start_goal_dist": 120.7,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4482,
+      "success": false,
+      "steps": 50,
+      "final_dist": 162.34,
+      "start_goal_dist": 164.13,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 3564,
+      "success": false,
+      "steps": 50,
+      "final_dist": 124.96,
+      "start_goal_dist": 129.15,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 6770,
+      "success": false,
+      "steps": 50,
+      "final_dist": 105.65,
+      "start_goal_dist": 71.0,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4327,
+      "success": false,
+      "steps": 50,
+      "final_dist": 103.31,
+      "start_goal_dist": 103.57,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 701,
+      "success": false,
+      "steps": 50,
+      "final_dist": 74.88,
+      "start_goal_dist": 113.83,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7818,
+      "success": false,
+      "steps": 50,
+      "final_dist": 111.16,
+      "start_goal_dist": 123.19,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 5237,
+      "success": false,
+      "steps": 50,
+      "final_dist": 95.28,
+      "start_goal_dist": 96.11,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4999,
+      "success": false,
+      "steps": 50,
+      "final_dist": 158.75,
+      "start_goal_dist": 133.46,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7586,
+      "success": false,
+      "steps": 50,
+      "final_dist": 134.74,
+      "start_goal_dist": 124.27,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 2002,
+      "success": false,
+      "steps": 50,
+      "final_dist": 85.17,
+      "start_goal_dist": 81.25,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8359,
+      "success": false,
+      "steps": 50,
+      "final_dist": 67.47,
+      "start_goal_dist": 64.2,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 5542,
+      "success": false,
+      "steps": 50,
+      "final_dist": 103.35,
+      "start_goal_dist": 94.86,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8204,
+      "success": false,
+      "steps": 50,
+      "final_dist": 75.33,
+      "start_goal_dist": 65.45,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 1674,
+      "success": false,
+      "steps": 50,
+      "final_dist": 107.92,
+      "start_goal_dist": 141.04,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 6922,
+      "success": false,
+      "steps": 50,
+      "final_dist": 143.08,
+      "start_goal_dist": 149.01,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8872,
+      "success": false,
+      "steps": 50,
+      "final_dist": 149.8,
+      "start_goal_dist": 154.95,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8945,
+      "success": false,
+      "steps": 50,
+      "final_dist": 111.87,
+      "start_goal_dist": 91.6,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4388,
+      "success": false,
+      "steps": 50,
+      "final_dist": 132.86,
+      "start_goal_dist": 119.58,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 961,
+      "success": false,
+      "steps": 50,
+      "final_dist": 115.74,
+      "start_goal_dist": 121.51,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8523,
+      "success": false,
+      "steps": 50,
+      "final_dist": 40.37,
+      "start_goal_dist": 49.56,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 9240,
+      "success": false,
+      "steps": 50,
+      "final_dist": 165.21,
+      "start_goal_dist": 168.57,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 6291,
+      "success": false,
+      "steps": 50,
+      "final_dist": 140.62,
+      "start_goal_dist": 158.26,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 6482,
+      "success": false,
+      "steps": 50,
+      "final_dist": 80.96,
+      "start_goal_dist": 92.76,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7324,
+      "success": false,
+      "steps": 50,
+      "final_dist": 65.07,
+      "start_goal_dist": 90.21,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4521,
+      "success": false,
+      "steps": 50,
+      "final_dist": 122.77,
+      "start_goal_dist": 107.29,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 9699,
+      "success": false,
+      "steps": 50,
+      "final_dist": 105.32,
+      "start_goal_dist": 89.19,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7144,
+      "success": false,
+      "steps": 50,
+      "final_dist": 72.44,
+      "start_goal_dist": 108.29,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 665,
+      "success": false,
+      "steps": 50,
+      "final_dist": 111.01,
+      "start_goal_dist": 118.95,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7584,
+      "success": false,
+      "steps": 50,
+      "final_dist": 126.12,
+      "start_goal_dist": 151.88,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 4450,
+      "success": false,
+      "steps": 50,
+      "final_dist": 87.54,
+      "start_goal_dist": 67.13,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8573,
+      "success": false,
+      "steps": 50,
+      "final_dist": 113.47,
+      "start_goal_dist": 168.16,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 5436,
+      "success": false,
+      "steps": 50,
+      "final_dist": 118.89,
+      "start_goal_dist": 113.13,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 2276,
+      "success": false,
+      "steps": 50,
+      "final_dist": 125.41,
+      "start_goal_dist": 153.79,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 896,
+      "success": false,
+      "steps": 50,
+      "final_dist": 184.48,
+      "start_goal_dist": 173.02,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7787,
+      "success": false,
+      "steps": 50,
+      "final_dist": 37.38,
+      "start_goal_dist": 85.26,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 7681,
+      "success": false,
+      "steps": 50,
+      "final_dist": 120.74,
+      "start_goal_dist": 137.21,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 1829,
+      "success": false,
+      "steps": 50,
+      "final_dist": 104.6,
+      "start_goal_dist": 99.49,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 3717,
+      "success": false,
+      "steps": 50,
+      "final_dist": 97.72,
+      "start_goal_dist": 123.53,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 1304,
+      "success": false,
+      "steps": 50,
+      "final_dist": 119.14,
+      "start_goal_dist": 90.53,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 976,
+      "success": false,
+      "steps": 50,
+      "final_dist": 148.17,
+      "start_goal_dist": 140.25,
+      "trivial_start": false,
+      "plans": 0
+    },
+    {
+      "episode": 8265,
+      "success": false,
+      "steps": 50,
+      "final_dist": 56.91,
+      "start_goal_dist": 65.51,
+      "trivial_start": false,
+      "plans": 0
+    }
+  ],
+  "success_rate": 0.0,
+  "n": 50,
+  "trivial_starts": 0,
+  "protocol": {
+    "num_eval": 50,
+    "budget": 50,
+    "goal_offset": 100,
+    "receding": 5,
+    "frameskip": 5,
+    "seed": 42,
+    "success_rule": "env terminated (dist<16)",
+    "cem": null
+  },
+  "ckpt": "../runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best.pt",
+  "epoch_field": 6
+}
