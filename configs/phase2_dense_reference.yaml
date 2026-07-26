@@ -1,0 +1,89 @@
+# phase2_dense_reference -- the corrected reproduction attempt.
+#
+# BASE: configs/rental_tworoom_v2.yaml (Run 0, experiment rental_tworoom_vit224),
+# which deviated from the reference on action_dim ALONE. Deliberately NOT based
+# on phase1_run1/phase1_run2, which carry three and four extra departures
+# respectively (lr 1e-5, sigreg 0.045, history_size 1, cosine schedule) and
+# would drag those into a run whose purpose is to test faithfulness.
+#
+# WHAT CHANGES FROM RUN 0
+#   action_dim 2 -> 10          the loader now emits frameskip x action_dim
+#   loader: dense actions       stable_worldmodel/data/buffer.py _gather_clip
+#   loader: ImageNet pixels     le-wm/utils.py:6 get_img_preprocessor
+#   loader: z-scored actions    le-wm/train.py:65 + utils.py:25
+#
+# WHAT STAYS AT RUN 0's (= the reference's) VALUES
+#   learning_rate 5e-5, sigreg_weight 0.09, history_size 3, NO lr schedule,
+#   batch 128, weight_decay 1e-3, grad_clip 1.0, num_preds 1, knots 17,
+#   num_proj 1024, embed_dim 192 and the whole predictor geometry.
+#
+# REMAINING DEVIATIONS FROM THE REFERENCE, all deliberate and all recorded
+#   epochs 10        the paper's App. E value; the repo config says 100, which
+#                    at ~$6 per 10 epochs is outside budget
+#   precision fp32   the reference uses bf16; ours is strictly MORE precise, so
+#                    it cannot explain non-convergence, and adding autocast
+#                    would put untested code inside the one run we can afford
+#   seed 0           reference 3072; arm identity
+#   independent code our own ToyJEPA / SIGReg / loader rather than theirs
+#   action z-score   the reference computes statistics on the 2-wide raw column
+#                    and applies them to the 10-wide clip array; its exact
+#                    broadcast is unverified, so we tile the 2-wide statistics
+#                    across the five concatenated actions. OUR INTERPRETATION.
+#
+# Before launching: python3 preflight_local.py --config configs/phase2_dense_reference.yaml
+experiment: phase2_dense_reference
+
+model:
+  name: phase2_dense_reference
+  encoder: vit
+  img_size: 224             # reference
+  patch_size: 14            # reference
+  enc_depth: 12             # reference ViT-Tiny
+  enc_heads: 3              # reference ViT-Tiny
+  embed_dim: 192            # reference
+  action_dim: 10            # CHANGED from 2: frameskip(5) x action_dim(2),
+                            # set programmatically by the reference at
+                            # le-wm/train.py:68
+  history_size: 3           # reference (and the released checkpoint's
+                            # predictor.pos_embedding is (1,3,192))
+  depth: 6                  # reference
+  heads: 16                 # reference
+  dim_head: 64              # reference
+  mlp_dim: 2048             # reference
+  proj_hidden: 2048         # reference
+  dropout: 0.1              # reference
+  enc_width: 32             # unused by the vit encoder
+
+data:
+  h5_path: /dev/shm/data/tworoom.h5
+  frameskip: 5              # reference
+  train_split: 0.9          # reference
+  data_seed: 42             # same clips for every arm; separate from run seed
+  # Recorded here so the manifest carries the loader convention. Without the
+  # train-script patch these are documentation only -- the loader reads its
+  # module-level flags. Set them there too, or apply the patch, and never let
+  # the two disagree.
+  dense_actions: true
+  imagenet_pixels: true
+  zscore_actions: true
+
+training:
+  epochs: 10                # paper App. E; repo config says 100
+  batch_size: 128           # reference
+  learning_rate: 0.00005    # reference 5e-5 -- Run 0's value, NOT Run 1/2's 1e-5
+  weight_decay: 0.001       # reference
+  num_preds: 1              # reference
+  grad_clip: 1.0            # reference gradient_clip_val
+  log_every: 10
+  num_workers: 16
+  # NO lr_schedule: the reference config specifies none. The cosine in Run 2
+  # was our addition and is not carried forward.
+
+loss:
+  sigreg_weight: 0.09       # reference lambda -- Run 0's value, NOT Run 1/2's 0.045
+  sigreg_kwargs:
+    knots: 17               # reference
+    num_proj: 1024          # reference
+
+requirements_file: requirements.txt
+seed: 0

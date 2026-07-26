@@ -210,49 +210,10 @@ class TwoRoomClips:
         """
         if getattr(self, "_act_mu", None) is None:
             a = np.asarray(f["action"][:], dtype=np.float64)
-            # The reference drops NaN rows before computing statistics
-            # (le-wm/utils.py:29). The dataset contains them; averaging over
-            # them gives NaN mean/std and poisons every clip.
-            keep = ~np.isnan(a).any(axis=1)
-            self._n_nan_actions = int((~keep).sum())
-            a = a[keep]
             self._act_mu = a.mean(0).astype(np.float32)
             self._act_sd = a.std(0).astype(np.float32)
             self._act_sd[self._act_sd < 1e-8] = 1.0
         return self._act_mu, self._act_sd
-
-    def nan_audit(self, n_clips: int = 500, seed: int = 0):
-        """Where are the NaN actions, and do any clips contain one?
-
-        A clip whose action block holds a NaN produces a NaN loss and NaN
-        gradients from the first batch that touches it. Better to find that
-        here than on a rented machine.
-        """
-        import h5py
-        with h5py.File(self.h5_path, "r") as f:
-            a = np.asarray(f["action"][:], dtype=np.float64)
-            bad = np.where(np.isnan(a).any(axis=1))[0]
-            off = np.asarray(f["ep_offset"][:])
-            ln = np.asarray(f["ep_len"][:])
-        report = {"total_actions": len(a), "nan_actions": int(len(bad))}
-        if len(bad):
-            ends = set((off + ln - 1).tolist())
-            starts = set(off.tolist())
-            report["at_episode_end"] = int(sum(1 for i in bad if i in ends))
-            report["at_episode_start"] = int(sum(1 for i in bad if i in starts))
-            report["elsewhere"] = int(len(bad) - report["at_episode_end"]
-                                      - report["at_episode_start"])
-            report["first_few"] = bad[:5].tolist()
-        rng = np.random.default_rng(seed)
-        picks = rng.choice(len(self), size=min(n_clips, len(self)),
-                           replace=False)
-        hit = 0
-        for i in picks:
-            if np.isnan(np.asarray(self[int(i)]["action"], dtype=np.float64)).any():
-                hit += 1
-        report["clips_sampled"] = len(picks)
-        report["clips_with_nan"] = hit
-        return report
 
     def close(self):
         if self._f is not None:

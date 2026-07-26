@@ -56,34 +56,7 @@ from parallel_data import make_loader
 from seed import set_seed
 from toy_model import ToyJEPA
 from toy_sigreg import SIGReg
-import tworoom_data
 from tworoom_data import ClipSpec, TwoRoomClips, TwoRoomIndex
-
-# --- loader convention: config is the source of truth ----------------------
-# tworoom_data carries module-level flags that fully determine what the model
-# sees. Left implicit they are invisible to the manifest, which is how "which
-# convention did Run 0 use?" became a three-day source audit.
-_LOADER_FLAGS = ("dense_actions", "imagenet_pixels", "zscore_actions")
-
-
-def _apply_loader_convention(cfg) -> None:
-    """Set tworoom_data's flags from cfg['data'], where the config says so."""
-    data_cfg = cfg.get("data", {}) or {}
-    for name in _LOADER_FLAGS:
-        if name in data_cfg:
-            attr = name.upper()
-            if not hasattr(tworoom_data, attr):
-                raise SystemExit(
-                    f"config sets data.{name} but tworoom_data has no {attr}; "
-                    f"apply the loader patches first")
-            setattr(tworoom_data, attr, bool(data_cfg[name]))
-
-
-def _loader_convention() -> dict:
-    """What is actually in force right now, read off the module."""
-    return {name: bool(getattr(tworoom_data, name.upper()))
-            for name in _LOADER_FLAGS
-            if hasattr(tworoom_data, name.upper())}
 
 
 # ---------------------------------------------------------------------------
@@ -344,8 +317,6 @@ def main():
     with open(args.config) as f:
         cfg = yaml.safe_load(f)
     cfg["seed"] = args.seed
-    _apply_loader_convention(cfg)
-    print(f"loader convention: {_loader_convention()}", flush=True)
     set_seed(cfg["seed"])        # also bans non-deterministic ops: loud > silent
 
     d, t, m = cfg["data"], cfg["training"], cfg["model"]
@@ -419,9 +390,6 @@ def main():
                    "n_train_clips": int(len(train_idx)),
                    "n_val_clips": int(len(val_idx)),
                    "n_params": sum(p.numel() for p in model.parameters()),
-                   # Read back off the module, not echoed from the config, so
-                   # the manifest records what was actually in force.
-                   "loader_convention": _loader_convention(),
                    "requirements_file": cfg.get("requirements_file", "requirements.txt")})
         log({"kind": "start", "n_params": sum(p.numel() for p in model.parameters())})
 

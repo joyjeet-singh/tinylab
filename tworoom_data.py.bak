@@ -116,24 +116,6 @@ class TwoRoomIndex:
 # ---------------------------------------------------------------------------
 # reading clips
 # ---------------------------------------------------------------------------
-# Reference pixel preprocessing: le-wm/utils.py:6 applies ImageNet mean/std
-# (ToImage(**dataset_stats.ImageNet)) before resizing. Ours used to stop at
-# dividing by 255. Set False to reproduce results committed before 2026-07-26.
-IMAGENET_PIXELS = True
-IMAGENET_MEAN = (0.485, 0.456, 0.406)
-IMAGENET_STD = (0.229, 0.224, 0.225)
-
-# Reference action preprocessing: le-wm/train.py:65 z-scores every non-pixel
-# column using dataset statistics (utils.py:25). Ours used raw actions.
-ZSCORE_ACTIONS = True
-
-
-# Reference behaviour: actions are gathered at full rate and reshaped to
-# (num_steps, frameskip * action_dim). Set to False to reproduce every result
-# committed before 2026-07-26, which used the strided (subsampled) read.
-DENSE_ACTIONS = True
-
-
 class TwoRoomClips:
     """
     Reads clips on demand. Opens the file lazily so this object can be handed
@@ -162,97 +144,13 @@ class TwoRoomClips:
         if "pixels" in self.keys:
             px = f["pixels"][idx]                        # (T,224,224,3) uint8
             px = px.astype(np.float32) / 255.0           # -> 0..1 decimals
-            if IMAGENET_PIXELS:
-                # match the reference: ImageNet mean/std, channels last here
-                px = (px - np.asarray(IMAGENET_MEAN, dtype=np.float32)) \
-                    / np.asarray(IMAGENET_STD, dtype=np.float32)
             out["pixels"] = np.transpose(px, (0, 3, 1, 2))  # -> (T,3,224,224)
         for k in self.keys:
             if k == "pixels":
                 continue
-            if DENSE_ACTIONS:
-                # Keep per-step keys DENSE across the clip span and reshape to
-                # (num_steps, frameskip * dim), as the reference does. The
-                # strided read used before threw away four of every five
-                # actions and asked the predictor to explain a five-step
-                # displacement from a one-step action.
-                fs = self.index.spec.frameskip
-                n = self.index.spec.num_steps
-                # Row t holds the fs raw actions taken between clip frame t
-                # and clip frame t+1. A clip of n frames has only n-1 such
-                # transitions, and reading n blocks would run past the clip
-                # span, so the final row is zero-filled. The predictor pairs
-                # frame t with frame t+1, so row n-1 has no target and is
-                # never scored.
-                dense_idx = int(idx[0]) + np.arange((n - 1) * fs)
-                dense = np.asarray(f[k][dense_idx],
-                                   dtype=np.float32).reshape(n - 1, -1)
-                if ZSCORE_ACTIONS and k == "action":
-                    mu, sd = self._action_stats(f)
-                    reps = dense.shape[1] // mu.shape[0]
-                    dense = (dense - np.tile(mu, reps)) / np.tile(sd, reps)
-                out[k] = np.concatenate(
-                    [dense, np.zeros((1, dense.shape[1]), dtype=np.float32)],
-                    axis=0)
-            else:
-                out[k] = np.asarray(f[k][idx], dtype=np.float32)
+            out[k] = np.asarray(f[k][idx], dtype=np.float32)
         out["_start"] = idx[0]
         return out
-
-    def _action_stats(self, f):
-        """Per-dimension mean/std of the RAW action column, computed once.
-
-        The reference computes these on the raw column (width action_dim) and
-        applies them to the clip's action array (width frameskip*action_dim).
-        We tile across the concatenated actions, which is the semantically
-        correct reading; the reference's exact broadcast is unverified, so
-        this is listed as OUR INTERPRETATION in the deviations table.
-        """
-        if getattr(self, "_act_mu", None) is None:
-            a = np.asarray(f["action"][:], dtype=np.float64)
-            # The reference drops NaN rows before computing statistics
-            # (le-wm/utils.py:29). The dataset contains them; averaging over
-            # them gives NaN mean/std and poisons every clip.
-            keep = ~np.isnan(a).any(axis=1)
-            self._n_nan_actions = int((~keep).sum())
-            a = a[keep]
-            self._act_mu = a.mean(0).astype(np.float32)
-            self._act_sd = a.std(0).astype(np.float32)
-            self._act_sd[self._act_sd < 1e-8] = 1.0
-        return self._act_mu, self._act_sd
-
-    def nan_audit(self, n_clips: int = 500, seed: int = 0):
-        """Where are the NaN actions, and do any clips contain one?
-
-        A clip whose action block holds a NaN produces a NaN loss and NaN
-        gradients from the first batch that touches it. Better to find that
-        here than on a rented machine.
-        """
-        import h5py
-        with h5py.File(self.h5_path, "r") as f:
-            a = np.asarray(f["action"][:], dtype=np.float64)
-            bad = np.where(np.isnan(a).any(axis=1))[0]
-            off = np.asarray(f["ep_offset"][:])
-            ln = np.asarray(f["ep_len"][:])
-        report = {"total_actions": len(a), "nan_actions": int(len(bad))}
-        if len(bad):
-            ends = set((off + ln - 1).tolist())
-            starts = set(off.tolist())
-            report["at_episode_end"] = int(sum(1 for i in bad if i in ends))
-            report["at_episode_start"] = int(sum(1 for i in bad if i in starts))
-            report["elsewhere"] = int(len(bad) - report["at_episode_end"]
-                                      - report["at_episode_start"])
-            report["first_few"] = bad[:5].tolist()
-        rng = np.random.default_rng(seed)
-        picks = rng.choice(len(self), size=min(n_clips, len(self)),
-                           replace=False)
-        hit = 0
-        for i in picks:
-            if np.isnan(np.asarray(self[int(i)]["action"], dtype=np.float64)).any():
-                hit += 1
-        report["clips_sampled"] = len(picks)
-        report["clips_with_nan"] = hit
-        return report
 
     def close(self):
         if self._f is not None:

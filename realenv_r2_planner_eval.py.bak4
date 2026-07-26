@@ -87,12 +87,6 @@ def main():
                    help="authors_driving_spec.json: evaluate the AUTHORS' "
                         "released checkpoint instead of ours, with every "
                         "other protocol element unchanged")
-    p.add_argument("--action-scale", type=float, default=1.0,
-                   help="multiply the action before it reaches the model "
-                        "(NOT the environment). Our loader subsampled one "
-                        "action per clip step, so the model under-predicts "
-                        "displacement by the frameskip factor; 5.0 corrects "
-                        "it. Default 1.0 reproduces every committed result.")
     p.add_argument("--unsafe-skip-guard", action="store_true",
                    help="mechanics testing ONLY; recorded loudly in outputs")
     args = p.parse_args()
@@ -146,26 +140,6 @@ def main():
         model.eval()
         say(f"model: {m.get('encoder', 'cnn')} at {m.get('img_size', 32)}px "
             f"({ckpt.name}, epoch field {ck.get('epoch')})")
-
-    if args.action_scale != 1.0:
-        if args.authors_spec:
-            raise SystemExit(
-                "--action-scale and --authors-spec both rescale actions; the "
-                "authors' encoding comes from the driving spec. Pass only one.")
-        class _ScaledActionEncoder(torch.nn.Module):
-            """Wraps the real encoder; must be a Module to be assignable."""
-
-            def __init__(self, inner, k):
-                super().__init__()
-                self.inner, self.k = inner, float(k)
-
-            def forward(self, a):
-                return self.inner(a * self.k)
-
-        _k = float(args.action_scale)
-        model.action_encoder = _ScaledActionEncoder(model.action_encoder, _k)
-        say(f"ACTION SCALE {_k:g} applied to the model input only "
-            f"(the environment still receives the unscaled action)")
 
     @torch.no_grad()
     def emb_of(img_hwc_uint8):
@@ -350,7 +324,6 @@ def main():
 
     out = {"tag": tag, "guard": guard, "results": results,
            "success_rate": succ / n, "n": n, "trivial_starts": n_triv,
-           "action_scale": args.action_scale,
            "protocol": {"num_eval": args.num_eval, "budget": args.budget,
                         "goal_offset": args.goal_offset,
                         "receding": args.receding,
