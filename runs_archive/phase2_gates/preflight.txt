@@ -1,0 +1,63 @@
+========================================================================
+A. FIDELITY vs the reference (values traced to source)
+========================================================================
+  element                              reference          ours   status
+  ------------------------------------------------------------------
+  model.embed_dim                            192           192   match
+  model.depth                                  6             6   match
+  model.heads                                 16            16   match
+  model.dim_head                              64            64   match
+  model.mlp_dim                             2048          2048   match
+  model.proj_hidden                         2048          2048   match
+  model.dropout                              0.1           0.1   match
+  model.img_size                             224           224   match
+  model.patch_size                            14            14   match
+  model.history_size                           3             3   match
+  data.frameskip                               5             5   match
+  data.train_split                           0.9           0.9   match
+  training.batch_size                        128           128   match
+  training.learning_rate                   5e-05         5e-05   match
+  training.weight_decay                    0.001         0.001   match
+  training.num_preds                           1             1   match
+  training.grad_clip                         1.0           1.0   match
+  loss.sigreg_weight                        0.09          0.09   match
+  loss.sigreg_kwargs.knots                    17            17   match
+  loss.sigreg_kwargs.num_proj               1024          1024   match
+  [deliberate] training.epochs = 10 -- reference repo says 100, paper App. E says 10; budget allows 10
+  [deliberate] seed = 0 -- held at Run 0's value so the comparison against Run 0 isolates the four pipeline fixes; reference uses 3072
+
+========================================================================
+B. DATA CONTRACT
+========================================================================
+  DENSE_ACTIONS = True
+  action shape (4, 10)   expected (4, 10)
+  model.action_dim 10 agrees with the loader
+  physics identity on 60 wall-free blocks: median error 4.52e-06
+  (z-scoring restored to True)
+
+========================================================================
+C/D. MODEL BUILD AND CPU MICRO-TRAIN
+========================================================================
+  parameters: 18,034,670  (the authors' released checkpoint is 18,034,xxx)
+  SIGReg note: its statistic scales with BATCH SIZE, so at batch 4 it carries roughly 4/128 of the anti-collapse
+  pressure the real run will have. An absolute spread drop here is EXPECTED and not
+  diagnostic. What is diagnostic: whether SIGReg slows the drop at all.
+    [lam=0.09] step   0  loss    0.2820  grad   1.003  spread 0.0401  sigreg     1.60
+    [lam=0.09] step   3  loss    0.2125  grad   0.692  spread 0.0194  sigreg     1.61
+    [lam=0.09] step   6  loss    0.1747  grad   0.435  spread 0.0171  sigreg     1.61
+    [lam=0.09] step   9  loss    0.1570  grad   0.263  spread 0.0108  sigreg     1.61
+    [lam=0] step   0  loss    0.1380  grad   1.004  spread 0.0401  sigreg     1.60
+    [lam=0] step   3  loss    0.0677  grad   0.693  spread 0.0168  sigreg     1.61
+    [lam=0] step   6  loss    0.0299  grad   0.435  spread 0.0147  sigreg     1.61
+    [lam=0] step   9  loss    0.0122  grad   0.263  spread 0.0095  sigreg     1.61
+  final spread with SIGReg 0.0101  without 0.0087
+  OK -- SIGReg holds 1.15x more spread than lambda=0, so it is wired and active
+  loss 0.2820 -> 0.1522
+
+========================================================================
+PRE-FLIGHT PASSED
+========================================================================
+  Every config element either matches the reference or is a listed,
+  deliberate deviation; the loader's actions satisfy the physics
+  identity; the model builds, trains and does not collapse on CPU.
+  Record this output alongside the run.

@@ -1,0 +1,37 @@
+======================================================================
+G1 — FRESH CLONE DRY RUN AND ARTIFACT AUDIT
+======================================================================
+
+1. WORKING TREE
+   the run imports 7 local modules: lablog, parallel_data, seed, toy_model, toy_sigreg, train_toy_lewm, tworoom_data
+   uncommitted changes overall: 0, untracked: 1
+   OK — every file the run needs is committed as tested
+
+2. FRESH CLONE
+   cloned /Users/joyjeetsingh/Downloads/tinylab - vast at d8308b9 -> /var/folders/sg/tsl1msps70l0c3r3_lh8rcpr0000gn/T/g1_qmsdqd4r/repo (63 python files)
+
+3. IMPORT CLOSURE
+   OK — all 7 local modules present in the clone
+   OK — configs/phase2_dense_reference.yaml is committed
+
+4. COMPILES INSIDE THE CLONE
+   OK — every python file compiles
+   OK — the entry point runs --help inside the clone
+
+5. ARTIFACT AUDIT
+   run will write:  runs/<phase2_dense_reference_...>/
+     manifest.json, log.jsonl, ckpt.pt, ckpt_best.pt, ckpt_final.pt
+   runs/ gitignored: yes
+   data path in the config: /dev/shm/data/tworoom.h5
+     (not required in the clone; stage it on the box separately)
+
+   RETRIEVAL — rehearse this BEFORE launching, per the retrieval-first rule:
+     rsync -avP <user>@<host>:<remote>/runs/  ./runs_pulled/
+     then md5 the checkpoints on both ends before destroying anything
+
+======================================================================
+G1 PASSED
+======================================================================
+  A fresh clone of HEAD contains everything the run imports, every
+  file compiles, the entry point starts, and outputs are gitignored.
+  Record this alongside the run.
