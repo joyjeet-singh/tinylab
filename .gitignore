@@ -17,3 +17,5 @@ __pycache__/
 
 data/
 *.tar.gz
+*.bak
+*.bak[0-9]
