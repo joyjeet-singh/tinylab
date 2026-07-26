@@ -23,7 +23,10 @@
 #   precision fp32   the reference uses bf16; ours is strictly MORE precise, so
 #                    it cannot explain non-convergence, and adding autocast
 #                    would put untested code inside the one run we can afford
-#   seed 0           reference 3072; arm identity
+#   seed 0           held at Run 0's value so the comparison against Run 0
+#                    isolates the four pipeline fixes; the reference uses
+#                    3072, which buys no comparability and would add a
+#                    fifth difference
 #   independent code our own ToyJEPA / SIGReg / loader rather than theirs
 #   action z-score   the reference computes statistics on the 2-wide raw column
 #                    and applies them to the 10-wide clip array; its exact

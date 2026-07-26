@@ -75,7 +75,8 @@ REFERENCE = {
 EXPECTED_DEVIATIONS = {
     "training.epochs": "reference repo says 100, paper App. E says 10; budget "
                        "allows 10",
-    "seed": "arm identity; reference uses 3072",
+    "seed": "held at Run 0's value so the comparison against Run 0 isolates "
+        "the four pipeline fixes; reference uses 3072",
 }
 
 
