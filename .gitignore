@@ -19,3 +19,5 @@ data/
 *.tar.gz
 *.bak
 *.bak[0-9]
+tinylab/
+tinylab_phase2/
