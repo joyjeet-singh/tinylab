@@ -1,0 +1,40 @@
+======================================================================
+A. COMMIT PROVENANCE — is 4f2efbb a descendant of d8308b9?
+======================================================================
+  YES — d8308b9 is an ancestor of 4f2efbb.
+  1 commit(s) between them:
+    4f2efbb Phase2 gate outputs
+  files changed:
+    runs_archive/phase2_gates/g1.txt        | 37 +++++++++++++++++++
+     runs_archive/phase2_gates/preflight.txt | 63 +++++++++++++++++++++++++++++++++
+     2 files changed, 100 insertions(+)
+
+  No .py or .yaml differs — the run executed the gated code. Only non-executable files (gate outputs, docs) were added.
+
+======================================================================
+B. WHICH EPOCH IS IN EACH CHECKPOINT?
+======================================================================
+  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+    ckpt.pt         epoch 10   size    216.8 MB   other keys ['optim', 'step', 'epoch', 'pos_in_epoch', 'torch_rng_state', 'cuda_rng_state']
+    ckpt_best.pt    epoch 9   size    216.8 MB   other keys ['optim', 'step', 'epoch', 'pos_in_epoch', 'torch_rng_state', 'cuda_rng_state']
+    ckpt_final.pt   (absent)
+    (the paper quotes epoch 8: pred 4.603, step0 ratio 2.255 — confirm that is ckpt_best)
+
+======================================================================
+C. ENVIRONMENT ACROSS ALL RUNS (for the deviations section)
+======================================================================
+  run                                 python   torch         data      lr       sigreg  hs  act  conv 
+  ----------------------------------------------------------------------------------------------------
+  phase1_run1_bundle_phase1_run1_bun  3.11.15  2.2.2+cu121   ce1d3ebb  1e-05    0.045   1   2    —    
+  phase1_run2_cosine_phase1_run2_cos  3.11.15  2.2.2+cu121   ce1d3ebb  1e-05    0.045   1   2    —    
+  phase2_dense_reference_phase2_dens  3.12.3   2.2.2+cu121   c7027525  5e-05    0.09    3   10   yes  
+  rental_tworoom_vit224_rental_tworo  3.11.15  2.2.2+cu121   c7027525  5e-05    0.09    3   2    —    
+  rental_tworoom_vit224_rental_tworo  3.11.15  2.2.2+cu121   c7027525  5e-05    0.09    3   2    —    
+  toy_lewm_vit_toy_lewm_vit           3.11.15  2.2.2         7936bc67  5e-05    0.09    3   2    —    
+
+  DEVIATION TO RECORD: python differs across runs ['3.11.15', '3.12.3'].
+  Benign — but a reproduction paper states it rather than leaving a reader to find it.
+
+  Note: data_sha256 is a FINGERPRINT over (clip index, file), not a
+  file hash. Runs sharing a history_size share a value; a difference
+  between history_size 1 and 3 runs is expected, not a data change.

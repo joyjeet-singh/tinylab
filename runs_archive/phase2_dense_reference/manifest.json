@@ -1,0 +1,66 @@
+{
+  "run_name": "phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632",
+  "config": {
+    "experiment": "phase2_dense_reference",
+    "model": {
+      "name": "phase2_dense_reference",
+      "encoder": "vit",
+      "img_size": 224,
+      "patch_size": 14,
+      "enc_depth": 12,
+      "enc_heads": 3,
+      "embed_dim": 192,
+      "action_dim": 10,
+      "history_size": 3,
+      "depth": 6,
+      "heads": 16,
+      "dim_head": 64,
+      "mlp_dim": 2048,
+      "proj_hidden": 2048,
+      "dropout": 0.1,
+      "enc_width": 32
+    },
+    "data": {
+      "h5_path": "/dev/shm/data/tworoom.h5",
+      "frameskip": 5,
+      "train_split": 0.9,
+      "data_seed": 42,
+      "dense_actions": true,
+      "imagenet_pixels": true,
+      "zscore_actions": true
+    },
+    "training": {
+      "epochs": 10,
+      "batch_size": 128,
+      "learning_rate": 5e-05,
+      "weight_decay": 0.001,
+      "num_preds": 1,
+      "grad_clip": 1.0,
+      "log_every": 10,
+      "num_workers": 16
+    },
+    "loss": {
+      "sigreg_weight": 0.09,
+      "sigreg_kwargs": {
+        "knots": 17,
+        "num_proj": 1024
+      }
+    },
+    "requirements_file": "requirements.txt",
+    "seed": 0
+  },
+  "git_commit": "4f2efbba80ce7e3d3e9d7f690ab337f48fe7219d",
+  "torch_version": "2.2.2+cu121",
+  "python_version": "3.12.3",
+  "started_at": "2026-07-27T11:56:32.715347",
+  "data_sha256": "c7027525dd842bcd67f50fb82a8c5155abb2b6d9fcc887f5910fa4882e1c682e",
+  "n_train_clips": 693728,
+  "n_val_clips": 77081,
+  "n_params": 18034670,
+  "loader_convention": {
+    "dense_actions": true,
+    "imagenet_pixels": true,
+    "zscore_actions": true
+  },
+  "requirements_file": "requirements.txt"
+}

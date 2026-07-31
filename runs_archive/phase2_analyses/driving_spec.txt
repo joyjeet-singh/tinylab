@@ -1,0 +1,27 @@
+======================================================================
+HOW MUST phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632 BE DRIVEN?
+======================================================================
+  manifest loader_convention: {'dense_actions': True, 'imagenet_pixels': True, 'zscore_actions': True} (manifest)
+  model: action_dim 10, history_size 3, epoch field 9
+  loader convention (manifest): dense=True imagenet=True zscore=True
+  ADAPTER ACTIVE: pixels ImageNet, actions 2 -> 10 by repeat + z-score, history_size 3
+
+STATISTICS CROSS-CHECK (adapter vs the loader's own)
+  adapter mu [ 0.0031 -0.053 ] sd [0.8675 0.8686]
+  loader  mu [ 0.0031 -0.053 ] sd [0.8675 0.8686]
+  identical: True
+
+150 windows; frozen-world baseline 13.021
+  encoding                                err    ratio
+  ----------------------------------------------------
+  repeat + z-score (the adapter)       34.276    2.632
+  repeat, no z-score                   33.814    2.597
+  first-2 padded + z-score             27.368    2.102
+  zeros                                26.617    2.044
+  random                               29.721    2.283
+  dense true actions (ceiling)         29.502    2.266
+  ----------------------------------------------------
+
+VERDICT
+  STOP. The adapter's encoding (2.632) is no better than no action at all (2.283).
+  The model is not reading our actions. Do not plan with it; send me this table.
