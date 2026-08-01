@@ -150,7 +150,7 @@ def main():
         ok_eps = np.where(ln > need + 2)[0]
         eps = rng.choice(ok_eps, size=min(args.samples, len(ok_eps)),
                          replace=False)
-        frames, dense, first, meanb = [], [], [], []
+        frames, dense, first = [], [], []
         for ep in eps:
             s = int(off[ep]) + int(rng.integers(0, ln[ep] - need - 1))
             frames.append(np.stack([f["pixels"][s + fs * i]
@@ -159,11 +159,9 @@ def main():
                                  dtype=np.float32) for i in range(HS)]
             dense.append(np.stack([b.reshape(-1) for b in blocks]))
             first.append(np.stack([b[0] for b in blocks]))
-            meanb.append(np.stack([b.mean(0) for b in blocks]))
     frames = np.stack(frames).astype(np.float32) / 255.0
     dense = np.stack(dense)
     first = np.stack(first)
-    meanb = np.stack(meanb)
     N = len(frames)
     if np.isnan(dense).any():
         print("\n  NaN in a sampled action block -- the NaN audit missed "
@@ -181,19 +179,12 @@ def main():
         reps = x.shape[-1] // len(mu)
         return (x - np.tile(mu, reps)) / np.tile(sd, reps)
 
-    # A planner emits one action `a` held for frameskip steps, so its block
-     # sums to 5a -- which matches a data block whose MEAN is a. Repeating the
-     # mean is therefore displacement-matched to the transition being
-     # predicted; repeating the FIRST action is not, and differs from the true
-     # summed action by more than the whole signal.
-    rep_mean = np.tile(meanb, (1, 1, A // meanb.shape[-1]))
     rep_raw = np.tile(first, (1, 1, A // first.shape[-1]))
     padded = np.zeros((N, HS, A), dtype=np.float32)
     padded[:, :, :2] = first
     variants = {
-        "repeat of MEAN (displacement-matched)": zscore(rep_mean),
-        "repeat of mean, no z-score": rep_mean,
-        "repeat of FIRST (not matched)": zscore(rep_raw),
+        "repeat + z-score (the adapter)": zscore(rep_raw),
+        "repeat, no z-score": rep_raw,
         "first-2 padded + z-score": zscore(padded),
         "zeros": np.zeros((N, HS, A), dtype=np.float32),
         "random": rng.normal(0, 1, (N, HS, A)).astype(np.float32),
@@ -226,7 +217,7 @@ def main():
         print("  verdict is possible; never read GO off a table with NaN in it.")
         return
 
-    adp = res["repeat of MEAN (displacement-matched)"]
+    adp = res["repeat + z-score (the adapter)"]
     ceil = res["dense true actions (ceiling)"]
     noise = max(res["zeros"], res["random"])
     print("\nVERDICT")
@@ -250,7 +241,7 @@ def main():
     print("  planner gives up by not varying the action within a block -- a "
           "stated limitation,")
     print("  not a surprise.")
-    zs = res["repeat of mean, no z-score"]
+    zs = res["repeat, no z-score"]
     print(f"  Z-scoring is worth {zs - adp:+.3f} (no-z-score {zs:.3f} vs "
           f"{adp:.3f}); if that is ~0,\n  the model is insensitive to action "
           f"scale and the normalisation row can be relaxed.")

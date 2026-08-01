@@ -163,14 +163,6 @@ def main():
                     "pipeline checkpoint: the adapter already applies the "
                     "dataset z-score, and the two rescalings would compose.")
             model = _wrapped
-            # The planner must search the ENVIRONMENT's action space, which is
-            # 2-D. The manifest's action_dim of 10 is the width of the model's
-            # DENSE input (frameskip x 2), and the adapter produces that from a
-            # 2-D action. Leaving it at 10 makes CEM sample candidates the
-            # environment cannot execute.
-            m = {**m, "action_dim": 2}
-            say("  planner action space pinned to 2-D (the environment's); "
-                "the adapter widens each action to the model's 10-D input")
         say(f"model: {m.get('encoder', 'cnn')} at {m.get('img_size', 32)}px "
             f"({ckpt.name}, epoch field {ck.get('epoch')})")
 

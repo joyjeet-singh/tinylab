@@ -149,28 +149,6 @@ def main():
         ck = torch.load(ckpt, map_location="cpu", weights_only=False)
         model.load_state_dict(ck["model"])
         model.eval()
-        # A checkpoint trained with the corrected pipeline expects
-        # ImageNet-normalised pixels and dense z-scored actions. The manifest
-        # records which; wrap_if_needed() returns the model untouched when the
-        # run predates the change, so older results are unaffected.
-        from dense_action_adapter import wrap_if_needed
-        _wrapped = wrap_if_needed(model, run_dir, args.h5,
-                                  frameskip=cfg["data"]["frameskip"])
-        if _wrapped is not model:
-            if args.action_scale != 1.0:
-                raise SystemExit(
-                    "--action-scale cannot be combined with a corrected-"
-                    "pipeline checkpoint: the adapter already applies the "
-                    "dataset z-score, and the two rescalings would compose.")
-            model = _wrapped
-            # The planner must search the ENVIRONMENT's action space, which is
-            # 2-D. The manifest's action_dim of 10 is the width of the model's
-            # DENSE input (frameskip x 2), and the adapter produces that from a
-            # 2-D action. Leaving it at 10 makes CEM sample candidates the
-            # environment cannot execute.
-            m = {**m, "action_dim": 2}
-            say("  planner action space pinned to 2-D (the environment's); "
-                "the adapter widens each action to the model's 10-D input")
         say(f"model: {m.get('encoder', 'cnn')} at {m.get('img_size', 32)}px "
             f"({ckpt.name}, epoch field {ck.get('epoch')})")
 

@@ -115,7 +115,7 @@ def effective_rank(Z):
     return float(ev.sum() ** 2 / (ev ** 2).sum())
 
 
-def load_encoder(run_dir, ckpt=None):
+def load_encoder(run_dir):
     """The model plus the pixel convention IT was trained with."""
     import torch
     from toy_model import ToyJEPA
@@ -133,10 +133,10 @@ def load_encoder(run_dir, ckpt=None):
                     patch_size=m.get("patch_size", 4),
                     enc_depth=m.get("enc_depth", 12),
                     enc_heads=m.get("enc_heads", 3))
-    _ck_name = ckpt or ("ckpt_best.pt"
-                        if (run_dir / "ckpt_best.pt").exists() else "ckpt.pt")
-    ck = torch.load(run_dir / _ck_name, map_location="cpu",
-                    weights_only=False)
+    ck = torch.load(run_dir / ("ckpt_best.pt"
+                               if (run_dir / "ckpt_best.pt").exists()
+                               else "ckpt.pt"),
+                    map_location="cpu", weights_only=False)
     model.load_state_dict(ck["model"])
     model.eval()
     model.requires_grad_(False)
@@ -153,10 +153,6 @@ def main():
     ap.add_argument("--frames", type=int, default=4000)
     ap.add_argument("--frameskip", type=int, default=5)
     ap.add_argument("--mlp-steps", type=int, default=3000)
-    ap.add_argument("--ckpt-a", default=None,
-                   help="checkpoint filename inside --run-a")
-    ap.add_argument("--ckpt-b", default=None,
-                   help="checkpoint filename inside --run-b")
     ap.add_argument("--seed", type=int, default=0)
     args = ap.parse_args()
 
@@ -192,9 +188,8 @@ def main():
         print(f"  dropped {int((~keep).sum())} windows containing a NaN action")
 
     results = {}
-    for label, run, _ck in ((args.label_a, args.run_a, args.ckpt_a),
-                            (args.label_b, args.run_b, args.ckpt_b)):
-        model, conv, m = load_encoder(run, _ck)
+    for label, run in ((args.label_a, args.run_a), (args.label_b, args.run_b)):
+        model, conv, m = load_encoder(run)
         img_norm = bool(conv.get("imagenet_pixels"))
         print(f"\n--- {label} ---")
         print(f"  action_dim {m['action_dim']}, history_size "
