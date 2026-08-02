@@ -21,3 +21,4 @@ data/
 *.bak[0-9]
 tinylab/
 tinylab_phase2/
+*.bak*
