@@ -22,3 +22,5 @@ data/
 tinylab/
 tinylab_phase2/
 *.bak*
+.DS_Store
+.DS_Store
