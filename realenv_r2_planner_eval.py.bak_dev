@@ -366,25 +366,13 @@ def main():
             f"{st/len(nt)*100:.1f}%")
     say(f"  wall-clock             : {(time.time()-t0)/60:.1f} min")
     say("\nDEVIATIONS from the reference protocol (state wherever quoted):")
-    say("  - episode/start selection ours ("
-        + (f"committed set {Path(args.episodes).name}"
-           if getattr(args, "episodes", None)
-           else f"random {args.num_eval} eps seed {args.seed}")
-        + ", start =")
-    say(f"    frame 0, goal = frame {args.goal_offset}); reference's "
-        f"exact selection unknown")
-    say(f"  - receding_horizon {args.receding} read as: execute "
-        f"{args.receding} planned actions, replan")
-    say("  - the AUTHORS' released weights, driven through our harness"
-        if getattr(args, "authors_spec", None)
-        else "  - OUR reproduction checkpoint, not the authors' released weights")
-    if getattr(args, "action_scale", 1.0) != 1.0:
-        say(f"  - action scaled by {args.action_scale:g} before reaching the "
-            f"model (the environment receives the unscaled action)")
+    say("  - episode/start selection ours (random 50 eps seed 42, start =")
+    say("    frame 0, goal = frame 25); reference's exact selection unknown")
+    say("  - receding_horizon 5 read as: execute 5 planned actions, replan")
+    say("  - OUR reproduction checkpoint, not the authors' released weights")
     say("  - success = the registered env's terminated rule (distance < 16)")
     say("  matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,")
-    say(f"  budget {args.budget}, goal_offset {args.goal_offset}, "
-        f"img 224, goal-image")
+    say("  budget 50, num_eval 50, goal_offset 25, img 224, goal-image")
     say("  convention.")
 
     out = {"tag": tag, "guard": guard, "results": results,

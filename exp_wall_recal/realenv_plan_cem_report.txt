@@ -1,0 +1,250 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (CEM)  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  planner action space pinned to 2-D (the environment's); the adapter widens each action to the model's 10-D input
+model: vit at 224px (ckpt_best_recal.pt, epoch field 9)
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.009 (threshold 1.0) -> pass
+episode set: ../balanced_episodes.json (110 matched pairs, selection: one-to-one caliper matching on start-goal distance; blind to model and outcome)
+
+episodes: 220 sampled (seed 42); start = episode frame 0; goal = frame 100 of the same episode
+  ep  1/220 (# 1883): REACHED in 46 steps, final dist   13.3, start-goal  156.3
+  ep  2/220 (# 7288): missed  in 50 steps, final dist  180.8, start-goal  156.3
+  ep  3/220 (# 2374): REACHED in 20 steps, final dist   15.3, start-goal   70.7
+  ep  4/220 (# 2385): REACHED in 49 steps, final dist   11.2, start-goal   70.7
+  ep  5/220 (# 2274): missed  in 50 steps, final dist  209.3, start-goal  180.2
+  ep  6/220 (# 3149): missed  in 50 steps, final dist  160.7, start-goal  180.5
+  ep  7/220 (#   27): missed  in 50 steps, final dist   73.0, start-goal   85.6
+  ep  8/220 (# 9223): missed  in 50 steps, final dist   81.1, start-goal   85.7
+  ep  9/220 (# 5067): REACHED in 46 steps, final dist   15.8, start-goal  117.3
+  ep 10/220 (# 8328): missed  in 50 steps, final dist  174.0, start-goal  117.3
+  ep 11/220 (# 1145): missed  in 50 steps, final dist   72.3, start-goal  125.8
+  ep 12/220 (# 8692): missed  in 50 steps, final dist  134.9, start-goal  125.8
+  ep 13/220 (# 8373): missed  in 50 steps, final dist   43.3, start-goal   75.5
+  ep 14/220 (# 1213): REACHED in 21 steps, final dist   14.1, start-goal   75.4
+  ep 15/220 (# 6065): missed  in 50 steps, final dist  119.4, start-goal  113.2
+  ep 16/220 (# 9756): missed  in 50 steps, final dist  138.5, start-goal  113.2
+  ep 17/220 (# 1515): missed  in 50 steps, final dist  162.3, start-goal   98.0
+  ep 18/220 (# 2426): missed  in 50 steps, final dist  148.1, start-goal   98.0
+  ep 19/220 (# 9136): missed  in 50 steps, final dist  161.9, start-goal  105.6
+  ep 20/220 (# 2119): missed  in 50 steps, final dist  152.4, start-goal  105.6
+  ep 21/220 (# 4784): missed  in 50 steps, final dist  149.3, start-goal  124.9
+  ep 22/220 (# 8538): missed  in 50 steps, final dist  136.3, start-goal  124.9
+  ep 23/220 (# 7127): missed  in 50 steps, final dist  154.6, start-goal  155.7
+  ep 24/220 (# 4064): missed  in 50 steps, final dist  164.2, start-goal  155.6
+  ep 25/220 (# 1056): missed  in 50 steps, final dist  137.0, start-goal  136.5
+  ep 26/220 (# 3416): missed  in 50 steps, final dist  157.3, start-goal  136.4
+  ep 27/220 (# 9024): missed  in 50 steps, final dist  118.3, start-goal   81.3
+  ep 28/220 (# 3819): missed  in 50 steps, final dist   82.5, start-goal   81.2
+  ep 29/220 (# 4281): missed  in 50 steps, final dist  109.9, start-goal  168.2
+  ep 30/220 (# 8573): missed  in 50 steps, final dist  146.5, start-goal  168.2
+  ep 31/220 (#  570): missed  in 50 steps, final dist  110.6, start-goal  101.3
+  ep 32/220 (#   52): missed  in 50 steps, final dist  163.9, start-goal  101.2
+  ep 33/220 (# 5754): REACHED in 44 steps, final dist   15.3, start-goal  115.5
+  ep 34/220 (#  683): missed  in 50 steps, final dist  172.8, start-goal  115.4
+  ep 35/220 (# 2346): missed  in 50 steps, final dist   92.8, start-goal  105.9
+  ep 36/220 (# 4769): missed  in 50 steps, final dist  159.0, start-goal  105.9
+  ep 37/220 (#  674): REACHED in 45 steps, final dist   14.1, start-goal   93.0
+  ep 38/220 (#  849): missed  in 50 steps, final dist  139.2, start-goal   93.0
+  ep 39/220 (# 7134): missed  in 50 steps, final dist  142.7, start-goal  144.4
+  ep 40/220 (#  575): missed  in 50 steps, final dist  143.1, start-goal  144.4
+  ep 41/220 (#  990): REACHED in 22 steps, final dist   14.6, start-goal  101.5
+  ep 42/220 (# 6277): missed  in 50 steps, final dist  146.0, start-goal  101.6
+  ep 43/220 (# 1018): missed  in 50 steps, final dist   90.4, start-goal  147.3
+  ep 44/220 (# 8423): missed  in 50 steps, final dist  139.0, start-goal  147.3
+  ep 45/220 (# 3906): missed  in 50 steps, final dist  129.0, start-goal   97.1
+  ep 46/220 (# 4923): REACHED in 48 steps, final dist   12.4, start-goal   97.1
+  ep 47/220 (# 9346): missed  in 50 steps, final dist  182.3, start-goal  127.3
+  ep 48/220 (# 7345): missed  in 50 steps, final dist  156.8, start-goal  127.3
+  ep 49/220 (# 8827): REACHED in 22 steps, final dist   14.4, start-goal   54.9
+  ep 50/220 (# 4945): REACHED in 19 steps, final dist   15.8, start-goal   54.9
+  ep 51/220 (# 9841): missed  in 50 steps, final dist   82.4, start-goal  149.9
+  ep 52/220 (# 1536): missed  in 50 steps, final dist  167.2, start-goal  149.8
+  ep 53/220 (# 8878): REACHED in 45 steps, final dist   15.6, start-goal   93.8
+  ep 54/220 (# 5032): REACHED in 47 steps, final dist   13.8, start-goal   93.5
+  ep 55/220 (# 4490): REACHED in 43 steps, final dist   15.3, start-goal  121.6
+  ep 56/220 (# 6241): missed  in 50 steps, final dist  138.0, start-goal  121.6
+  ep 57/220 (# 4056): REACHED in 21 steps, final dist   13.4, start-goal   51.3
+  ep 58/220 (# 4842): REACHED in 22 steps, final dist   14.8, start-goal   51.0
+  ep 59/220 (# 2919): missed  in 50 steps, final dist  120.6, start-goal   78.7
+  ep 60/220 (# 9337): REACHED in 22 steps, final dist   15.3, start-goal   78.7
+  ep 61/220 (# 7974): missed  in 50 steps, final dist  109.7, start-goal   75.7
+  ep 62/220 (# 9892): missed  in 50 steps, final dist   78.5, start-goal   75.7
+  ep 63/220 (# 3365): missed  in 50 steps, final dist  132.5, start-goal   98.3
+  ep 64/220 (# 1164): missed  in 50 steps, final dist  167.7, start-goal   98.3
+  ep 65/220 (# 2546): missed  in 50 steps, final dist   50.2, start-goal  115.8
+  ep 66/220 (# 7650): missed  in 50 steps, final dist  162.2, start-goal  115.8
+  ep 67/220 (# 7708): missed  in 50 steps, final dist   45.6, start-goal   90.1
+  ep 68/220 (# 4623): REACHED in 22 steps, final dist   14.3, start-goal   90.1
+  ep 69/220 (# 6606): missed  in 50 steps, final dist  157.7, start-goal  152.5
+  ep 70/220 (# 5568): missed  in 50 steps, final dist  167.7, start-goal  152.6
+  ep 71/220 (# 2190): REACHED in 43 steps, final dist   15.1, start-goal  130.1
+  ep 72/220 (# 2489): missed  in 50 steps, final dist  134.5, start-goal  130.1
+  ep 73/220 (# 9699): missed  in 50 steps, final dist  109.9, start-goal   89.2
+  ep 74/220 (#  680): missed  in 50 steps, final dist  126.3, start-goal   89.2
+  ep 75/220 (#  280): missed  in 50 steps, final dist  158.3, start-goal  143.8
+  ep 76/220 (# 1847): missed  in 50 steps, final dist  151.0, start-goal  143.8
+  ep 77/220 (# 7551): REACHED in 22 steps, final dist   14.8, start-goal   86.3
+  ep 78/220 (# 6791): REACHED in 20 steps, final dist   13.8, start-goal   86.3
+  ep 79/220 (# 8678): missed  in 50 steps, final dist  124.5, start-goal   58.0
+  ep 80/220 (#   85): REACHED in 20 steps, final dist   14.3, start-goal   57.6
+  ep 81/220 (# 1126): missed  in 50 steps, final dist   67.3, start-goal  126.8
+  ep 82/220 (# 1361): missed  in 50 steps, final dist  143.7, start-goal  126.8
+  ep 83/220 (# 9635): missed  in 50 steps, final dist  139.8, start-goal  128.6
+  ep 84/220 (# 4563): missed  in 50 steps, final dist  144.6, start-goal  128.7
+  ep 85/220 (# 2594): missed  in 50 steps, final dist   96.5, start-goal  136.5
+  ep 86/220 (# 8470): missed  in 50 steps, final dist  140.1, start-goal  136.4
+  ep 87/220 (# 9844): missed  in 50 steps, final dist  101.4, start-goal   94.6
+  ep 88/220 (# 2696): missed  in 50 steps, final dist  146.9, start-goal   94.6
+  ep 89/220 (# 4180): missed  in 50 steps, final dist  170.3, start-goal  144.8
+  ep 90/220 (# 8169): missed  in 50 steps, final dist  149.5, start-goal  144.8
+  ep 91/220 (# 9394): missed  in 50 steps, final dist  138.9, start-goal  159.0
+  ep 92/220 (# 5087): missed  in 50 steps, final dist  154.7, start-goal  159.0
+  ep 93/220 (# 5314): missed  in 50 steps, final dist  196.9, start-goal  155.3
+  ep 94/220 (# 2566): missed  in 50 steps, final dist  160.7, start-goal  155.3
+  ep 95/220 (# 4135): REACHED in 44 steps, final dist   14.7, start-goal  100.4
+  ep 96/220 (# 6223): missed  in 50 steps, final dist  150.4, start-goal  100.4
+  ep 97/220 (# 5749): missed  in 50 steps, final dist   99.7, start-goal  162.0
+  ep 98/220 (# 8184): missed  in 50 steps, final dist  161.9, start-goal  162.1
+  ep 99/220 (# 4721): missed  in 50 steps, final dist  139.5, start-goal  154.0
+  ep 100/220 (# 1724): missed  in 50 steps, final dist  160.2, start-goal  154.0
+  ep 101/220 (# 5539): missed  in 50 steps, final dist  151.3, start-goal  165.5
+  ep 102/220 (# 9554): missed  in 50 steps, final dist  136.9, start-goal  165.6
+  ep 103/220 (# 3913): missed  in 50 steps, final dist  105.0, start-goal   83.2
+  ep 104/220 (# 4676): REACHED in 21 steps, final dist   14.2, start-goal   83.2
+  ep 105/220 (# 7380): missed  in 50 steps, final dist  173.2, start-goal   85.5
+  ep 106/220 (# 4260): REACHED in 22 steps, final dist   13.4, start-goal   85.6
+  ep 107/220 (# 3519): missed  in 50 steps, final dist   31.7, start-goal  132.0
+  ep 108/220 (# 9406): missed  in 50 steps, final dist  151.1, start-goal  132.0
+  ep 109/220 (# 4297): missed  in 50 steps, final dist  172.4, start-goal   93.4
+  ep 110/220 (# 8597): missed  in 50 steps, final dist  140.3, start-goal   93.4
+  ep 111/220 (# 8324): missed  in 50 steps, final dist  146.7, start-goal  153.0
+  ep 112/220 (# 1183): missed  in 50 steps, final dist  140.6, start-goal  152.9
+  ep 113/220 (# 6852): missed  in 50 steps, final dist   98.0, start-goal  164.3
+  ep 114/220 (# 6668): missed  in 50 steps, final dist  147.2, start-goal  164.4
+  ep 115/220 (# 2218): missed  in 50 steps, final dist  103.6, start-goal  146.0
+  ep 116/220 (# 8363): missed  in 50 steps, final dist  166.8, start-goal  146.0
+  ep 117/220 (# 1608): missed  in 50 steps, final dist  174.9, start-goal  128.9
+  ep 118/220 (# 5797): missed  in 50 steps, final dist   93.4, start-goal  128.9
+  ep 119/220 (# 9693): REACHED in 46 steps, final dist   15.0, start-goal  166.2
+  ep 120/220 (# 9456): missed  in 50 steps, final dist  164.8, start-goal  166.2
+  ep 121/220 (# 7668): REACHED in 45 steps, final dist   15.8, start-goal  121.8
+  ep 122/220 (# 3996): missed  in 50 steps, final dist  154.2, start-goal  121.7
+  ep 123/220 (#  203): missed  in 50 steps, final dist  159.6, start-goal  144.9
+  ep 124/220 (# 5190): missed  in 50 steps, final dist  164.3, start-goal  144.9
+  ep 125/220 (# 9546): missed  in 50 steps, final dist  107.8, start-goal  109.3
+  ep 126/220 (# 4193): missed  in 50 steps, final dist   82.4, start-goal  109.3
+  ep 127/220 (#  854): missed  in 50 steps, final dist  154.9, start-goal  171.1
+  ep 128/220 (#  627): missed  in 50 steps, final dist  166.3, start-goal  171.2
+  ep 129/220 (# 8441): missed  in 50 steps, final dist  171.3, start-goal  133.5
+  ep 130/220 (# 3174): missed  in 50 steps, final dist  127.4, start-goal  133.6
+  ep 131/220 (# 5649): missed  in 50 steps, final dist  148.7, start-goal  133.1
+  ep 132/220 (# 6304): missed  in 50 steps, final dist  152.7, start-goal  133.0
+  ep 133/220 (# 1176): missed  in 50 steps, final dist  183.8, start-goal  149.2
+  ep 134/220 (#  446): missed  in 50 steps, final dist  151.4, start-goal  149.2
+  ep 135/220 (# 9986): missed  in 50 steps, final dist   71.2, start-goal  102.6
+  ep 136/220 (# 7452): missed  in 50 steps, final dist  173.3, start-goal  102.6
+  ep 137/220 (# 8386): missed  in 50 steps, final dist  185.2, start-goal  152.7
+  ep 138/220 (# 7375): missed  in 50 steps, final dist  166.3, start-goal  152.8
+  ep 139/220 (# 3418): missed  in 50 steps, final dist   98.9, start-goal  151.5
+  ep 140/220 (# 5614): missed  in 50 steps, final dist  160.5, start-goal  151.6
+  ep 141/220 (# 8022): missed  in 50 steps, final dist  151.2, start-goal  147.8
+  ep 142/220 (# 2234): missed  in 50 steps, final dist  158.8, start-goal  147.8
+  ep 143/220 (#  350): REACHED in 46 steps, final dist   13.3, start-goal  132.1
+  ep 144/220 (#  941): missed  in 50 steps, final dist  134.6, start-goal  132.1
+  ep 145/220 (#  726): REACHED in 45 steps, final dist   13.1, start-goal  119.9
+  ep 146/220 (# 1634): missed  in 50 steps, final dist  126.4, start-goal  119.9
+  ep 147/220 (# 4890): missed  in 50 steps, final dist  108.3, start-goal  100.5
+  ep 148/220 (# 2966): missed  in 50 steps, final dist  153.7, start-goal  100.5
+  ep 149/220 (# 8139): missed  in 50 steps, final dist  111.5, start-goal  153.4
+  ep 150/220 (#  456): missed  in 50 steps, final dist  173.7, start-goal  153.3
+  ep 151/220 (# 6883): missed  in 50 steps, final dist  130.7, start-goal  102.9
+  ep 152/220 (# 6470): missed  in 50 steps, final dist  168.8, start-goal  102.9
+  ep 153/220 (# 4918): missed  in 50 steps, final dist   66.1, start-goal  135.1
+  ep 154/220 (# 4818): missed  in 50 steps, final dist  111.4, start-goal  135.1
+  ep 155/220 (# 2261): REACHED in 39 steps, final dist   14.3, start-goal  113.8
+  ep 156/220 (# 4993): missed  in 50 steps, final dist  147.6, start-goal  113.8
+  ep 157/220 (# 4058): missed  in 50 steps, final dist  147.6, start-goal  158.2
+  ep 158/220 (#  584): missed  in 50 steps, final dist  170.4, start-goal  158.2
+  ep 159/220 (# 3358): REACHED in 23 steps, final dist   13.5, start-goal  114.6
+  ep 160/220 (# 5929): missed  in 50 steps, final dist  138.9, start-goal  114.5
+  ep 161/220 (# 4323): missed  in 50 steps, final dist  109.7, start-goal   92.4
+  ep 162/220 (# 4935): REACHED in 46 steps, final dist   15.3, start-goal   92.6
+  ep 163/220 (# 1681): missed  in 50 steps, final dist  108.4, start-goal  103.5
+  ep 164/220 (# 9912): missed  in 50 steps, final dist   72.8, start-goal  103.5
+  ep 165/220 (# 5891): missed  in 50 steps, final dist  154.2, start-goal  164.3
+  ep 166/220 (# 9352): missed  in 50 steps, final dist  158.8, start-goal  164.1
+  ep 167/220 (# 5960): missed  in 50 steps, final dist  137.9, start-goal  127.2
+  ep 168/220 (# 9065): missed  in 50 steps, final dist  162.9, start-goal  127.2
+  ep 169/220 (# 5045): missed  in 50 steps, final dist  172.8, start-goal  144.0
+  ep 170/220 (# 5200): missed  in 50 steps, final dist  174.2, start-goal  144.0
+  ep 171/220 (# 7455): REACHED in 21 steps, final dist   15.9, start-goal   99.5
+  ep 172/220 (# 6557): missed  in 50 steps, final dist  166.2, start-goal   99.5
+  ep 173/220 (# 1718): missed  in 50 steps, final dist   63.1, start-goal  145.7
+  ep 174/220 (# 2803): missed  in 50 steps, final dist  151.1, start-goal  145.7
+  ep 175/220 (# 1433): missed  in 50 steps, final dist   24.7, start-goal   67.3
+  ep 176/220 (# 7395): REACHED in 22 steps, final dist   13.3, start-goal   67.3
+  ep 177/220 (# 2515): missed  in 50 steps, final dist  139.4, start-goal  131.5
+  ep 178/220 (# 9606): missed  in 50 steps, final dist  179.0, start-goal  131.5
+  ep 179/220 (# 7544): missed  in 50 steps, final dist  167.9, start-goal  117.3
+  ep 180/220 (#  582): missed  in 50 steps, final dist   95.8, start-goal  117.3
+  ep 181/220 (# 3741): missed  in 50 steps, final dist  139.1, start-goal  125.4
+  ep 182/220 (# 4516): missed  in 50 steps, final dist  130.1, start-goal  125.4
+  ep 183/220 (# 8044): missed  in 50 steps, final dist  139.0, start-goal   82.4
+  ep 184/220 (# 5695): missed  in 50 steps, final dist   79.7, start-goal   82.4
+  ep 185/220 (# 8751): missed  in 50 steps, final dist  134.0, start-goal  126.3
+  ep 186/220 (# 7840): missed  in 50 steps, final dist  147.8, start-goal  126.3
+  ep 187/220 (# 7865): missed  in 50 steps, final dist   59.9, start-goal   68.4
+  ep 188/220 (# 9626): REACHED in 22 steps, final dist   14.7, start-goal   68.4
+  ep 189/220 (# 9887): missed  in 50 steps, final dist  170.4, start-goal  161.8
+  ep 190/220 (# 3469): missed  in 50 steps, final dist  163.3, start-goal  161.7
+  ep 191/220 (# 9925): missed  in 50 steps, final dist  144.0, start-goal   94.4
+  ep 192/220 (# 9210): missed  in 50 steps, final dist  127.0, start-goal   94.5
+  ep 193/220 (# 5939): missed  in 50 steps, final dist  145.6, start-goal  124.7
+  ep 194/220 (# 9808): missed  in 50 steps, final dist  154.7, start-goal  124.7
+  ep 195/220 (# 8503): missed  in 50 steps, final dist  133.1, start-goal  119.8
+  ep 196/220 (# 9750): missed  in 50 steps, final dist  163.0, start-goal  119.8
+  ep 197/220 (# 8933): missed  in 50 steps, final dist  159.5, start-goal  131.3
+  ep 198/220 (# 9555): missed  in 50 steps, final dist  159.1, start-goal  131.3
+  ep 199/220 (# 9321): REACHED in 22 steps, final dist   13.1, start-goal   95.2
+  ep 200/220 (# 9007): missed  in 50 steps, final dist  168.0, start-goal   95.2
+  ep 201/220 (# 2941): missed  in 50 steps, final dist   83.4, start-goal  146.6
+  ep 202/220 (# 8240): missed  in 50 steps, final dist  141.9, start-goal  146.6
+  ep 203/220 (# 4820): REACHED in 46 steps, final dist   15.8, start-goal   76.3
+  ep 204/220 (# 2774): REACHED in 21 steps, final dist   13.9, start-goal   76.2
+  ep 205/220 (# 3964): missed  in 50 steps, final dist  174.0, start-goal  125.7
+  ep 206/220 (# 6779): missed  in 50 steps, final dist  144.1, start-goal  125.7
+  ep 207/220 (# 8886): missed  in 50 steps, final dist  180.2, start-goal  151.2
+  ep 208/220 (# 4161): missed  in 50 steps, final dist  160.1, start-goal  151.1
+  ep 209/220 (# 1715): missed  in 50 steps, final dist  122.7, start-goal   82.7
+  ep 210/220 (# 7797): missed  in 50 steps, final dist   86.9, start-goal   82.7
+  ep 211/220 (# 2687): REACHED in 22 steps, final dist   14.6, start-goal   95.3
+  ep 212/220 (# 8201): missed  in 50 steps, final dist  160.9, start-goal   95.2
+  ep 213/220 (# 4450): missed  in 50 steps, final dist   63.8, start-goal   67.1
+  ep 214/220 (# 7996): missed  in 50 steps, final dist   81.3, start-goal   67.2
+  ep 215/220 (#  964): missed  in 50 steps, final dist  130.8, start-goal  121.4
+  ep 216/220 (# 7901): missed  in 50 steps, final dist  157.0, start-goal  121.4
+  ep 217/220 (# 3024): missed  in 50 steps, final dist  119.8, start-goal  125.5
+  ep 218/220 (# 2284): missed  in 50 steps, final dist  156.2, start-goal  125.5
+  ep 219/220 (#  540): missed  in 50 steps, final dist   93.6, start-goal  143.1
+  ep 220/220 (# 3137): missed  in 50 steps, final dist  141.5, start-goal  143.1
+
+======================================================================
+SUMMARY (cem)
+======================================================================
+  success rate           : 39/220 = 17.7%
+  mean final distance    : 114.43
+  trivial starts (<16)   : 0/220
+  non-trivial success    : 39/220 = 17.7%
+  wall-clock             : 232.7 min
+
+DEVIATIONS from the reference protocol (state wherever quoted):
+  - episode/start selection ours (random 50 eps seed 42, start =
+    frame 0, goal = frame 25); reference's exact selection unknown
+  - receding_horizon 5 read as: execute 5 planned actions, replan
+  - OUR reproduction checkpoint, not the authors' released weights
+  - success = the registered env's terminated rule (distance < 16)
+  matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,
+  budget 50, num_eval 50, goal_offset 25, img 224, goal-image
+  convention.

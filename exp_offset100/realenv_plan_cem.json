@@ -459,6 +459,7 @@
   "success_rate": 0.48,
   "n": 50,
   "trivial_starts": 0,
+  "action_scale": 1.0,
   "protocol": {
     "num_eval": 50,
     "budget": 50,

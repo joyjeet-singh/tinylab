@@ -1,0 +1,7 @@
+The DEVIATIONS block at the end of the report(s) in this directory was written
+before that block was parameterised (see patch_r2_deviations_text.py). It lists
+the script's default values, not this run's. The run's actual parameters are
+stated correctly in the report header ("episodes: N sampled ... goal = frame M")
+and in the accompanying .json. The measurements are unaffected; regenerating
+these particular reports would cost several hours of compute for a text
+correction. The authoritative deviation set is Table 1 of the paper.

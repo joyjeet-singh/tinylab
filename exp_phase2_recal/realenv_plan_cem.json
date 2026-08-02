@@ -6,464 +6,464 @@
   },
   "results": [
     {
-      "episode": 4014,
-      "success": true,
-      "steps": 21,
-      "final_dist": 13.66,
-      "start_goal_dist": 44.59,
+      "episode": 4022,
+      "success": false,
+      "steps": 50,
+      "final_dist": 176.71,
+      "start_goal_dist": 105.45,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 5115,
-      "success": true,
-      "steps": 19,
-      "final_dist": 14.61,
-      "start_goal_dist": 53.31,
+      "episode": 5113,
+      "success": false,
+      "steps": 50,
+      "final_dist": 193.43,
+      "start_goal_dist": 139.16,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 4490,
-      "success": true,
-      "steps": 19,
-      "final_dist": 12.47,
-      "start_goal_dist": 46.52,
+      "episode": 4514,
+      "success": false,
+      "steps": 50,
+      "final_dist": 141.92,
+      "start_goal_dist": 118.64,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 888,
-      "success": true,
-      "steps": 21,
-      "final_dist": 14.28,
-      "start_goal_dist": 58.87,
+      "episode": 925,
+      "success": false,
+      "steps": 50,
+      "final_dist": 174.75,
+      "start_goal_dist": 86.75,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 7783,
-      "success": true,
-      "steps": 14,
-      "final_dist": 14.22,
-      "start_goal_dist": 28.45,
+      "episode": 9999,
+      "success": false,
+      "steps": 50,
+      "final_dist": 180.48,
+      "start_goal_dist": 169.84,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 9703,
-      "success": true,
-      "steps": 16,
-      "final_dist": 13.46,
-      "start_goal_dist": 26.77,
+      "episode": 9702,
+      "success": false,
+      "steps": 50,
+      "final_dist": 161.25,
+      "start_goal_dist": 72.23,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 6423,
-      "success": true,
-      "steps": 22,
-      "final_dist": 12.63,
-      "start_goal_dist": 54.0,
+      "episode": 6399,
+      "success": false,
+      "steps": 50,
+      "final_dist": 163.44,
+      "start_goal_dist": 84.67,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
       "episode": 7000,
-      "success": true,
-      "steps": 15,
-      "final_dist": 15.86,
-      "start_goal_dist": 34.58,
+      "success": false,
+      "steps": 50,
+      "final_dist": 143.18,
+      "start_goal_dist": 87.71,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 2764,
-      "success": true,
-      "steps": 1,
-      "final_dist": 15.98,
-      "start_goal_dist": 17.19,
+      "episode": 2745,
+      "success": false,
+      "steps": 50,
+      "final_dist": 169.84,
+      "start_goal_dist": 120.7,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 4455,
+      "episode": 4482,
+      "success": false,
+      "steps": 50,
+      "final_dist": 147.73,
+      "start_goal_dist": 164.13,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 3564,
+      "success": false,
+      "steps": 50,
+      "final_dist": 142.29,
+      "start_goal_dist": 129.15,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 6770,
+      "success": false,
+      "steps": 50,
+      "final_dist": 116.39,
+      "start_goal_dist": 71.0,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 4327,
+      "success": false,
+      "steps": 50,
+      "final_dist": 70.06,
+      "start_goal_dist": 103.57,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 701,
+      "success": false,
+      "steps": 50,
+      "final_dist": 102.45,
+      "start_goal_dist": 113.83,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7818,
+      "success": false,
+      "steps": 50,
+      "final_dist": 133.64,
+      "start_goal_dist": 123.19,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 5237,
+      "success": true,
+      "steps": 48,
+      "final_dist": 11.02,
+      "start_goal_dist": 96.11,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 4999,
+      "success": false,
+      "steps": 50,
+      "final_dist": 188.45,
+      "start_goal_dist": 133.46,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7586,
+      "success": false,
+      "steps": 50,
+      "final_dist": 138.64,
+      "start_goal_dist": 124.27,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 2002,
       "success": true,
       "steps": 22,
-      "final_dist": 12.32,
-      "start_goal_dist": 55.39,
+      "final_dist": 14.87,
+      "start_goal_dist": 81.25,
       "trivial_start": false,
       "plans": 1
     },
     {
-      "episode": 3543,
+      "episode": 8359,
       "success": true,
       "steps": 22,
-      "final_dist": 13.19,
-      "start_goal_dist": 47.38,
+      "final_dist": 14.45,
+      "start_goal_dist": 64.2,
       "trivial_start": false,
       "plans": 1
     },
     {
-      "episode": 6778,
-      "success": true,
-      "steps": 20,
-      "final_dist": 14.99,
-      "start_goal_dist": 48.68,
+      "episode": 5542,
+      "success": false,
+      "steps": 50,
+      "final_dist": 108.71,
+      "start_goal_dist": 94.86,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 4310,
-      "success": true,
-      "steps": 12,
-      "final_dist": 15.13,
-      "start_goal_dist": 34.67,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 678,
-      "success": true,
-      "steps": 21,
-      "final_dist": 13.73,
-      "start_goal_dist": 31.32,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7833,
-      "success": true,
-      "steps": 19,
-      "final_dist": 15.41,
-      "start_goal_dist": 49.43,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 5244,
-      "success": true,
-      "steps": 21,
-      "final_dist": 15.13,
-      "start_goal_dist": 48.29,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 4989,
-      "success": true,
-      "steps": 21,
-      "final_dist": 14.05,
-      "start_goal_dist": 35.76,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7574,
+      "episode": 8204,
       "success": true,
       "steps": 47,
-      "final_dist": 13.99,
-      "start_goal_dist": 61.41,
+      "final_dist": 12.04,
+      "start_goal_dist": 65.45,
       "trivial_start": false,
       "plans": 2
     },
     {
-      "episode": 2006,
-      "success": true,
-      "steps": 24,
-      "final_dist": 15.0,
-      "start_goal_dist": 65.39,
+      "episode": 1674,
+      "success": false,
+      "steps": 50,
+      "final_dist": 102.41,
+      "start_goal_dist": 141.04,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 8371,
-      "success": true,
-      "steps": 10,
-      "final_dist": 14.62,
-      "start_goal_dist": 44.44,
+      "episode": 6922,
+      "success": false,
+      "steps": 50,
+      "final_dist": 156.12,
+      "start_goal_dist": 149.01,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 5536,
-      "success": true,
-      "steps": 22,
-      "final_dist": 13.39,
-      "start_goal_dist": 32.8,
+      "episode": 8872,
+      "success": false,
+      "steps": 50,
+      "final_dist": 134.08,
+      "start_goal_dist": 154.95,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 8209,
+      "episode": 8945,
+      "success": true,
+      "steps": 48,
+      "final_dist": 12.69,
+      "start_goal_dist": 91.6,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 4388,
+      "success": false,
+      "steps": 50,
+      "final_dist": 168.05,
+      "start_goal_dist": 119.58,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 961,
+      "success": false,
+      "steps": 50,
+      "final_dist": 118.34,
+      "start_goal_dist": 121.51,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 8523,
       "success": true,
       "steps": 17,
-      "final_dist": 13.66,
-      "start_goal_dist": 61.26,
+      "final_dist": 14.85,
+      "start_goal_dist": 49.56,
       "trivial_start": false,
       "plans": 1
     },
     {
-      "episode": 1650,
+      "episode": 9240,
       "success": false,
       "steps": 50,
-      "final_dist": 79.17,
-      "start_goal_dist": 56.86,
+      "final_dist": 116.72,
+      "start_goal_dist": 168.57,
       "trivial_start": false,
       "plans": 2
     },
     {
-      "episode": 6944,
-      "success": true,
-      "steps": 3,
-      "final_dist": 15.62,
-      "start_goal_dist": 22.02,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 8865,
-      "success": true,
-      "steps": 18,
-      "final_dist": 14.28,
-      "start_goal_dist": 51.89,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 8929,
+      "episode": 6291,
       "success": false,
       "steps": 50,
-      "final_dist": 147.44,
-      "start_goal_dist": 96.83,
+      "final_dist": 156.46,
+      "start_goal_dist": 158.26,
       "trivial_start": false,
       "plans": 2
     },
     {
-      "episode": 4368,
+      "episode": 6482,
       "success": false,
       "steps": 50,
-      "final_dist": 63.89,
-      "start_goal_dist": 72.13,
+      "final_dist": 137.27,
+      "start_goal_dist": 92.76,
       "trivial_start": false,
       "plans": 2
     },
     {
-      "episode": 919,
-      "success": true,
-      "steps": 19,
-      "final_dist": 14.12,
-      "start_goal_dist": 32.84,
+      "episode": 7324,
+      "success": false,
+      "steps": 50,
+      "final_dist": 139.64,
+      "start_goal_dist": 90.21,
       "trivial_start": false,
-      "plans": 1
+      "plans": 2
     },
     {
-      "episode": 8548,
+      "episode": 4521,
+      "success": false,
+      "steps": 50,
+      "final_dist": 135.22,
+      "start_goal_dist": 107.29,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 9699,
+      "success": false,
+      "steps": 50,
+      "final_dist": 186.24,
+      "start_goal_dist": 89.19,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7144,
+      "success": false,
+      "steps": 50,
+      "final_dist": 170.58,
+      "start_goal_dist": 108.29,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 665,
+      "success": false,
+      "steps": 50,
+      "final_dist": 61.85,
+      "start_goal_dist": 118.95,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7584,
+      "success": false,
+      "steps": 50,
+      "final_dist": 168.35,
+      "start_goal_dist": 151.88,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 4450,
+      "success": false,
+      "steps": 50,
+      "final_dist": 55.65,
+      "start_goal_dist": 67.13,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 8573,
+      "success": false,
+      "steps": 50,
+      "final_dist": 146.53,
+      "start_goal_dist": 168.16,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 5436,
+      "success": false,
+      "steps": 50,
+      "final_dist": 164.62,
+      "start_goal_dist": 113.13,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 2276,
+      "success": false,
+      "steps": 50,
+      "final_dist": 147.22,
+      "start_goal_dist": 153.79,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 896,
+      "success": true,
+      "steps": 45,
+      "final_dist": 14.13,
+      "start_goal_dist": 173.02,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7787,
+      "success": true,
+      "steps": 46,
+      "final_dist": 15.49,
+      "start_goal_dist": 85.26,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 7681,
+      "success": false,
+      "steps": 50,
+      "final_dist": 186.99,
+      "start_goal_dist": 137.21,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 1829,
+      "success": false,
+      "steps": 50,
+      "final_dist": 95.3,
+      "start_goal_dist": 99.49,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 3717,
+      "success": false,
+      "steps": 50,
+      "final_dist": 116.46,
+      "start_goal_dist": 123.53,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 1304,
+      "success": false,
+      "steps": 50,
+      "final_dist": 177.37,
+      "start_goal_dist": 90.53,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 976,
+      "success": true,
+      "steps": 46,
+      "final_dist": 13.4,
+      "start_goal_dist": 140.25,
+      "trivial_start": false,
+      "plans": 2
+    },
+    {
+      "episode": 8265,
       "success": true,
       "steps": 23,
-      "final_dist": 12.9,
-      "start_goal_dist": 45.0,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 9243,
-      "success": true,
-      "steps": 23,
-      "final_dist": 12.59,
-      "start_goal_dist": 43.14,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 6310,
-      "success": true,
-      "steps": 21,
-      "final_dist": 15.44,
-      "start_goal_dist": 35.34,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 6514,
-      "success": true,
-      "steps": 23,
-      "final_dist": 13.58,
-      "start_goal_dist": 51.29,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7330,
-      "success": true,
-      "steps": 20,
-      "final_dist": 15.03,
-      "start_goal_dist": 51.62,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 4496,
-      "success": true,
-      "steps": 22,
-      "final_dist": 13.92,
-      "start_goal_dist": 83.06,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 9719,
-      "success": true,
-      "steps": 21,
-      "final_dist": 14.65,
-      "start_goal_dist": 33.24,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7149,
-      "success": true,
-      "steps": 9,
-      "final_dist": 15.45,
-      "start_goal_dist": 24.18,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 637,
-      "success": true,
-      "steps": 22,
-      "final_dist": 13.26,
-      "start_goal_dist": 64.01,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7583,
-      "success": true,
-      "steps": 23,
-      "final_dist": 13.9,
-      "start_goal_dist": 73.74,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 4425,
-      "success": true,
-      "steps": 22,
-      "final_dist": 12.32,
-      "start_goal_dist": 59.93,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 8571,
-      "success": true,
-      "steps": 19,
-      "final_dist": 15.28,
-      "start_goal_dist": 73.21,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 5442,
-      "success": true,
-      "steps": 1,
-      "final_dist": 12.42,
-      "start_goal_dist": 10.63,
-      "trivial_start": true,
-      "plans": 1
-    },
-    {
-      "episode": 2268,
-      "success": true,
-      "steps": 21,
-      "final_dist": 14.3,
-      "start_goal_dist": 42.94,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 855,
-      "success": true,
-      "steps": 1,
-      "final_dist": 15.2,
-      "start_goal_dist": 14.31,
-      "trivial_start": true,
-      "plans": 1
-    },
-    {
-      "episode": 7796,
-      "success": true,
-      "steps": 18,
-      "final_dist": 15.71,
-      "start_goal_dist": 43.09,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 7702,
-      "success": true,
-      "steps": 21,
-      "final_dist": 14.61,
-      "start_goal_dist": 37.41,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 1820,
-      "success": true,
-      "steps": 21,
-      "final_dist": 15.34,
-      "start_goal_dist": 41.93,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 3697,
-      "success": true,
-      "steps": 19,
-      "final_dist": 13.52,
-      "start_goal_dist": 60.42,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 1277,
-      "success": true,
-      "steps": 22,
-      "final_dist": 15.46,
-      "start_goal_dist": 81.9,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 938,
-      "success": true,
-      "steps": 22,
-      "final_dist": 12.7,
-      "start_goal_dist": 52.94,
-      "trivial_start": false,
-      "plans": 1
-    },
-    {
-      "episode": 8266,
-      "success": true,
-      "steps": 23,
-      "final_dist": 15.68,
-      "start_goal_dist": 57.6,
+      "final_dist": 14.29,
+      "start_goal_dist": 65.51,
       "trivial_start": false,
       "plans": 1
     }
   ],
-  "success_rate": 0.94,
+  "success_rate": 0.2,
   "n": 50,
-  "trivial_starts": 2,
+  "trivial_starts": 0,
   "action_scale": 1.0,
   "protocol": {
     "num_eval": 50,
     "budget": 50,
-    "goal_offset": 25,
+    "goal_offset": 100,
     "receding": 5,
     "frameskip": 5,
     "seed": 42,
