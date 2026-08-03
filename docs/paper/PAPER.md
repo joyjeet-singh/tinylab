@@ -1,3 +1,14 @@
+<!-- Consistency checker: four pass-1 findings are reviewed and accepted.
+     L593, L617  §4.2 — the subject is "the authors' released checkpoint",
+                 named in the sentence that introduces the measurement.
+     L715        §4.3 — a cell in the recalibration table; the eval-before
+                 and eval-after columns make the context unambiguous.
+     L1025       §5.3 — the sentence opens "At goal offset 25" and Table 3
+                 sits directly above it naming all three checkpoints.
+     L1291       §7  — the paragraph says "between checkpoints" and now
+                 carries the offset.
+     Re-check these if the surrounding text is rewritten. -->
+
 # Abstract
 
 *(~250 words)*
@@ -833,7 +844,8 @@ median of roughly 48).
 Two qualifications belong with the headline figure. First, the 87% is measured
 under the authors' episode selection, which is not published; ours is a fixed
 random draw at a stated seed, and remains a listed deviation (Table 1). The
-like-for-like comparison is therefore 94.0% against 84.0% on identical
+like-for-like comparison is therefore 94.0% against 84.0% at goal offset
+25 on identical
 episodes, not against 87%. Second, all three of our figures come from a single
 seed, and we make no claim about seed variance.
 
