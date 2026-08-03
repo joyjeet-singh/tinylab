@@ -167,10 +167,15 @@ def main():
     for f in args.files:
         text = Path(f).read_text(errors="ignore")
         for start, para in paragraphs(text):
+            # Collapse whitespace first: a qualifier split across a line wrap
+            # ("...evaluation goal\noffset") would otherwise never match its
+            # rule, and a correctly-written sentence would be reported as a
+            # violation.
+            flat = " ".join(para.split())
             for rule in PAIRED:
-                if not re.search(rule["trigger"], para, re.I):
+                if not re.search(rule["trigger"], flat, re.I):
                     continue
-                if any(re.search(n, para, re.I) for n in rule["needs"]):
+                if any(re.search(n, flat, re.I) for n in rule["needs"]):
                     continue
                 findings += 1
                 first = next(l for l in para.splitlines() if l.strip())

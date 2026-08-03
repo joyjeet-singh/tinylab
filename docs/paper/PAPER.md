@@ -1,5 +1,3 @@
-<!-- ASSEMBLED by assemble_paper.py. Do not edit the drafts after this point; edit this file. -->
-
 # Abstract
 
 *(~250 words)*
@@ -590,9 +588,7 @@ presented once.*
 A reproduction that reports a planning number is reporting the product of two
 things: a model, and a protocol for evaluating it. If the protocol is wrong,
 every number it produces is wrong in a way no amount of internal consistency
-checking will reveal. Before reporting any figure from our own checkpoints, we
-therefore ran the **authors' released checkpoint** through our evaluation
-harness, changing nothing but the weights.
+checking will reveal. Before reporting any figure from our own checkpoints, we therefore ran the **authors' released checkpoint** — not ours — through our evaluation harness, changing nothing but the weights.
 
 It reaches **42 of 50 goals = 84.0%**, against the reported approximately 87%.
 A one-sample test against 0.87 gives p = 0.53, and the 95% Wilson interval,
@@ -971,7 +967,7 @@ as a length-caused failure still leaves a 27-point difference.
 The first row is the pre-registered primary test and stands as registered: on
 that checkpoint, with distance matched pair-by-pair and reachability verified at
 100% for both geometries, the planner reached 79.1% of same-room goals and 40.0%
-of cross-wall goals, a difference of 39.1 points at p = 3.4 × 10⁻⁸.
+of cross-wall goals, a difference of 39.1 points at p = 3.4 × 10⁻⁸ — a figure that falls to +12.7 points under a change of action scaling and to −6.4 points on a different checkpoint, as the two rows below show.
 
 The second row applies a correction to the action scale supplied to the same
 checkpoint (§5.4). The difference falls to +12.7 points and the test becomes
@@ -1296,7 +1292,7 @@ they should change a reader's confidence.
 every probe in this paper uses one seed. We make no estimate of seed variance,
 and none of our differences should be read as robust to reinitialisation. This
 matters most for the planning figures in §4.5, where the differences we report
-between checkpoints (94.0% against 84.0%, p = 0.0625; 94.0% against 78.0%,
+between checkpoints (94.0% against 84.0% at goal offset 25, p = 0.0625; 94.0% against 78.0%,
 p = 0.0574) are already not established at our sample size of fifty episodes.
 Our evaluations are, however, deterministic: re-running a planning evaluation
 from the committed commit reproduces its per-episode outcomes exactly, so the
@@ -1350,8 +1346,8 @@ episodes are a fixed random draw at a stated seed, with the start at the first
 frame of an episode and the goal a fixed number of steps later. The authors'
 selection is not described in enough detail to reproduce. Consequently the
 like-for-like comparison in §4.5 is our checkpoint against the authors' released
-checkpoint on identical episodes (94.0% against 84.0%), not against the reported
-87%, which was measured under a selection we cannot replicate.
+checkpoint on identical episodes at goal offset 25 (94.0% against 84.0%), not
+against the reported 87%, which was measured under a selection we cannot replicate.
 
 **Recalibration data overlaps the evaluation episodes.** The BatchNorm
 recalibration of §4.3 accumulates statistics over training clips drawn from the
@@ -1381,8 +1377,7 @@ environments, or about the method's behaviour at scales other than the
 *(~330 words)*
 
 The three claims we set out to test (§2) resolve as follows. The representation
-claim reproduces directly and easily. The planning claim reproduces, at 94.0%
-against a reported ~87% and against 84.0% for the authors' own weights under our
+claim reproduces directly and easily. The planning claim reproduces, at 94.0% at goal offset 25 against a reported ~87% and against 84.0% for the authors' own weights under our
 protocol, once four undocumented conventions are corrected. The training claim
 does not reproduce from the released configuration files alone, and does
 reproduce once those conventions are supplied — which we take to be a
