@@ -11,6 +11,8 @@ exp_phase2_recal/realenv_plan_random_report.txt,random,ours,0/50,0.0,0.0%,111.07
 exp_phase2_recal_25/realenv_plan_cem_report.txt,cem,ours,47/50,94.0,93.8%,19.19,31.6,0.009,50,50,frame 25,no,no,ckpt_best_recal.pt
 exp_r0_short/realenv_plan_cem_report.txt,cem,ours,31/50,62.0,62.5%,36.87,41.5,0.004,50,50,frame 25,no,no,ckpt_recal.pt
 exp_randstart_authors/realenv_plan_authors_cem_report.txt,cem,authors,5/50,10.0,10.0%,125.87,143.3,0.012,50,150,frame 100,no,no,authors-spec
+exp_randstart_check/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,0.0%,24.38,1.8,0.012,2,50,frame 25,no,no,authors-spec
+exp_randstart_control/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,50.0%,47.70,2.3,0.012,2,50,frame 25,no,no,authors-spec
 exp_receding1/realenv_plan_cem_report.txt,cem,ours,13/50,26.0,22.9%,35.68,84.5,0.013,50,50,frame 25,no,no,ckpt_best.pt
 exp_ref_authors_repeat/realenv_plan_authors_cem_report.txt,cem,authors,5/50,10.0,10.0%,125.87,149.3,0.012,50,150,frame 100,no,no,authors-spec
 exp_ref_p2/realenv_plan_cem_report.txt,cem,ours,13/50,26.0,26.0%,108.82,138.9,0.009,50,150,frame 100,no,no,ckpt_best_recal.pt
@@ -22,6 +24,7 @@ exp_run2_recal/realenv_plan_cem_report.txt,cem,ours,27/50,54.0,54.0%,40.46,20.5,
 exp_run2_recal_25/realenv_plan_cem_report.txt,cem,ours,39/50,78.0,77.1%,24.20,15.2,0.014,50,50,frame 25,no,no,ckpt_best_recal.pt
 exp_scaled25/realenv_plan_cem_report.txt,cem,ours,24/50,48.0,45.8%,19.82,18.8,0.013,50,50,frame 25,no,no,ckpt_best.pt
 exp_scaled25/realenv_plan_random_report.txt,random,ours,9/50,18.0,14.6%,46.98,0.1,0.013,50,50,frame 25,no,no,ckpt_best.pt
+exp_target_all/realenv_plan_authors_cem_report.txt,cem,authors,4/50,8.0,8.0%,133.42,160.7,0.012,50,150,TARGET,no,no,authors-spec
 exp_target_authors/realenv_plan_authors_cem_report.txt,cem,authors,7/50,14.0,14.0%,114.16,149.1,0.012,50,150,TARGET,yes,no,authors-spec
 exp_wall_recal/realenv_plan_cem_report.txt,cem,ours,39/220,17.7,17.7%,114.43,232.7,0.009,220,50,frame 100,no,no,ckpt_best_recal.pt
 exp_wall_recal/realenv_plan_random_report.txt,random,ours,0/220,0.0,0.0%,116.53,0.2,0.009,220,50,frame 100,no,no,ckpt_best_recal.pt
