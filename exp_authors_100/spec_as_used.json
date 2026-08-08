@@ -27,5 +27,6 @@
     "samples": 200
   },
   "action_scale": 5.0,
-  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)"
+  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)",
+  "encoding_provenance": "INFERRED, not recorded at run time: assignment from this experiment's file mtime against the commit dates of authors_driving_spec.json (ee3c23e 2026-07-25, e4b67b4 2026-07-26, ecb139d 2026-08-08). The action_encoding field was an uncommitted local edit until ecb139d, so no run before that date recorded it. Corroborating evidence: exp_ref_protocol (slots) scored 7/50 and exp_ref_authors_repeat (repeat) 5/50 on the same protocol, consistent with the measured near-equivalence of the two encodings (0.415 vs 0.410)."
 }
