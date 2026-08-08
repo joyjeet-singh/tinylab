@@ -1,0 +1,29 @@
+loader convention applied: {'dense_actions': False, 'imagenet_pixels': False, 'zscore_actions': False}
+checkpoint ckpt_best.pt, epoch field 6
+
+                              held-out        training clips
+                      pred      sigreg      pred      sigreg
+  ----------------------------------------------------------
+  eval mode         0.1846        5.53    0.1830        5.54
+  train mode        0.1812        4.79    0.1820        4.87
+  ----------------------------------------------------------
+  (8 held-out batches, 8 training batches, 128 clips each)
+
+BATCHNORM RUNNING STATISTICS (the proposed mechanism)
+  projector.net.1              mean |0.3494| max |1.8095|   var 0.0002 (min 0.0000, max 0.0006)   batches seen 36748
+  pred_proj.net.1              mean |0.3301| max |1.4329|   var 0.2021 (min 0.0477, max 0.5896)   batches seen 36748
+
+==============================================================
+VERDICT
+==============================================================
+  effect of eval MODE, holding data fixed : +0.0034
+  effect of held-out DATA, in train mode  : -0.0008
+
+  THE MODE DOMINATES. The reported oscillation is a property
+  of eval-mode measurement, not of training. §4.3 must not
+  describe the eval series as training instability; the training
+  loss is flat. Report both series and explain the gap.
+
+  Either way: the training loss being flat at ~0.30 across ten
+  epochs is a PLATEAU, not an oscillation. That is a different
+  claim from the one currently drafted, and a cleaner one.

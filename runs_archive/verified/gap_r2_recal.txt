@@ -1,0 +1,28 @@
+loader convention applied: {'dense_actions': False, 'imagenet_pixels': False, 'zscore_actions': False}
+checkpoint ckpt_best_recal.pt, epoch field 6
+
+                              held-out        training clips
+                      pred      sigreg      pred      sigreg
+  ----------------------------------------------------------
+  eval mode         0.1811        5.17    0.1798        5.41
+  train mode        0.1811        4.83    0.1819        4.91
+  ----------------------------------------------------------
+  (8 held-out batches, 8 training batches, 128 clips each)
+
+BATCHNORM RUNNING STATISTICS (the proposed mechanism)
+  projector.net.1              mean |0.3494| max |1.8096|   var 0.0002 (min 0.0000, max 0.0006)   batches seen 224
+  pred_proj.net.1              mean |0.3300| max |1.4328|   var 0.2023 (min 0.0475, max 0.5915)   batches seen 224
+
+==============================================================
+VERDICT
+==============================================================
+  effect of eval MODE, holding data fixed : +0.0000
+  effect of held-out DATA, in train mode  : -0.0009
+
+  THE DATA DOMINATES: a genuine generalisation gap, which is
+  surprising for a random split of the same episodes and worth
+  a sentence of its own.
+
+  Either way: the training loss being flat at ~0.30 across ten
+  epochs is a PLATEAU, not an oscillation. That is a different
+  claim from the one currently drafted, and a cleaner one.

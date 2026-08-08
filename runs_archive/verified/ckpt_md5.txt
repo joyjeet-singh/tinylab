@@ -1,0 +1,6 @@
+MD5 (runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt.pt) = 48e0aea3f34a935d534a3db3930058ab
+MD5 (runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt_recal.pt) = 8ee34f7bb096971acc4d50d2760929e5
+MD5 (runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best.pt) = e90b5c0496073ad692357ac23d1e5b91
+MD5 (runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best_recal.pt) = 928f209a3d6cd88bb2f90f066b4688be
+MD5 (runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best.pt) = 7720afe1c573915057fb699c6defa42c
+MD5 (runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best_recal.pt) = a4ea49ab17f6cb262842eae071c37a60

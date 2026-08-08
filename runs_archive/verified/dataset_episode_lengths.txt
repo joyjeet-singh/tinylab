@@ -1,0 +1,9 @@
+episodes 10000, mean length 92.1, max 101
+at the cap: 6056, shorter: 3944
+policy-successful (terminated flag): 4035
+  of which at the cap: 91
+eligible at goal_offset 100 (ln>100): 6056
+  of which policy-successful: 91 (1.5% overlap)
+random-start span at offset 100: max 0
+random-start span at offset  25: mean 66.1
+final distance to target - early-terminating 13.6, capped 73.1

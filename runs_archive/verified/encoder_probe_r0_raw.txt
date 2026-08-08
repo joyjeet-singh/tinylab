@@ -1,0 +1,38 @@
+========================================================================
+ENCODER COMPARISON on 4000 identical frames
+========================================================================
+
+--- Run 0 (as trained) ---
+  action_dim 2, history_size 3, pixels raw [0,1] (absent (assumed all off))
+  1. position, LINEAR probe      R² 0.9977
+  2. position, MLP probe         R² 0.9995
+  3. effective rank              11.9 of 192 dims
+  4. action from (z_t, z_t+1)    R² 0.9207
+     action from (z_t+1 − z_t)   R² 0.8925
+     embedding spread            1.0001
+
+--- phase2 (recalibrated) ---
+  action_dim 10, history_size 3, pixels ImageNet-normalised (manifest)
+  1. position, LINEAR probe      R² 0.9971
+  2. position, MLP probe         R² 0.9994
+  3. effective rank              67.8 of 192 dims
+  4. action from (z_t, z_t+1)    R² 0.9132
+     action from (z_t+1 − z_t)   R² 0.8844
+     embedding spread            1.0087
+
+========================================================================
+VERDICT
+========================================================================
+                              Run 0 (as trained)phase2 (recalibrated)         Δ
+  position, linear                  0.9977      0.9971   -0.0006
+  position, MLP                     0.9995      0.9994   -0.0001
+  action, linear                    0.9207      0.9132   -0.0076
+  action, from Δz                   0.8925      0.8844   -0.0082
+  effective rank                   11.9297     67.7837  +55.8540
+
+  No meaningful linear gap on this sample -- the training-log
+  difference may be a probe-protocol artifact. Worth chasing.
+
+  Action decodability is unchanged (-0.0076), so the
+  'spent on dynamics' story is NOT supported. State the
+  trade-off as an unexplained observation.
