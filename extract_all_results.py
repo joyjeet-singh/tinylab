@@ -99,7 +99,9 @@ def main():
     args = ap.parse_args()
 
     root = Path(args.root)
-    reports = sorted(root.glob("**/realenv_plan_*report*.txt"))
+    all_reports = sorted(root.glob("**/realenv_plan_*report*.txt"))
+    reports = [q for q in all_reports if "diagnostics" not in q.parts]
+    n_quarantined = len(all_reports) - len(reports)
     if not reports:
         sys.exit("no report files found — run from the tinylab folder")
 
@@ -117,6 +119,9 @@ def main():
         r["nested_copy"] = "yes" if first in nested_roots else "no"
     nested = [r for r in rows if r["nested_copy"] == "yes"]
     print(f"{len(rows)} evaluation reports found under {root.resolve()}")
+    if n_quarantined:
+        print(f"{n_quarantined} report(s) under diagnostics/ excluded "
+              f"(flag tests and smoke runs, not results).")
     if nested:
         print(f"{len(nested)} of them are inside NESTED COPIES of the repository "
               f"and duplicate top-level results.")

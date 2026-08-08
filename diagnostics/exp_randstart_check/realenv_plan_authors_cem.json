@@ -1,0 +1,49 @@
+{
+  "tag": "authors_cem",
+  "guard": {
+    "status": "pass",
+    "paired_median": 0.01158882724121213
+  },
+  "results": [
+    {
+      "episode": 892,
+      "success": true,
+      "steps": 1,
+      "final_dist": 14.75,
+      "start_goal_dist": 15.28,
+      "trivial_start": true,
+      "plans": 1
+    },
+    {
+      "episode": 7739,
+      "success": false,
+      "steps": 50,
+      "final_dist": 34.01,
+      "start_goal_dist": 46.98,
+      "trivial_start": false,
+      "plans": 2
+    }
+  ],
+  "success_rate": 0.5,
+  "n": 2,
+  "trivial_starts": 1,
+  "action_scale": 1.0,
+  "protocol": {
+    "num_eval": 2,
+    "budget": 50,
+    "goal_offset": 25,
+    "receding": 5,
+    "frameskip": 5,
+    "seed": 42,
+    "success_rule": "env terminated (dist<16)",
+    "cem": {
+      "num_samples": 300,
+      "n_steps": 30,
+      "topk": 30,
+      "var_scale": 1.0,
+      "horizon": 5
+    }
+  },
+  "ckpt": "../authors_driving_spec.json",
+  "epoch_field": -1
+}
