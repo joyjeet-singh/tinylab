@@ -27,5 +27,6 @@
     "samples": 200
   },
   "action_scale": 5.0,
-  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)"
+  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)",
+  "action_encoding": "repeat"
 }
