@@ -1,4 +1,6 @@
 file,arm,whose,succ,pct,nontrivial,meanfinal,wall,guard,episodes,budget,goal,succ_only,adapter,banner_conflict,ckpt,reldir,nested_copy
+diagnostics/exp_randstart_check/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,0.0%,24.38,1.8,0.012,2,50,frame 25,no,no,no,authors-spec,diagnostics/exp_randstart_check,no
+diagnostics/exp_randstart_control/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,50.0%,47.70,2.3,0.012,2,50,frame 25,no,no,no,authors-spec,diagnostics/exp_randstart_control,no
 exp_authors/realenv_plan_authors_cem_report.txt,cem,authors,42/50,84.0,83.3%,25.29,38.7,0.012,50,50,frame 25,no,no,yes,authors-spec,exp_authors,no
 exp_authors/realenv_plan_authors_random_report.txt,random,authors,9/50,18.0,14.6%,46.98,0.1,0.012,50,50,frame 25,no,no,yes,authors-spec,exp_authors,no
 exp_authors_100/realenv_plan_authors_cem_report.txt,cem,authors,6/50,12.0,12.0%,122.52,53.8,0.012,50,50,frame 100,no,no,yes,authors-spec,exp_authors_100,no
@@ -11,8 +13,6 @@ exp_phase2_recal/realenv_plan_random_report.txt,random,ours,0/50,0.0,0.0%,111.07
 exp_phase2_recal_25/realenv_plan_cem_report.txt,cem,ours,47/50,94.0,93.8%,19.19,31.6,0.009,50,50,frame 25,no,no,no,ckpt_best_recal.pt,exp_phase2_recal_25,no
 exp_r0_short/realenv_plan_cem_report.txt,cem,ours,31/50,62.0,62.5%,36.87,41.5,0.004,50,50,frame 25,no,no,no,ckpt_recal.pt,exp_r0_short,no
 exp_randstart_authors/realenv_plan_authors_cem_report.txt,cem,authors,5/50,10.0,10.0%,125.87,143.3,0.012,50,150,frame 100,no,no,no,authors-spec,exp_randstart_authors,no
-exp_randstart_check/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,0.0%,24.38,1.8,0.012,2,50,frame 25,no,no,no,authors-spec,exp_randstart_check,no
-exp_randstart_control/realenv_plan_authors_cem_report.txt,cem,authors,1/2,50.0,50.0%,47.70,2.3,0.012,2,50,frame 25,no,no,no,authors-spec,exp_randstart_control,no
 exp_receding1/realenv_plan_cem_report.txt,cem,ours,13/50,26.0,22.9%,35.68,84.5,0.013,50,50,frame 25,no,no,no,ckpt_best.pt,exp_receding1,no
 exp_ref_authors_repeat/realenv_plan_authors_cem_report.txt,cem,authors,5/50,10.0,10.0%,125.87,149.3,0.012,50,150,frame 100,no,no,no,authors-spec,exp_ref_authors_repeat,no
 exp_ref_p2/realenv_plan_cem_report.txt,cem,ours,13/50,26.0,26.0%,108.82,138.9,0.009,50,150,frame 100,no,no,no,ckpt_best_recal.pt,exp_ref_p2,no
