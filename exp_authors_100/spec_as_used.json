@@ -1,0 +1,31 @@
+{
+  "pixel_convention": "imagenet",
+  "imagenet_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "imagenet_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "action_width": 10,
+  "action_slots": [
+    0,
+    1
+  ],
+  "history_size": 3,
+  "frameskip": 5,
+  "action_aggregation": "sum over each frameskip block",
+  "note": "first-2 and last-2 padding were indistinguishable; stated as a deviation",
+  "evidence": {
+    "weights": null,
+    "measurement": null,
+    "ratio_first": 0.4048784673213959,
+    "ratio_last": 0.3981240689754486,
+    "samples": 200
+  },
+  "action_scale": 5.0,
+  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)"
+}
