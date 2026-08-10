@@ -1,17 +1,4 @@
-<!-- Consistency checker: four pass-1 findings are reviewed and accepted.
-     L593, L617  §4.2 — the subject is "the authors' released checkpoint",
-                 named in the sentence that introduces the measurement.
-     L715        §4.3 — a cell in the recalibration table; the eval-before
-                 and eval-after columns make the context unambiguous.
-     L1025       §5.3 — the sentence opens "At goal offset 25" and Table 3
-                 sits directly above it naming all three checkpoints.
-     L1291       §7  — the paragraph says "between checkpoints" and now
-                 carries the offset.
-     Re-check these if the surrounding text is rewritten. -->
-
 # Abstract
-
-*(~250 words)*
 
 LeWorldModel trains a latent world model with a prediction loss and a single
 anti-collapse regulariser, and reports approximately 87% of goals reached on
@@ -23,12 +10,20 @@ laptop CPU.
 We reach **94.0%** at the repository's evaluation goal offset, against **84.0%**
 for the authors' own released checkpoint measured under our protocol on
 identical episodes, and we reproduce the reported representation result directly
-(position probe R² 0.9977). Reaching that point required correcting **four
-conventions that determine the outcome and appear in no released configuration
-file**: dense action gathering across a frameskip block, a programmatically-set
-action-encoder width, ImageNet pixel normalisation, and action z-scoring. A
-reproducer following the released configurations alone obtains a model whose
-predictor cannot converge.
+(position probe Pearson r = 0.9988 against a reported 0.996). Reaching that
+point required correcting **four conventions that determine the outcome and
+appear in no released configuration file**: dense action gathering across a
+frameskip block, a programmatically-set action-encoder width, ImageNet pixel
+normalisation, and action z-scoring. A reproducer following the released
+configurations alone obtains a model whose predictor cannot converge.
+
+**The evaluation protocol is itself contested by the released material**, and we
+report which reading reproduces. The paper's appendix and the repository's
+evaluation configuration specify different goal offsets and step budgets; on the
+authors' own released weights these yield 14.0% and 84.0% respectively, and only
+the configuration's values reproduce the reported figure. On fifty identical
+episodes, changing nothing but how the goal is constructed moves that same
+checkpoint from 84.0% to 8.0%.
 
 Two findings generalise beyond this reproduction. First, **one-step prediction
 accuracy does not predict long-horizon planning success**: across three
@@ -36,9 +31,8 @@ checkpoints spanning a sevenfold range in prediction error — including the
 authors' own — accuracy orders short-horizon success monotonically and fails to
 order long-horizon success at all, where the two most accurate checkpoints
 finish farther from the goal than a random-action policy. Second, **a batch
-normalisation layer inflated our reported validation loss by up to three orders
-of magnitude**, concealing for three training runs a training loss that was
-descending monotonically; we give the two conditions under which this occurs and
+normalisation layer inflated our reported validation loss by a factor of up to 300**, concealing for three training runs a training loss that was flat
+or descending throughout; we give the two conditions under which this occurs and
 a cheap check for it.
 
 We also report a pre-registered mechanism-level result that did not survive a
@@ -48,7 +42,7 @@ change of checkpoint, and what we take from that.
 
 # 1 Introduction
 
-LeWorldModel [REF:paper] proposes a latent world model trained with a
+LeWorldModel (Maes et al., 2026a) proposes a latent world model trained with a
 prediction loss and a single anti-collapse regulariser, deliberately without the
 exponential moving averages, frozen encoders and auxiliary objectives that
 comparable methods require. Among the environments it evaluates, TwoRoom is the
@@ -56,12 +50,12 @@ simplest: a point agent in a two-room arena joined by a single door, with an
 action space of two dimensions and deterministic dynamics. It is also where the
 method looks weakest. The paper reports approximately 87% of goals reached
 there, against 97–100% for the baselines it compares against on the same task
-[REF:baselines]. A method's behaviour on its easiest diagnostic is informative,
+(Maes et al., 2026a, Fig. 6). A method's behaviour on its easiest diagnostic is informative,
 and an anomaly on that diagnostic is worth resolving before drawing conclusions
 from harder ones.
 
 We set out to reproduce three claims on TwoRoom: that the learned encoder
-recovers agent position under a linear probe at approximately R² 0.996, that
+recovers agent position under a linear probe at a Pearson correlation of approximately 0.996, that
 planning over the learned model reaches approximately 87% of goals, and that the
 released configuration produces such a model within the stated training budget.
 We reimplemented the method from the released code and paper rather than
@@ -79,7 +73,7 @@ finding it. This paper reports the reproduction and the failures together,
 because the failures are what a reproducer attempting the same work would most
 benefit from knowing.
 
-### Contributions
+## Contributions
 
 **We reproduce the reported result and exceed it.** With four undocumented
 pipeline conventions corrected and a normalisation artifact repaired, our
@@ -88,6 +82,19 @@ offset (§4.5), against a reported ~87% and against **84.0%** for the authors'
 own released checkpoint measured under our protocol on identical episodes. The
 representation result reproduces directly: R² 0.9977 under a linear probe
 (§4.1).
+
+**We show that the released material publishes two evaluation protocols that
+disagree, and that only one reproduces the reported figure** (§4.2). Appendix
+F.1 specifies a 150-step budget with the goal sampled 100 frames ahead; the
+released evaluation configuration specifies 50 and 25. On the authors' own
+released weights these yield 14.0% and 84.0%. On fifty identical episodes, with
+identical weights and an identical planner, changing only the goal construction
+moves that checkpoint from 84.0% to 8.0% (matched-pair p < 10⁻⁸). We further
+show that the appendix's protocol cannot be followed as written on the released
+dataset: episode lengths cap at 101 frames, so a goal 100 frames ahead admits
+exactly one legal start rather than the sampled one the appendix specifies, and
+the eligible episodes are precisely the 6,056 in which the data-collection
+policy ran out of time.
 
 **We identify four conventions that determine the outcome and appear in no
 configuration file** (§3.2): actions must be gathered densely across a frameskip
@@ -111,13 +118,12 @@ is the strongest planner by a wide margin.
 real environment, sat twenty-five times farther from the training distribution
 than training frames sit from each other, and produced below-random planning
 results for three paid runs while a position probe read R² 0.99 throughout. And
-a batch-normalisation layer specified by the released configuration inflated our
-reported validation loss by up to three orders of magnitude, concealing a
-training loss that was descending monotonically the whole time. We give the
+a batch-normalisation layer specified by the released configuration inflated our reported validation loss by a factor of up to 300, concealing a
+training loss that was flat or descending throughout. We give the
 conditions under which the second occurs — a normalisation layer whose running
 variance is far below its activation scale, combined with weights still moving
-— and show that the authors' released checkpoint satisfies only the second and
-is therefore unaffected.
+— and show that the authors' released checkpoint does not satisfy the first
+and is therefore unaffected.
 
 **We report a pre-registered result that did not survive** (§5.2). A same-room
 planning advantage of +39.1 points at p = 3.4 × 10⁻⁸, distance-matched
@@ -127,14 +133,14 @@ scaling and to −6.4 points on a different checkpoint. We report all three arms
 and take from it that effect sizes measured on a single reproduction checkpoint
 should not be read as properties of the method.
 
-### Scope
+## Scope
 
 All results concern the TwoRoom diagnostic. We make no claim about the original
 paper's embodied or zero-shot results, about its other environments, or about
 the method at scales other than the 18.03M-parameter configuration studied here.
 Every figure in this paper comes from a single seed. Our full deviation set is
 given in Table 1, our limitations in §7, and all code, configurations,
-evaluation reports and gate outputs are available at [REF:repo].
+evaluation reports and gate outputs are available at (github.com/joyjeet-singh/tinylab).
 
 ---
 
@@ -144,54 +150,66 @@ We test three claims the original makes about TwoRoom. Each is stated below in
 the form the original makes it, followed by our verdict and a pointer to the
 evidence. We also state two claims we deliberately do not test.
 
-### Claim 1 — the encoder recovers agent position
+## Claim 1 — the encoder recovers agent position
 
 > The original reports that a linear probe recovers the agent's position from
-> the learned embedding at approximately R² 0.996 [REF:§x].
+> the learned embedding at a Pearson correlation of approximately 0.996 (Maes et al., 2026a, Tab. 3, App. F.2).
 
 **Reproduced.** On 4,000 held-out frames, a ridge probe fitted on 80% recovers
-position at **R² 0.9977**, and a two-layer network on the same split reaches
-0.9995 (§4.1). The result appears within a single training epoch and is robust
+position at **R² 0.9977** (Pearson r 0.9988), and a two-layer network on the
+same split reaches 0.9994 (§4.1). The result appears within a single training epoch and is robust
 across every pipeline configuration we trained, including those whose predictor
 does not converge.
 
 We report one methodological caveat that bears on any comparison of probe
 values. Our own per-epoch training logs report probe scores between 0.9305 and
-0.9974 for the same encoders, a spread that vanishes to 0.003 under a single
-protocol on identical frames. Probe values are protocol-dependent; we state ours
+0.9974 for the same encoders, a spread that vanishes to 0.0006 under a single protocol on identical frames. Probe values are protocol-dependent; we state ours
 (4,000 held-out frames, ridge, 80/20 split) wherever we report one.
 
-### Claim 2 — planning over the learned model reaches approximately 87%
+## Claim 2 — planning over the learned model reaches approximately 87%
 
 > The original reports approximately 87% of goals reached under cross-entropy
-> method planning [REF:§y].
+> method planning (Maes et al., 2026a, Fig. 6).
 
-**The protocol reproduces; our checkpoint exceeds the figure; the comparison is
-qualified.** Two measurements bear on this.
+**One of the two published evaluation protocols reproduces the figure; our
+corrected checkpoint exceeds it; the comparison between checkpoints is not
+established at our sample size.** Three measurements bear on this.
 
 First, the authors' own released checkpoint, driven through our evaluation
-harness with only the weights changed, reaches **42/50 = 84.0%** (§4.2). A
-one-sample test against 0.87 gives p = 0.53. Our harness therefore recovers the
-reported result from the reported weights, which validates the protocol
-independently of anything we trained.
+harness with only the weights changed, reaches **42/50 = 84.0%** under the
+released repository's evaluation configuration — a goal offset of 25 frames and
+a 50-step budget. A one-sample test against 0.87 gives p = 0.53. Under the
+protocol Appendix F.1 describes — a goal 100 frames ahead and a 150-step budget
+— the same weights reach **14.0%** (§4.2). Our harness therefore recovers the
+reported result from the reported weights under one published protocol and not
+the other, and the released material does not tell us which was used.
 
-Second, our own corrected checkpoint reaches **47/50 = 94.0%** at the
-repository's evaluation goal offset of 25 steps, with a 95% interval of
-[83.8%, 97.9%] that contains the reported figure (§4.5). Against the authors'
-checkpoint on identical episodes the difference is not established at our sample
-size (p = 0.0625).
+Second, the goal construction alone accounts for most of that spread. On fifty
+identical episodes, with identical weights, an identical planner and an
+identical driving convention, changing only how the goal is defined moves their
+checkpoint from 84.0% to 8.0% (matched-pair p < 10⁻⁸, §4.2). No property of any
+model is involved in that difference.
 
-This claim carries a conflict we cannot resolve from the released material. The
-repository's evaluation configuration uses a goal offset of 25 steps while the
-paper's description implies 100 (Table 1), and the choice is consequential: at
-offset 100 the same checkpoint reaches 20.0%, and across the three checkpoints
-we evaluate the figure ranges from 12.0% to 54.0% (§5.3). We report both
-offsets throughout and quote no planning number without one.
+Third, our own corrected checkpoint reaches **47/50 = 94.0%** at the
+repository's goal offset, with a 95% interval of [83.8%, 97.9%] that contains
+the reported figure (§4.5). Against the authors' checkpoint on identical
+episodes the difference is not established at our sample size (p = 0.0625), and
+the reported 87% was obtained under the authors' own episode selection, which
+the released material does not describe in reproducible detail.
 
-### Claim 3 — the released configuration produces such a model in the stated budget
+The conflict is therefore consequential rather than cosmetic, and we do not
+resolve it. At the paper's goal offset our best checkpoint reaches 20.0% within
+the repository's budget and 26.0% within the paper's; across the three
+checkpoints we evaluate, the figure spans 12.0% to 54.0% at the shorter budget
+and 14.0% to 80.0% at the longer (§5.3). We report both offsets throughout and
+quote no planning number without stating the offset and budget it was measured
+under.
 
-> The paper's appendix states ten training epochs [REF:appx]; the released
-> repository configuration specifies one hundred [REF:cfg].
+
+## Claim 3 — the released configuration produces such a model in the stated budget
+
+> The paper's appendix states ten training epochs (Maes et al., 2026a, App. E); the released
+> repository configuration specifies one hundred (the released `le-wm` repository configuration).
 
 **Not reproduced as released; reproduced once four undocumented conventions are
 corrected.** Our reimplementation of the released configuration plateaus: its
@@ -208,7 +226,7 @@ procedure fails. Our verdict is that the released *configuration*, as
 implementable from the released *configuration files*, is insufficient to
 specify a converging run.
 
-### Not tested
+## Not tested
 
 **The original's other environments and its embodied and zero-shot results.**
 Our budget covered four training runs on one task. We make no claim about any of
@@ -223,14 +241,17 @@ size, say so.
 
 ---
 
-## 3.1 Model and objective
+# 3 Method
 
-*(~280 words)*
+## 3.1 Model and objective
 
 We reimplement the architecture the released configuration specifies. The
 encoder is a ViT-Tiny at 224 pixels with patch size 14, twelve layers and three
 heads, producing a 192-dimensional embedding. A projector maps that embedding
-through a two-layer network with a batch-normalisation layer; the predictor is a
+through a one-layer MLP with batch normalisation, which the original states is
+necessary because the encoder's final layer normalisation would otherwise
+prevent its anti-collapse objective from being optimised effectively
+(Maes et al., 2026a, §3.1); the predictor is a
 six-layer transformer with sixteen heads, head dimension 64 and MLP width 2048,
 consuming a context of three frames; a second projection of the same shape as
 the first is applied to the predictor's output. An action embedder maps each
@@ -260,8 +281,6 @@ whether the release specifies it.
 
 ## 3.2 Fidelity of the reimplementation
 
-*(~380 words as drafted)*
-
 A reproduction is only as trustworthy as its account of where it differs from
 the original. We therefore audited our reimplementation element by element
 against the reference **source**, not against its configuration files, and
@@ -270,21 +289,21 @@ turned out to be decisive: of the four deviations that mattered most, none
 appears in any configuration file, and all four sit in code that a reader
 following the released configs would never open.
 
-Twenty of twenty-five audited elements match exactly, including the encoder
+24 of 40 audited elements match exactly, including the encoder
 architecture (ViT-Tiny/14 at 224 pixels), the predictor geometry, batch size,
 weight decay, gradient clipping, and the SIGReg parameters. Our parameter count
 of 18,034,670 differs from the reference checkpoint's only by the width of the
 action encoder.
 
 The four deviations were these. First, the reference gathers actions at full
-rate and reshapes them to `(history_len, frameskip × action_dim)` [REF:1],
+rate and reshapes them to `(history_len, frameskip × action_dim)` (Maes et al., 2026b, `stable_worldmodel/data/buffer.py`),
 whereas we sub-sampled one action per clip step; the released `config.json`
 records an action-encoder width of ten, which is exactly frameskip five times
 action dimension two. Second, and consequently, the action-encoder width is set
-programmatically at training time [REF:2] rather than in the config. Third,
-pixels are ImageNet-normalised before resizing [REF:3]; we divided by 255 and
+programmatically at training time (the `le-wm` code release, `train.py`) rather than in the config. Third,
+pixels are ImageNet-normalised before resizing (the `le-wm` code release, `utils.py`); we divided by 255 and
 stopped. Fourth, non-pixel columns are z-scored using dataset statistics with
-NaN rows dropped [REF:4]; we used raw actions, and the dataset contains exactly
+NaN rows dropped (the `le-wm` code release, `train.py` and `utils.py`); we used raw actions, and the dataset contains exactly
 one NaN action per episode, at the final step.
 
 Two of these are independently corroborated by the released artifact rather than
@@ -309,7 +328,12 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 > values are cited to implementation source rather than to configuration files;
 > the four rows marked **undocumented** are determined in code and appear in no
 > released configuration. "Corrected" indicates a deviation present in our
-> earlier runs and fixed in the final configuration (§3.2).
+> earlier runs and fixed in the final configuration (§3.2). Source codes:
+> **B** = `stable_worldmodel/data/buffer.py`; **T** = `le-wm/train.py`;
+> **U** = `le-wm/utils.py`; **C** = the released `config.json`; **Y** = the
+> repository YAML configuration; **package** = the installed distribution.
+> A number after a colon is a line number in the version we audited, whose
+> commit is recorded in the repository.
 
 ### Data pipeline
 
@@ -334,7 +358,7 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 | predictor head dim / MLP | 64 / 2048 | C | 64 / 2048 | match |
 | projector hidden width | 2048, BatchNorm1d | C | 2048, BatchNorm1d | match |
 | dropout | 0.1 | C | 0.1 | match |
-| context frames (`history_size`) | 3 | Y, C | 3 (Runs 0 and 4); **1** (Runs 1–2) | deviation, Runs 1–2 |
+| context frames (`history_size`) | 3 | Y, C | 3 (Run 0, phase2); **1** (Runs 1–2) | deviation, Runs 1–2 |
 | parameter count | 18,034,590 (rebuilt from C) | C | 18,034,670 | +80 = action encoder width |
 
 ### Objective
@@ -343,7 +367,7 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 |---|---|---|---|---|
 | prediction loss | MSE, target **not** detached | T:39 | identical | match |
 | total loss | prediction + λ · regulariser | T:41 | identical | match |
-| regulariser weight λ | 0.09 | Y | 0.09 (Runs 0, 4); **0.045** (Runs 1–2) | deviation, Runs 1–2 |
+| regulariser weight λ | **0.09 in the configuration; §3.1 and Alg. 1 state 0.1** | Y, §3.1 | 0.09 (Run 0, phase2); **0.045** (Runs 1–2) | **conflict**; deviation, Runs 1–2 |
 | regulariser knots / projections | 17 / 1024 | Y | 17 / 1024 | match |
 | regulariser axis | per timestep, across batch | T | identical | match |
 
@@ -352,12 +376,12 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 | element | reference | source | ours | status |
 |---|---|---|---|---|
 | optimiser | AdamW | Y | AdamW | match |
-| learning rate | 5 × 10⁻⁵ | Y | 5 × 10⁻⁵ (Runs 0, 4); **1 × 10⁻⁵** (Runs 1–2) | deviation, Runs 1–2 |
+| learning rate | 5 × 10⁻⁵ | Y | 5 × 10⁻⁵ (Run 0, phase2); **1 × 10⁻⁵** (Runs 1–2) | deviation, Runs 1–2 |
 | weight decay | 1 × 10⁻³ | Y | 1 × 10⁻³ | match |
 | batch size | 128 | Y | 128 | match |
 | gradient clipping | 1.0 | Y | 1.0 | match |
 | prediction steps | 1 | Y | 1 | match |
-| learning-rate schedule | **none specified** | Y | none (Runs 0, 1, 4); **cosine** (Run 2) | deviation, Run 2 |
+| learning-rate schedule | **none specified** | Y | none (Runs 0, 1, phase2); **cosine** (Run 2) | deviation, Run 2 |
 | epochs | 100 | Y | 10 | deviation — paper's appendix states 10 |
 | precision | bfloat16 | Y | float32 | deviation — benign |
 | seed | 3072 | Y | 0 | deviation — benign |
@@ -368,31 +392,29 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 |---|---|---|---|---|
 | environment | `swm/TwoRoom-v1` | package | identical, verified bit-level (§3.3) | match |
 | success criterion | registered env rule, distance < 16 | package | identical | match |
-| CEM settings | 300 samples / 30 elite / 30 iterations / variance 1.0 | Y | identical | match |
+| CEM settings | 300 samples / 30 elite / variance 1.0; **30 iterations in the configuration, App. D states 10 for TwoRoom** | Y, App. D | both reported (§4.2) | **conflict — immaterial: 42/50 under either (§4.2)** |
 | horizon, action block | 5, 5 | Y | 5, 5 | match |
-| step budget | 50 | Y | 50 | match |
+| step budget | **50 in the evaluation config; App. F.1 states 150** | Y, App. F.1 | both reported (§4.2, §5.3) | **conflict — only the config's value reproduces (§4.2)** |
 | episodes evaluated | 50 | Y | 50 (220 for §5.2) | match |
-| goal offset | **25 in the evaluation config; the paper implies 100** | Y | both reported (§4.5, §5.3) | **conflict — unresolved** |
+| goal offset | **25 in the evaluation config; App. F.1 states 100** | Y, App. F.1 | both reported (§4.2, §4.5, §5.3) | **conflict — only the config's value reproduces (§4.2)** |
 | episode selection | not published | — | fixed random draw, seed 42; start at episode frame 0 | deviation — unavoidable |
-| receding horizon | 5 | Y | read as: execute 5 planned actions, then replan | interpretation, tested (§5.3) |
+| receding horizon | 5; App. D states the entire optimised sequence is executed before replanning | Y, App. D | identical | match — confirmed behaviourally (§5.3) |
 
 ### Environment
 
 | element | ours | note |
 |---|---|---|
 | PyTorch | 2.2.2+cu121 | identical across all four runs |
-| Python | 3.11.15 (Runs 0–2); **3.12.3** (Run 4) | deviation — benign, recorded |
+| Python | 3.11.15 (Runs 0–2); **3.12.3** (phase2) | deviation — benign, recorded |
 
 ---
 
-## Table 1b — Configuration of the four training runs
-
 > **Table 1b: Our four training runs.** Runs 1 and 2 were exploratory and vary
 > three and four hyperparameters from the reference respectively; their results
-> are reported as ablations. Run 0 and Run 4 differ **only** in the four
+> are reported as ablations. Run 0 and phase2 differ **only** in the four
 > pipeline corrections, and form the controlled pair of §4.4.
 
-| | Run 0 | Run 1 | Run 2 | Run 4 (`phase2`) |
+| | Run 0 | Run 1 | Run 2 | phase2 |
 |---|---|---|---|---|
 | purpose | reference config, as reimplemented | exploratory bundle | Run 1 + schedule | corrected pipeline |
 | learning rate | 5e-5 | 1e-5 | 1e-5 | 5e-5 |
@@ -404,7 +426,7 @@ explain. The remaining deviations, all deliberate, are listed in Table 1.
 | ImageNet pixels | no | no | no | **yes** |
 | z-scored actions | no | no | no | **yes** |
 | epochs | 10 | 10 | 10 | 10 |
-| deviations from reference | 4 | 7 | 8 | **3** |
+| deviations from reference² | 7 | 10 | 11 | **3** |
 | used for | §4.4, §4.1 | ablation | §4.5, §5.2, §5.3 planning | §4.4, §4.5, §5.2, §5.3 |
 
 ¹ A patch applied twice caused the scheduler to step twice per epoch, turning
@@ -413,11 +435,13 @@ the intended one-way cosine decay into a full cycle from 1 × 10⁻⁵ down to
 sweep is what identified the normalisation artifact of §4.3, and we report it
 as an accident rather than a design.
 
+² Every element Table 1 marks as a deviation for that run, including the three
+benign ones common to all four: ten epochs rather than one hundred, float32
+rather than bfloat16, and seed 0 rather than 3072.
+
 ---
 
 ## 3.3 Environment verification
-
-*(~230 words)*
 
 Every planning number in this paper depends on the evaluation environment being
 the same environment that generated the training data. We establish that
@@ -432,8 +456,7 @@ a nearest-neighbour spacing within the real data of 2.43.
 
 This last figure is the instrument we use as a precondition throughout. Every
 evaluation in this paper computes it before planning and refuses to report a
-success rate if it exceeds a threshold of 1.0. The measured values across all
-runs reported here lie between 0.009 and 0.014.
+success rate if it exceeds a threshold of 1.0. The measured values across all runs reported here lie between 0.004 and 0.014.
 
 The check earns its place. An earlier phase of this work evaluated in a
 32-pixel fixture built for cheap iteration on a laptop, where the same
@@ -445,8 +468,6 @@ only that the precondition exists because it was needed.
 ---
 
 ## 3.4 Experimental protocol and gates
-
-*(~380 words)*
 
 Rented compute forces a discipline that is worth stating, because it shaped what
 we were able to conclude. Our budget allowed four training runs. A run that
@@ -488,8 +509,6 @@ in the repository.
 
 ## 3.5 Computational requirements
 
-*(~260 words)*
-
 Four training runs on a single rented GPU, at approximately six US dollars each,
 totalling about twenty-four dollars of compute. Each run is ten epochs over
 roughly 780,000 clips at 224-pixel resolution and completes in a few hours.
@@ -517,29 +536,35 @@ problem.
 
 ---
 
+# 4 Reproduction results
+
 ## 4.1 The representation reproduces, and is not the bottleneck
 
 The original reports that a linear probe recovers agent position from the
-learned embedding at approximately R² 0.996 [REF:C1]. We reproduce this. On
-4,000 held-out frames drawn uniformly from the released dataset, a ridge probe
-fitted on 80% and evaluated on the remaining 20% recovers position at **R²
-0.9977**; a two-layer MLP probe on the same split reaches 0.9995, confirming the
-linear probe is not limited by its own capacity.
+learned embedding at a Pearson correlation of approximately 0.996 (Maes et al., 2026a, Tab. 3, App. F.2). We
+reproduce this. On 4,000 held-out frames drawn uniformly from the released
+dataset, a ridge probe fitted on 80% and evaluated on the remaining 20%
+recovers position at **R² 0.9977**, a Pearson correlation of 0.9988; a two-layer
+MLP probe on the same split reaches R² 0.9994, confirming the linear probe is
+not limited by its own capacity. We report R² throughout, since it is the
+quantity our tooling computes, and give the correlation wherever a comparison
+with the original requires it.
 
 The protocol matters more here than the number. Our own training logs report
 per-epoch probe values ranging from 0.9922 to 0.9974 for the reference-faithful
 run and from 0.9305 to 0.9525 for the corrected-pipeline run — an apparent
 five-point difference between the two pipelines. Measured under a single
-protocol on identical frames, that difference is **0.003** (0.9977 against
-0.9946) and vanishes entirely under the non-linear probe (0.9995 against
-0.9996). The in-training probe fits far fewer samples, where ridge
-regularisation dominates at 192 dimensions. We report the common-protocol
-numbers throughout and recommend that probe protocols be stated wherever probe
-values are compared, including within a single paper's own logs.
+protocol on identical frames, with both checkpoints normalisation-repaired
+(§4.3), that difference is **0.0006** (0.9977 against 0.9971) and disappears
+entirely under the non-linear probe (0.9994 against 0.9994). The in-training
+probe fits far fewer samples, where ridge regularisation dominates at 192
+dimensions. We report the common-protocol numbers throughout and recommend that
+probe protocols be stated wherever probe values are compared, including within a
+single paper's own logs.
 
 A second measurement matters more for what follows. From a pair of consecutive
 embeddings (z_t, z_{t+k}), the summed action executed between them is linearly
-decodable at **R² 0.9207**; from their difference alone, at 0.8925. Together
+decodable at **R² 0.9290**; from their difference alone, at 0.8982. Together
 with the position result this characterises the latent space precisely: it is a
 near-linear encoding of agent position, and transitions within it carry the
 action that produced them in linearly accessible form.
@@ -553,6 +578,17 @@ the true dynamics, and every quantity it requires is present and linearly
 accessible in its inputs. **The failure to converge documented below is
 therefore not an information-theoretic limitation of the representation. It is a
 property of the predictor and its optimisation.**
+
+The original's authors reach the same conclusion from their own results. The
+caption to their probing table observes that although the method underperforms
+PLDM in downstream planning on this environment, it matches or exceeds PLDM
+across the probing metrics, and suggests that the planning gap is therefore not
+due to a less informative representation but to the dynamics model or the
+planning procedure itself (Maes et al., 2026a, Tab. 3 caption). Our measurements support that reading and
+sharpen it: not only is the position information present, so is the action
+information a planner needs, and the forward map is no harder in latent space
+than in the true state space. §5.3 takes up what happens when the planner is
+given a predictor that is nonetheless far more accurate.
 
 Finally, the regulariser does its job. Mean embedding spread remained within
 0.830–0.960 across the reference-faithful run and 0.797–1.039 across the
@@ -568,16 +604,17 @@ whether the predictor converges.
 
 > **Table 2: Encoder comparison under a single probe protocol.** 4,000 held-out
 > frames, identical for both models; each encoder receives the pixel convention
-> it was trained with. Ridge probes, 80/20 split.
+> it was trained with. Ridge probes, 80/20 split. Both checkpoints are
+> recalibrated (§4.3); measured before that repair, both read differently (§5.4).
 
 | measurement | reference-faithful (Run 0) | corrected pipeline (phase2) |
 |---|---|---|
-| position, linear probe | **0.9977** | 0.9946 |
-| position, MLP probe | 0.9995 | 0.9996 |
-| summed action from (z_t, z_{t+k}) | **0.9207** | 0.8733 |
-| summed action from z_{t+k} − z_t | 0.8925 | 0.8502 |
-| effective rank (of 192) | 11.9 | 16.5 |
-| mean embedding spread | 1.000 | 0.930 |
+| position, linear probe | **0.9977** | 0.9971 |
+| position, MLP probe | 0.9994 | 0.9994 |
+| summed action from (z_t, z_{t+k}) | **0.9290** | 0.9132 |
+| summed action from z_{t+k} − z_t | 0.8982 | 0.8844 |
+| effective rank (of 192) | 18.6 | 67.8 |
+| mean embedding spread | 1.004 | 1.009 |
 
 *Effective rank is discussed in §5.4; it is listed here so the comparison is
 presented once.*
@@ -591,24 +628,109 @@ presented once.*
 > consecutive embeddings against the true summed action; held-out R² = 0.9207.
 > **(c)** Mean embedding spread per epoch for both training configurations; no
 > monotone decline appears in either, and no run collapsed. Panels (a) and (b)
-> use the reference-faithful checkpoint; the corrected-pipeline checkpoint gives
-> 0.9946 and 0.8733 respectively (Table 2).
+> use the reference-faithful checkpoint as trained; recalibrated, it probes at
+> 0.9977 and 0.9290, and the corrected-pipeline checkpoint at 0.9971 and 0.9132
+> (Table 2, both recalibrated).
 
-## 4.2 The evaluation protocol reproduces
+## 4.2 Two published evaluation protocols, and which one reproduces
 
 A reproduction that reports a planning number is reporting the product of two
 things: a model, and a protocol for evaluating it. If the protocol is wrong,
 every number it produces is wrong in a way no amount of internal consistency
-checking will reveal. Before reporting any figure from our own checkpoints, we therefore ran the **authors' released checkpoint** — not ours — through our evaluation harness, changing nothing but the weights.
+checking will reveal. Before reporting any figure from our own checkpoints, we
+therefore ran the **authors' released checkpoint** — not ours — through our
+evaluation harness, changing nothing but the weights.
 
-It reaches **42 of 50 goals = 84.0%**, against the reported approximately 87%.
-A one-sample test against 0.87 gives p = 0.53, and the 95% Wilson interval,
-[71.5%, 91.7%], contains the reported figure. Our episode selection, goal
-construction, success criterion, step budget, planner settings and action
-convention therefore recover the reported result from the reported weights.
+Doing so required choosing a protocol, and the released material publishes two
+that disagree. Appendix F.1 states that for TwoRoom the evaluation budget is 150
+steps and the goal is sampled 100 timesteps in the future. The evaluation
+configuration in the released repository uses a budget of 50 and a goal offset
+of 25. We ran their checkpoint under both, and under five further readings
+constructed from the paper's description of the task.
 
-Reaching that point required settling two things the released material does not
-state, and both were settled by measurement rather than assumption.
+| goal construction | budget | success |
+|---|---|---|
+| frame 25 later — the released evaluation configuration | 50 | **42/50 = 84.0%** |
+| frame 100 later — Appendix F.1 | 50 | 6/50 = 12.0% |
+| frame 100 later — Appendix F.1 | 150 | 7/50 = 14.0% |
+| frame 100 later, action repeated rather than block-averaged | 150 | 5/50 = 10.0% |
+| frame 100 later, initial state sampled within the trajectory | 150 | 5/50 = 10.0% |
+| the episode's recorded target, episodes the data policy solved | 150 | 7/50 = 14.0% |
+| the episode's recorded target, all episodes | 150 | 4/50 = 8.0% |
+
+*Every figure in this table was read from a committed evaluation report; the
+report path for each is listed in `docs/paper/results_from_disk.csv`. The fifth
+row is discussed below: on this dataset that instruction has no effect at an
+offset of 100, and the row is identical to the fourth for that reason.*
+
+Only the first reproduces the reported figure. Under it the checkpoint reaches
+42 of 50 goals; a one-sample test against 0.87 gives p = 0.53, and the 95%
+Wilson interval, [71.5%, 91.7%], contains the reported figure. A random-action
+control over the same episodes reaches 9 of 50. Under the protocol the paper
+describes, the same weights reach 14.0%.
+
+The consequence is worth stating plainly, because it is the kind of thing a
+reproduction exists to find: **the evaluation protocol described in the paper
+does not reproduce the paper's reported result on the paper's own released
+weights, and the released repository's evaluation defaults do.** We do not know
+which the authors used, and we do not assume; §6.4 records that we asked.
+
+### The goal construction, not the model, determines the number
+
+The last row of the table draws the same fifty episodes as the first. Neither
+imposes a minimum episode length, and both sample with the same seed, so the
+two runs are a paired comparison on identical episodes, with identical weights,
+an identical planner and an identical driving convention. They differ only in
+how the goal is constructed. The result is 84.0% against 8.0%: 39 episodes are
+solved under the first and missed under the second, one is solved under the
+second alone, and a matched-pair test gives χ² = 34.2, p < 10⁻⁸. No property of
+the model changed between those two numbers.
+
+The failure mode differs as well as the rate. Under the recorded-target
+construction the planner ends a mean of 133.4 units from its goal, having
+started a mean of roughly 136 away — no net progress — and 29 of
+the 50 episodes finish farther from the goal than they began. Under the offset-25
+construction the same weights close from a mean of 46 units to 25.
+
+### Why the long-horizon reading cannot be followed as written
+
+That the offset-100 readings score poorly is a property of the released dataset
+rather than of the planner, and it is visible without running a model at all.
+
+The dataset contains 10,000 episodes of mean length 92.1 and maximum length
+exactly 101. An episode can supply a goal 100 frames after its start only if it
+runs longer than 100 frames, so the eligible set is precisely the 6,056
+episodes that reached the length cap. That cap is a timeout. Episodes ending
+before it do so because the data policy reached its target: all 3,944 of them
+are recorded as successful, and they finish a mean of 13.6 units from the
+target against a 16-unit success radius, whereas capped episodes finish a mean
+of 73.1 units away. Of the 6,056 eligible episodes, only 91 — 1.5% — were
+solved by the policy that generated them. Evaluating at an offset of 100
+therefore asks the planner to reach the point at which a failing policy ran out
+of time.
+
+The same appendix specifies that the initial state is sampled from within the
+trajectory rather than fixed at its first frame. On this dataset that
+instruction cannot be followed at an offset of 100: an episode of exactly 101
+frames whose goal lies 100 frames after its start admits exactly one legal
+start, and the maximum sampling span across all 6,056 eligible episodes is
+zero. At an offset of 25 the mean span is 66 frames and the instruction is
+followed normally. We report this as a property of the released dataset rather
+than as an error in the paper: the description is implementable at the offset
+the configuration uses, and not at the offset the appendix states.
+
+We draw one methodological point from this. Five hypotheses for the discrepancy
+were tested and eliminated over a single day — the action encoding, the context
+length, the sampling of initial states, the step budget, and the number of
+optimiser iterations. What identified the cause was none of them, but a
+one-minute query against the distribution of episode lengths. When a
+reproduction disagrees with its source, the data are worth interrogating before
+the model (§6.3).
+
+### Two conventions the released material does not state
+
+Reaching the 84.0% figure required settling two things the released material
+does not state, and both were settled by measurement rather than assumption.
 
 **The input convention.** The released configuration specifies the architecture
 but not the preprocessing. Encoding frames under raw `[0,1]` pixel values, their
@@ -623,7 +745,12 @@ environment's action space has two dimensions. Reading the reference's clip
 loader resolves this — actions are gathered densely across a frameskip block and
 concatenated, so ten is frameskip five times action dimension two (§3.2). A
 planner emitting one action held across a block corresponds to a block whose
-mean is that action, and we supply it accordingly.
+mean is that action, and we supply it accordingly. Supplying the action
+repeated rather than averaged is measurably equivalent on this checkpoint
+(one-step error ratios 0.410 against 0.415), and the fourth row of the table
+above shows it makes no material difference to planning either.
+
+### An earlier failure, recorded
 
 We record one earlier failure here because it bears on how such numbers should
 be read. Our first attempt at this calibration supplied the action at the wrong
@@ -640,20 +767,22 @@ completed run with passing checks is not the same as a correct measurement, and
 that a wrong answer of this kind is more readily caught by inspecting the
 distribution of failures than by any single summary statistic.
 
-Two properties of this validation are worth stating for what follows. First, it
-is independent of everything we trained: no checkpoint of ours enters it, so
-§4.5's and §5.3's protocol is validated regardless of how our own training
-turned out. Second, it is not a validation of our *model* in any respect, and we
-do not use it as one. Finally, we verified separately that the authors'
-checkpoint requires no normalisation recalibration — its evaluation-to-training
-gap is 1.09× (§4.3) — so the figures we report for it here and in §5.3 are not
-affected by the artifact described in that section.
+### What this validation does and does not establish
 
----
+Three properties are worth stating for what follows. First, it is independent of
+everything we trained: no checkpoint of ours enters it, so the protocol used in
+§4.5 and §5.3 is validated regardless of how our own training turned out.
+Second, it is not a validation of our *model* in any respect, and we do not use
+it as one. Third, we verified separately that the authors' checkpoint requires
+no normalisation recalibration — its evaluation-to-training gap is 1.09× (§4.3)
+— so the figures we report for it here and in §5.3 are not affected by the
+artifact described in that section.
+
+Because the two published protocols disagree, we report our own checkpoints at
+both goal offsets throughout, and we do not compare any single figure to the
+reported 87% without stating the offset and budget it was measured under.
 
 ## 4.3 An evaluation-mode artifact concealed the training result
-
-*(~700 words)*
 
 For three of our four training runs we recorded a per-epoch validation
 prediction loss that oscillated by more than 100% of its mean and showed no
@@ -670,17 +799,28 @@ the evaluation procedure, it would follow the mode.
 
 | checkpoint | eval mode, held-out | train mode, held-out | eval mode, train clips | train mode, train clips |
 |---|---|---|---|---|
-| released configuration | 1.4585 | **0.3079** | 1.4791 | 0.2973 |
-| corrected pipeline | 4.6034 | **0.0149** | 4.5525 | 0.0153 |
+| released configuration | 1.4585 | **0.3077** | 1.4791 | 0.2975 |
+| corrected pipeline | 4.6034 | **0.0151** | 4.5525 | 0.0149 |
 
-The mode effect is +1.15 and +4.59. The data effect is +0.011 and **−0.0004**.
+The mode effect is +1.15 and +4.59. The data effect is +0.010 and **+0.0002**.
 There is no generalisation gap in either run — on the corrected checkpoint the
-held-out loss is fractionally *lower* than the training loss — and the
-training-mode held-out values match the training logs to within 2%.
+held-out and training losses are indistinguishable, the difference changing
+sign between independent measurements of it at a magnitude of 0.0003 against a
+loss of 0.015 — and the training-mode held-out values match the training logs
+to within 2%. Training-mode figures are stochastic, dropout being active in
+that mode, and vary in the third decimal between measurements.
+
+The prediction loss is not the only quantity affected. The anti-collapse term is
+distorted by the same mechanism and more severely: under the released
+configuration it reads 107.1 in evaluation mode against 3.0 in training mode,
+and under the corrected pipeline 156.5 against 1.4. A practitioner monitoring
+that series in evaluation mode — the natural thing to do, since it is the series
+the evaluation loop writes — would conclude that the regulariser was diverging
+while it was in fact doing its job.
 
 The mechanism is in the checkpoints, and it has two factors rather than one.
 The projector's `BatchNorm1d`, specified by the released configuration
-[REF:cfg], carries a running variance of order 10⁻⁴ in all three of our
+(the released `le-wm` repository configuration), carries a running variance of order 10⁻⁴ in all three of our
 checkpoints. In evaluation mode the layer divides by the square root of that
 quantity, so any drift between the stored statistics and the current activations
 is amplified by a factor of 72 to 141; a squared error inflates that by two
@@ -696,9 +836,10 @@ the same two `BatchNorm1d` layers. We measured their evaluation-to-training gap
 on the same held-out clips and found **1.09×** — calibrated. Their projector's
 running variance is 0.0172, **89 times larger than our corrected checkpoint's
 0.00019**, so their evaluation mode divides by 0.131 where ours divides by
-0.014, an amplification of 7.6 rather than 72. For contrast the second
-normalisation layer, `pred_proj`, is near-identical across all four checkpoints
-(1.163 against 1.157). It is the projector alone that is near-degenerate in
+0.014, an amplification of 7.6 rather than 72. For contrast the second normalisation layer, `pred_proj`, is not degenerate in
+any of them: its running variance is 1.163 in the authors' checkpoint and 1.159
+in our corrected one, and 0.844 and 0.202 in our two earlier runs — in every
+case orders of magnitude above the projector's. It is the projector alone that is near-degenerate in
 ours.
 
 Why our projector output is so much narrower than theirs we do not establish.
@@ -725,15 +866,40 @@ agreement:
 
 | checkpoint | eval before | eval after | train mode | gap |
 |---|---|---|---|---|
-| released configuration | 1.4585 | **0.3061** | 0.3076 (unchanged) | 4.7× → 1.0× |
-| corrected pipeline | 4.6034 | **0.0085** | 0.0151 (unchanged) | 302.7× → 0.6× |
-| already-calibrated control | 0.1846 | 0.1845 | 0.1811 (unchanged) | 1.0× → 1.0× |
+| released configuration | 1.4585 | **0.3064** | 0.3076 (unchanged) | 4.7× → 1.0× |
+| corrected pipeline | 4.6034 | **0.0086** | 0.0150 (unchanged) | 302.7× → 0.6× |
+| already-calibrated control | 0.1846 | **0.1811** | 0.1811 (unchanged) | 1.02× → 1.00× |
 
 The first row lands on the training-mode value we had measured independently
 beforehand, which validates the procedure on a case whose answer was known. The
-third row is the control: on a checkpoint whose statistics were already correct,
-the loss does not move, so recalibration is a repair and not a general
-performance improvement.
+third row is the control: on a checkpoint whose statistics were already
+correct, recalibration moves the held-out loss by under two per cent while
+driving the residual mode effect from +0.0034 to exactly zero. Recalibration
+is a repair, not a general performance improvement.
+
+Two further quantities we report elsewhere are distorted by the same cause, and
+we flag them here because neither is a loss and neither would be expected to
+depend on a normalisation layer's stored statistics.
+
+The effective rank of the embedding cloud (§5.4) is computed downstream of the
+same layer. Recalibration modifies no weight, yet it moves the
+released-configuration checkpoint's rank from 11.9 to 18.6 and the corrected
+checkpoint's from 16.5 to 67.8. A measurement that changes by half on a model
+that did not change is measuring the statistics rather than the model.
+
+Planning outcomes are sensitive in the same way, at a magnitude the loss does
+not reveal. Recalibrating the already-calibrated checkpoint of the third row
+above moved its held-out loss by under two per cent and yet changed the outcome
+of seven of fifty planning episodes, because a change of 6×10⁻⁷ in the running
+variance is amplified by a factor of 78 before it reaches the planner's cost
+function. Reporting a loss to four decimal places is not sufficient evidence
+that two checkpoints will behave alike.
+
+One practical note for anyone auditing a checkpoint rather than training one:
+the count of batches accumulated into the normalisation statistics distinguishes
+the two states directly. Ours record between 36,748 and 54,206 batches — the
+exponential moving average maintained during training — while a recalibrated
+checkpoint records the 124 to 224 batches of the precise-BN pass.
 
 The consequence for checkpoint selection is worth stating separately, because it
 is easy to reproduce elsewhere. Our training loop saved a "best" checkpoint by
@@ -751,8 +917,6 @@ recalibrate, evaluate differently, or never encounter drift of this size.
 
 ## 4.4 Training under the released and the corrected configuration
 
-*(~550 words)*
-
 With the measurement repaired, the training results can be read directly. Both
 runs below use the same data, clip index, learning rate, regularisation weight,
 context length, schedule (none), epoch count and seed; they differ only in the
@@ -761,7 +925,7 @@ four pipeline corrections of §3.2.
 **The released configuration, as reimplemented, plateaus.** Its training loss
 reaches approximately 0.30 within the first epoch and stays there — the median
 per-epoch value moves from 0.292 to 0.304 over ten epochs, a drift of under 4%,
-with a fitted slope of +0.0004 per epoch. Recalibrated held-out loss: **0.3061**.
+with a fitted slope of +0.0004 per epoch. Recalibrated held-out loss: **0.3064**.
 This is not instability; it is a floor.
 
 The floor has a straightforward cause, and it is the deviation quantified in
@@ -777,7 +941,7 @@ conditional mean is the best available fit.
 input normalisations applied, the training loss descends monotonically at every
 epoch — 0.0412, 0.0268, 0.0226, 0.0205, 0.0186, 0.0176, 0.0166, 0.0159, 0.0148,
 0.0146 — a 65% reduction with no oscillation, and the lowest value at the final
-epoch. Recalibrated held-out loss: **0.0085**, against 0.3061 for the released
+epoch. Recalibrated held-out loss: **0.0086**, against 0.3064 for the released
 configuration. The corrected pipeline is **36 times better** on the same
 held-out clips.
 
@@ -796,22 +960,15 @@ while the repository configuration specifies one hundred (Table 1); the
 convergence reported here is therefore convergence within the paper's stated
 budget, not a claim about the asymptote. And all figures are from a single seed.
 
-Finally, the regulariser behaves as the original describes throughout. Mean
-embedding spread remained within 0.830–0.960 for the released configuration and
-0.797–1.039 for the corrected one, with no monotone decline in either and no
-collapse under any configuration we trained — including at the learning rate
-where the validation loss appeared not to settle. The two-term objective was
-sufficient to prevent collapse without an exponential moving average, a frozen
-encoder, or auxiliary supervision.
+Finally, the regulariser behaves as the original describes in both runs; the
+embedding-spread series is reported in §4.1.
 
 ---
 
-## 4.5 Planning at the reference goal offset
-
-*(~470 words. Home of the planning reproduction claim.)*
+## 4.5 Planning at both published goal offsets
 
 The original reports approximately 87% of goals reached on TwoRoom under
-cross-entropy-method planning over the learned model [REF:C2]. Under our
+cross-entropy-method planning over the learned model (Maes et al., 2026a, Fig. 6). Under our
 protocol at the repository's evaluation goal offset of 25 steps, our corrected
 reproduction reaches **47 of 50 = 94.0%** (non-trivial 45 of 48 = 93.8%). The
 95% Wilson interval is [83.8%, 97.9%] and contains the reported figure; a
@@ -822,15 +979,15 @@ Two comparisons place that number, and both use the identical fifty episodes.
 The authors' own released checkpoint, driven through our harness with only the
 weights changed, reaches **42 of 50 = 84.0%**. Our checkpoint is higher, but the
 matched-pair test gives 5 improvements against 0 reversals, **p = 0.0625** — a
-difference not established at this sample size. What the comparison does
-establish is that our evaluation protocol is faithful: it recovers the reported
-result from the reported weights (§4.2).
+difference not established at this sample size. What the comparison does establish is that our evaluation protocol is faithful
+under the reading that reproduces: it recovers the reported result from the
+reported weights under the repository's evaluation configuration, though not
+under the protocol the paper's appendix describes (§4.2).
 
 Our own earlier checkpoint, trained before the pipeline corrections of §3.2,
 reaches **39 of 50 = 78.0%**. Against it, the corrected checkpoint improves 11
 episodes and loses 3, **p = 0.0574** — again higher but not established at
-n = 50. We note that both checkpoints were normalisation-recalibrated before
-this comparison (§4.4); against the same checkpoint *without* recalibration the
+n = 50. We note that both checkpoints were normalisation-recalibrated before this comparison (§4.3); against the same checkpoint *without* recalibration the
 figure is 72.0% and the test reaches p = 0.0074, but that comparison confounds
 the pipeline correction with the recalibration and we do not rely on it.
 
@@ -843,23 +1000,23 @@ median of roughly 48).
 
 Two qualifications belong with the headline figure. First, the 87% is measured
 under the authors' episode selection, which is not published; ours is a fixed
-random draw at a stated seed, and remains a listed deviation (Table 1). The
-like-for-like comparison is therefore 94.0% against 84.0% at goal offset
-25 on identical
-episodes, not against 87%. Second, all three of our figures come from a single
+random draw at a stated seed, and remains a listed deviation (Table 1). The like-for-like comparison is therefore 94.0% against 84.0% at goal offset 25
+on identical episodes, not against 87%. Second, all three of our figures come from a single
 seed, and we make no claim about seed variance.
 
-Finally, the number is specific to the goal offset. The repository's evaluation
-configuration uses 25 steps while the paper's description implies 100 (Table 1),
-and the choice is consequential: at offset 100 the same checkpoint reaches
-20.0%. Section 5.3 takes that up, because the effect is not a simple
-degradation with distance.
+Finally, the number is specific to the goal offset and the step budget. The
+repository's evaluation configuration uses a 25-frame offset and a 50-step
+budget; Appendix F.1 states 100 and 150 (§4.2). The choice is consequential:
+the same checkpoint reaches 94.0% at offset 25, 20.0% at offset 100 within the
+repository's budget, and 26.0% within the paper's. Section 5.3 takes that up,
+because the effect is not a simple degradation with distance — at the longer
+offset our least accurate checkpoint is the strongest planner.
 
 ---
 
-## 5.1 A silent evaluation-domain gap
+# 5 Findings beyond the reproduction
 
-*(~400 words as drafted)*
+## 5.1 A silent evaluation-domain gap
 
 Our most transferable finding concerns not the method but the way it was
 evaluated. For three paid training runs we measured planning success in a
@@ -896,8 +1053,6 @@ training-set neighbour — reads 61.03 on the fixture and 0.01 on the real
 environment. We now run it as a precondition inside every evaluation, which
 refuses to emit a success rate when the check fails.
 
-fidelity…"*
-
 The general lesson is that visual fidelity is not distributional fidelity, and
 that a probe demonstrating a representation is good does not demonstrate that
 the inputs being fed to it are in-distribution. A debugging fixture that looks
@@ -912,32 +1067,12 @@ in neither case had we thought to run it. We return to this in §6.3.
 
 ---
 
-# Questions for the original authors
-
-Three of the four are answerable from released artifacts. Say so when you ask —
-it turns each question into a request for confirmation rather than for
-information, and shows you have done the work.
-
-| # | question | answerable from artifacts? |
-|---|---|---|
-| 1 | `history_size` for TwoRoom: Appendix E says 1, the repo config says 3 | **Yes** — the released checkpoint's `predictor.pos_embedding` is (1, 3, 192), so 3 is operative |
-| 2 | Epochs: Appendix E says 10, the repo config says `max_epochs: 100` | **No.** This one genuinely matters — our reproduction does not converge in 10 |
-| 3 | `goal_offset_steps`: the eval config uses 25, the paper implies 100 | **No.** We measure this as worth 24 points (72% vs 48%) |
-| 4 | Are ImageNet normalisation and dense action gathering intended, given neither appears in any config? | **Yes** for both — but worth reporting, because a reproducer following configs alone gets a silently broken model |
-
-**One more worth adding, and possibly the most valuable to us:** the learning
-rate and schedule that produced the released checkpoint. Our reimplementation
-produces a predictor beating a frozen-world baseline only when the learning rate
-falls to ~1e-6 or below, whereas the released config specifies a constant 5e-5.
-If they used a schedule that is not in the config, that single answer explains
-our central negative result.
-
 ## 5.2 A pre-registered effect that did not survive a change of checkpoint
 
 A published critique of latent world models argues that scoring a plan by
 Euclidean distance between latent states conflates latent proximity with
 reachability, and predicts that a planner will fail disproportionately when a
-goal requires moving *away* from it before approaching [REF:critique]. TwoRoom
+goal requires moving *away* from it before approaching (Li et al., 2026). TwoRoom
 provides a clean test: goals in the opposite room require routing through a
 single door, and goals in the same room do not. We designed and pre-registered
 an experiment to measure it, obtained a large and highly significant effect, and
@@ -949,7 +1084,10 @@ driven or a change of checkpoint. We report all three arms.
 The obvious confound is distance: cross-wall goals are farther on average. We
 therefore built a matched-pair design. From the 6,056 episodes long enough to
 supply a goal at our longer offset, we performed one-to-one caliper matching on
-start-to-goal distance, obtaining **110 matched pairs**. Matching quality far
+start-to-goal distance, obtaining **110 matched pairs**. Matching was possible at every distance band
+up to approximately 203 units; beyond that no same-room counterpart exists,
+since a same-room goal cannot exceed the diagonal of a half-arena, so 22 of
+4,373 cross-wall candidates fall outside the claim's scope. Matching quality far
 exceeded the caliper: the median within-pair distance difference was 0.02 units
 against a caliper of 6, the worst was 0.35, and the two arms' median distances
 were identical at 124.8. A simulated power analysis on the matched-pair test
@@ -968,6 +1106,16 @@ path-length effect was bounded analytically: deleting the quarter of cross-wall
 episodes with the longest geometric requirement and counting every one of them
 as a length-caused failure still leaves a 27-point difference.
 
+One property of the underlying population is worth stating, because §4.2
+establishes it only after this experiment was designed. Episodes long enough to
+supply a goal 100 frames ahead are exactly the 6,056 that ran to the dataset's
+length cap — the episodes in which the data-collection policy timed out. The
+matched set is therefore drawn entirely from that policy's failures, and every
+goal in it is a position the policy had not reached. This does not affect the
+matching, the power calculation or the oracle ceiling, all of which are computed
+on the episodes as selected. It does mean that what these three arms measure is
+not a task the data-collection policy solved.
+
 ### The three arms
 
 | driving regime | same-room | cross-wall | difference | exact p |
@@ -979,10 +1127,12 @@ as a length-caused failure still leaves a 27-point difference.
 The first row is the pre-registered primary test and stands as registered: on
 that checkpoint, with distance matched pair-by-pair and reachability verified at
 100% for both geometries, the planner reached 79.1% of same-room goals and 40.0%
-of cross-wall goals, a difference of 39.1 points at p = 3.4 × 10⁻⁸ — a figure that falls to +12.7 points under a change of action scaling and to −6.4 points on a different checkpoint, as the two rows below show.
+of cross-wall goals, a difference of 39.1 points at p = 3.4 × 10⁻⁸.
 
-The second row applies a correction to the action scale supplied to the same
-checkpoint (§5.4). The difference falls to +12.7 points and the test becomes
+The second row applies the action convention of §3.2 to the same checkpoint,
+supplying the planner's action as the block sum it was trained on rather than
+as a single held step — the same correction measured on the authors' weights in
+§4.2. The difference falls to +12.7 points and the test becomes
 marginal. The third row uses the corrected checkpoint of §4.4. The point estimate
 is now negative, and the test is not significant.
 
@@ -991,7 +1141,7 @@ zero. We are careful about what the third arm establishes. It **rules out** an
 effect as large as the +20 points the study was designed to detect: the
 confidence interval excludes it. It does **not** establish a reversal — at
 p = 0.248 the honest reading is no detectable difference. And a confound must be
-named: overall success across the three arms is 61.6%, 68.2% and 17.7%, so they
+named: overall success across the three arms is 59.5%, 68.2% and 17.7%, so they
 are not compared at matched performance, and the low rate in the third arm could
 in principle mask a real difference. The random-action control reached 0 of 110
 in both geometries in every arm; being at the floor, it is uninformative about
@@ -1021,8 +1171,6 @@ arms because they are what the result turned out to mean.
 
 ## 5.3 One-step accuracy does not predict long-horizon planning
 
-*(~620 words. The paper's principal finding beyond the original.)*
-
 A world model is trained to predict, and used to plan. It is natural to treat
 prediction error as a proxy for planning competence. Across three checkpoints
 spanning a sevenfold range in one-step prediction error, we find that the proxy
@@ -1032,27 +1180,45 @@ models plan **worse than a random-action control** at the longer horizon.
 Table 3 gives the comparison. All three checkpoints are evaluated under one
 protocol on identical episodes; one-step error is reported relative to a
 frozen-world baseline, so a value below 1 means the model predicts better than
-assuming nothing moves.
+assuming nothing moves. Because the released material specifies two different
+step budgets (§4.2), we report the long-horizon task under both.
 
 At goal offset 25 the ordering is monotone: as one-step error falls from 0.830
 to 0.410 to 0.116, success rises from 78.0% to 84.0% to 94.0%. Prediction
 accuracy behaves exactly as the proxy assumption expects.
 
-At goal offset 100 the ordering does not hold at all. Success runs 54.0%, 12.0%
-and 20.0% over the same three checkpoints. The **least** accurate model is by a
-wide margin the best long-horizon planner: against it, the authors' checkpoint
-loses 23 episodes and gains 2 (p = 1.9×10⁻⁵), and our corrected checkpoint
-loses 18 and gains 1 (p = 7.6×10⁻⁵). The two more accurate checkpoints are not
-distinguishable from each other (p = 0.29).
+At goal offset 100 the ordering does not hold at all. Under the repository's
+50-step budget, success runs 54.0%, 12.0% and 20.0% over the same three
+checkpoints. The **least** accurate model is by a wide margin the best
+long-horizon planner: against it, the authors' checkpoint loses 23 episodes and
+gains 2 (p = 1.9×10⁻⁵), and our corrected checkpoint loses 18 and gains 1
+(p = 7.6×10⁻⁵). The two more accurate checkpoints are not distinguishable from
+each other (p = 0.29).
+
+The step budget separates the two failure modes further, and does so in the
+direction an overshoot account predicts. Raising the budget at goal offset 100
+from 50 steps to the 150 the paper's appendix specifies lifts the least accurate
+checkpoint from 54.0% to **80.0%** — twenty-six points — while moving the
+authors' checkpoint two points and our corrected checkpoint six. Extra time
+rescues a planner that was running out of it, and does almost nothing for
+planners that are travelling in the wrong direction. At the longer budget the
+dissociation is sharper rather than weaker: one-step errors of 0.830, 0.410 and
+0.116 map to 80.0%, 14.0% and 26.0%.
 
 The failure mode is overshoot rather than stalling, and it is visible without
-any modelling. The random-action control finishes a mean of 111.1 units from the
-goal. The two accurate checkpoints finish at 116.6 and 122.5 units — **farther
-away than random**, with individual final distances of 140 to 193 units in an
-arena roughly 192 units across. The least accurate checkpoint finishes at 40.5
-units. Neither accurate model is incapable of long goals: our corrected
-checkpoint reached a 173-unit goal in 45 of its 50 allotted steps. They
-systematically travel too far.
+any modelling. Under the 50-step budget the random-action control finishes a
+mean of 111.1 units from the goal, while the two accurate checkpoints finish at
+116.6 and 122.5 units — **farther away than random** — with individual final
+distances of 140 to 193 units in an arena roughly 192 units across. The least
+accurate checkpoint finishes at 40.5 units. Neither accurate model is incapable
+of long goals: our corrected checkpoint reached a 173-unit goal in 45 of its 50
+allotted steps. They systematically travel too far.
+
+The longer budget partly softens that picture, and the way it softens is
+informative. Our corrected checkpoint draws level with its own random control
+(108.8 units against 108.1) while the authors' checkpoint remains farther out
+(122.7 against 108.1). The additional steps let the more accurate model stop
+diverging; they do not let it arrive.
 
 That the pattern holds for the **authors' own released weights**, and most
 strongly there, matters for how it should be read. It is not an artifact of our
@@ -1063,8 +1229,8 @@ We are careful about mechanism. A plausible account is that a more accurate
 model produces a sharper cost landscape, so the optimiser commits to
 near-maximal actions, which a terminal-cost objective does not penalise until
 the horizon ends; a weaker model yields a flatter landscape and more moderate
-actions. The mean-final-distance column is consistent with this, but we have not
-tested it, and we do not claim it.
+actions. The mean-final-distance column and the budget response are both
+consistent with this, but we have not tested it, and we do not claim it.
 
 A confound must also be stated plainly. The two overshooting checkpoints both
 use a three-frame context; the cautious one uses a single frame. Context length
@@ -1076,24 +1242,27 @@ not allow.
 The practical implication stands regardless of mechanism. **Selecting a world
 model by held-out one-step prediction error is not a reliable way to select a
 world model for long-horizon planning**, and on this task at this horizon it
-would have selected the worst of three available options. Reporting a single
-planning number without its horizon is correspondingly misleading: across these
-three checkpoints, the goal offset alone moves success between 12% and 54%.
+would have selected the worst of three available options under either budget.
+Reporting a single planning number without its horizon is correspondingly
+misleading: across these three checkpoints the goal offset alone moves success
+between 12% and 54% at the repository's budget, and between 14% and 80% at the
+paper's.
 
 ---
 
 > **Table 3: One-step prediction error against planning success at two goal
-> horizons.** All figures from 50 episodes per cell, identical across
-> checkpoints, under one protocol. One-step error is relative to a frozen-world
-> baseline (below 1 = better than assuming no motion). Mean final distance is
-> at offset 100; the random-action control finishes at 111.1 units.
+> horizons and two step budgets.** All figures from 50 episodes per cell,
+> identical across checkpoints, under one protocol. One-step error is relative
+> to a frozen-world baseline (below 1 = better than assuming no motion). Mean
+> final distance is at offset 100 under the 50-step budget, where the
+> random-action control finishes at 111.1 units.
 
-| checkpoint | one-step error | offset 25 | offset 100 | mean final dist. @100 | context frames |
-|---|---|---|---|---|---|
-| our pre-correction checkpoint | 0.830 | 78.0% | **54.0%** | **40.5** | 1 |
-| authors' released | 0.410 | 84.0% | **12.0%** | 122.5 | 3 |
-| our corrected checkpoint | 0.116 | **94.0%** | 20.0% | 116.6 | 3 |
-| random-action control | — | 18.0% | 0.0% | 111.1 | — |
+| checkpoint | one-step error | offset 25, budget 50 | offset 100, budget 50 | offset 100, budget 150 | mean final dist. @100/50 | context frames |
+|---|---|---|---|---|---|---|
+| our pre-correction checkpoint | 0.830 | 78.0% | **54.0%** | **80.0%** | **40.5** | 1 |
+| authors' released | 0.410 | 84.0% | **12.0%** | **14.0%** | 122.5 | 3 |
+| our corrected checkpoint | 0.116 | **94.0%** | 20.0% | 26.0% | 116.6 | 3 |
+| random-action control | — | 18.0% | 0.0% | 2.0% | 111.1 | — |
 
 > **Figure 3: Prediction accuracy orders short-horizon planning success and
 > fails to order long-horizon planning success.** **(a)** Goals reached against
@@ -1104,9 +1273,8 @@ three checkpoints, the goal offset alone moves success between 12% and 54%.
 > from the goal than a random-action policy does; the two most accurate
 > checkpoints both do.
 
-## 5.4 What the corrected pipeline does to the representation
 
-*(~380 words)*
+## 5.4 What the corrected pipeline does to the representation
 
 The pipeline corrections of §3.2 change the predictor's task substantially, and
 it is natural to ask what they do to the representation the encoder learns. We
@@ -1115,16 +1283,16 @@ under the corrected pipeline — on 4,000 identical held-out frames, with each
 encoder receiving the pixel convention it was trained with.
 
 Three of the four measurements are unchanged. Position is decodable at R² 0.9977
-against 0.9971 by a linear probe, and at 0.9995 against 0.9994 by a two-layer
-network. The summed action executed between two frames is decodable from the
-pair of embeddings at 0.9207 against 0.9132. On the information a planner needs,
+against 0.9971 by a linear probe, and at 0.9994 by a two-layer network for
+both. The summed action executed between two frames is decodable from the
+pair of embeddings at 0.9290 against 0.9132. On the information a planner needs,
 the two encoders are equivalent.
 
 The fourth measurement is not. The **effective rank** of the embedding cloud —
 the participation ratio of its covariance spectrum, which counts how many
-dimensions the representation actually occupies — rises from **11.9 to 67.8 of
+dimensions the representation actually occupies — rises from **18.6 to 67.8 of
 192**. The corrected pipeline produces a representation spread over roughly
-five and a half times more dimensions while carrying the same position and
+three and a half times more dimensions while carrying the same position and
 action information.
 
 We tested one explanation and it did not survive. Our hypothesis was that the
@@ -1134,15 +1302,41 @@ configuration the predictor received one sub-sampled action to explain a
 five-step displacement (§3.2), so it could not usefully constrain the encoder,
 leaving it free to become a nearly pure position code. That hypothesis predicts
 that the corrected encoder should make actions *more* linearly decodable. It
-does not — action decodability is unchanged to within 0.008. We therefore report
+does not — action decodability is unchanged to within 0.016. We therefore report
 the rank difference as an observation and offer no account of what the
 additional dimensions encode.
 
-We record one methodological point, because it changed our own answer. Both
-measurements above were first taken before the normalisation repair of §4.3, and
-both were wrong: the corrected encoder then appeared to have an effective rank of
-16.5 rather than 67.8, and appeared to lose action decodability (0.8733 rather
-than 0.9132). The position figures were unaffected, because a ridge probe
+Two cautions apply to reading the rank difference at all. First, the two
+encoders differ in three respects rather than one: the action aggregation, the
+pixel convention — raw `[0,1]` against ImageNet-normalised — and the
+action-encoder width (§3.2). Two checkpoints cannot attribute a difference to
+one of three simultaneous changes, and we do not. Second, effective rank is
+computed downstream of the normalisation layer of §4.3, and is therefore partly
+a measurement of that layer's stored statistics rather than of the encoder; the
+paragraph below shows it moving by more than half on a checkpoint whose weights
+never changed.
+
+The original offers an explanation for its TwoRoom result that this measurement
+speaks to directly. Its discussion attributes the environment's weak planning
+performance to the low diversity and low intrinsic dimensionality of the
+dataset, which it argues makes it difficult for the encoder to match the
+isotropic Gaussian prior the regulariser enforces in a high-dimensional latent space (Maes et al., 2026a, §4.2). Our reference-faithful encoder occupies 18.6 of 192 available
+dimensions, which is consistent with that account and puts a number on it. What
+we add is that the occupancy is not fixed by the environment: correcting the
+action pipeline raises it to 67.8 while leaving the decodable content unchanged,
+so at least part of the shortfall against the prior is a property of the
+training pipeline rather than of the dataset.
+
+We record one methodological point, because it changed our own answer twice.
+Both measurements above were first taken before the normalisation repair of
+§4.3, and both were wrong: the corrected encoder then appeared to have an
+effective rank of 16.5 rather than 67.8, and appeared to lose action
+decodability (0.8733 rather than 0.9132). The second error was subtler, and we
+caught it only on re-verification: having repaired one checkpoint, we compared
+it against the other unrepaired. That understates the reference-faithful
+encoder's own rank as 11.9 rather than 18.6, and inflates the reported
+difference from 49 dimensions to 56. The position figures were unaffected,
+because a ridge probe
 standardises its inputs and is scale-invariant. Any measurement on a latent space
 whose scale a normalisation layer controls should be taken after verifying that
 layer, and probe-style measurements are precisely the ones that will not warn
@@ -1152,11 +1346,9 @@ you.
 
 ## 5.5 Scoring geometry within the training distribution
 
-*(~220 words)*
-
 A published critique of latent world models argues that scoring plans by
 Euclidean distance in latent space conflates latent proximity with reachability
-[REF:critique]. §5.2 tests the behavioural prediction that follows from it.
+(Li et al., 2026). §5.2 tests the behavioural prediction that follows from it.
 Here we report the representation-level measurement, which is narrower and
 points the other way.
 
@@ -1179,8 +1371,6 @@ geometry, reported as such.
 ---
 
 # 6 Discussion
-
-*(~1,150 words)*
 
 ## 6.1 What was easy
 
@@ -1236,10 +1426,9 @@ normalisation is applied to inputs, would have saved us several days and one
 paid training run. This is the single highest-value change available to authors
 of the work we reproduced.
 
-**2. Check fidelity against source, not configuration.** Our audit compared 25
-pipeline elements against the reference implementation's source with
+**2. Check fidelity against source, not configuration.** Our audit compared 40 pipeline elements against the reference implementation's source with
 file-and-line citations, and marked each as matching, deviating, or unverified
-(Table 1, Appendix A). Every one of the four expensive deviations lived in code
+(Table 1). Every one of the four expensive deviations lived in code
 that no configuration file mentions. An audit against configurations would have
 found none of them, and we had performed exactly such an audit twice before,
 concluding both times that we matched.
@@ -1284,14 +1473,32 @@ special.
 ## 6.4 Communication with the original authors
 
 We wrote to the corresponding author on 31 July 2026, reporting the two
-undocumented pipeline steps of §3.2 and asking four questions: which of the two
-published `history_size` values is operative for TwoRoom; whether the dense
-action gathering and ImageNet normalisation are intended as we describe them;
-which goal offset the reported figure uses; and what learning rate and schedule
-produced the released checkpoint. As of submission we have received no
-response, and the questions above remain open. We note that three of the four
-are answerable from the released artifacts, and we have answered them that way
-in Table 1; the fourth is not, and it bears on §4.4.
+undocumented preprocessing steps of §3.2 and asking four questions. As of
+submission we have received no response.
+
+We record them here alongside what the released artifacts show, because three of
+the four can be settled from those artifacts alone. Saying so makes the
+correspondence a request for confirmation rather than for information, and it
+lets anyone reproducing this work resolve the same ambiguities without waiting
+for an answer.
+
+| question | what the released artifacts show |
+|---|---|
+| Which `history_size` is operative for TwoRoom? Appendix D states 1; the repository configuration specifies 3. | **3.** The released checkpoint's `predictor.pos_embedding` has shape (1, 3, 192), so 3 is the value that produced it. |
+| Are dense action gathering and ImageNet normalisation intended as we describe them, given that neither appears in any configuration file? | **Yes** to both, from `buffer.py` and `utils.py` respectively (§3.2), and corroborated by the released weights. A reader following the configuration alone would implement neither. |
+| Which goal offset and step budget produced the reported figure? Appendix F.1 states a 150-step budget with the goal sampled 100 steps ahead; the released evaluation configuration uses 50 and 25. | **The configuration's values.** Their own released checkpoint scores 84.0% under 50 and 25, and 14.0% under 150 and 100 (§4.2). Only one of the two published protocols reproduces the reported result; which was intended is theirs to say. |
+| Which learning rate and schedule produced the released checkpoint? | **Not recoverable from the released artifacts.** This is the one question we cannot answer for ourselves, and it bears directly on §4.4. |
+
+The last of these is the one we most want answered. Our reimplementation
+produces a predictor that beats a frozen-world baseline only when the learning
+rate falls to about 10⁻⁶ or below, whereas the released configuration specifies
+a constant 5 × 10⁻⁵ (§4.4). If the released checkpoint was trained under a
+schedule that does not appear in the configuration, that single fact would
+account for our central negative result.
+
+A fifth conflict — Appendix E's ten training epochs against the repository's
+`max_epochs: 100` — is tabulated in Table 1 and bears on §4.4; we did not raise
+it in correspondence.
 
 ---
 
@@ -1324,9 +1531,8 @@ distance-matched, verified reachable by an oracle, and significant at
 p = 3.4 × 10⁻⁸ on one checkpoint fell to +12.7 points under a change of action
 scaling and to −6.4 points on a different checkpoint. Effect sizes measured on a
 single reproduction checkpoint should not be read as properties of the method,
-and we no longer read our own that way. Claims 23 and 24 in particular
-(§5.3, §5.5) were measured on one checkpoint only and were not re-tested after
-the pipeline correction.
+and we no longer read our own that way. The latent-geometry measurement of §5.5 in particular was made on one
+checkpoint only, before the pipeline correction, and was not repeated after it.
 
 **The mechanism of the long-horizon reversal is untested.** Our principal
 finding (§5.3) is that one-step prediction accuracy orders short-horizon
@@ -1343,8 +1549,7 @@ matched checkpoints varying one factor at a time.
 **An independent reimplementation, with a documented but non-empty deviation
 set.** We did not rerun the authors' code; we reimplemented from the released
 code and paper, which is what surfaced the four undocumented pipeline
-differences of §3.2. Our audit matched twenty of twenty-five elements against
-reference source, and the remainder are listed in Table 1. Two deviations
+differences of §3.2. Our audit matched 24 of 40 elements against reference source, and the remainder are listed in Table 1. Two deviations
 deserve individual mention. Our runs use full 32-bit precision where the
 reference specifies bfloat16; the direction favours numerical accuracy and
 cannot explain a failure to converge, but it is a difference. And the reference
@@ -1386,14 +1591,16 @@ environments, or about the method's behaviour at scales other than the
 
 # 8 Conclusion
 
-*(~330 words)*
-
 The three claims we set out to test (§2) resolve as follows. The representation
-claim reproduces directly and easily. The planning claim reproduces, at 94.0% at goal offset 25 against a reported ~87% and against 84.0% for the authors' own weights under our
-protocol, once four undocumented conventions are corrected. The training claim
-does not reproduce from the released configuration files alone, and does
-reproduce once those conventions are supplied — which we take to be a
-documentation gap rather than a defect in the method.
+claim reproduces directly and easily. The planning claim reproduces under one of
+the two evaluation protocols the released material publishes — 94.0% at the
+repository's goal offset against a reported ~87%, and 84.0% for the authors' own
+weights under that same protocol — once four undocumented conventions are
+corrected; under the protocol the paper's appendix describes, the authors' own
+weights reach 14.0%. The training claim does not reproduce from the released
+configuration files alone, and does reproduce once those conventions are
+supplied — which we take to be a documentation gap rather than a defect in the
+method.
 
 What we did not anticipate is how much of the work would consist of establishing
 that our own measurements meant what we thought they meant. Three training runs
@@ -1417,6 +1624,30 @@ available.
 
 We release the reimplementation, all four checkpoints, every evaluation report,
 the fidelity audit against reference source, the pre-registration, and the gate
-outputs, at [REF:repo].
+outputs, at (github.com/joyjeet-singh/tinylab).
+
+
+# References
+
+Randall Balestriero and Yann LeCun. LeJEPA: Provable and scalable self-supervised
+learning without the heuristics. arXiv:2511.08544, 2025.
+
+Liangyu Li, Shengzhi Wang, and Qingwen Liu. Beyond Euclidean Proximity: Repairing
+Latent World Models with Horizon-Matched Trajectory Reachability Metrics.
+arXiv:2605.22164, 2026.
+
+Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, and Randall Balestriero.
+LeWorldModel: Stable End-to-End Joint-Embedding Predictive Architecture from
+Pixels. arXiv:2603.19312, 2026a. Cited as the original throughout.
+
+Lucas Maes, Quentin Le Lidec, Dan Haramati, Nassim Massaudi, Damien Scieur,
+Yann LeCun, and Randall Balestriero. stable-worldmodel-v1: Reproducible World
+Modeling Research and Evaluation. arXiv:2602.08968, 2026b.
+
+The `le-wm` code release accompanying Maes et al. (2026a). <URL>, accessed
+<DATE>, commit <HASH>.
+
+Our reimplementation, checkpoints, evaluation reports, fidelity audit,
+pre-registration and gate outputs: github.com/joyjeet-singh/tinylab.
 
 ---
