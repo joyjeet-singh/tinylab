@@ -1,0 +1,111 @@
+=== SECTIONS ===
+   270 words  # Abstract
+   321 words  # 1 Introduction
+   439 words  ### Contributions
+    72 words  ### Scope
+    40 words  # 2 Scope of reproducibility
+   132 words  ### Claim 1 — the encoder recovers agent position
+   203 words  ### Claim 2 — planning over the learned model reaches approximately 87%
+   151 words  ### Claim 3 — the released configuration produces such a model in the stated budget
+    91 words  ### Not tested
+   282 words  ## 3.1 Model and objective
+   439 words  ## 3.2 Fidelity of the reimplementation
+   159 words  ### Data pipeline
+   164 words  ### Architecture
+    97 words  ### Objective
+   165 words  ### Optimisation
+   177 words  ### Evaluation
+    35 words  ### Environment
+   288 words  ## Table 1b — Configuration of the four training runs
+   217 words  ## 3.3 Environment verification
+   369 words  ## 3.4 Experimental protocol and gates
+   227 words  ## 3.5 Computational requirements
+   664 words  ## 4.1 The representation reproduces, and is not the bottleneck
+   575 words  ## 4.2 The evaluation protocol reproduces
+   903 words  ## 4.3 An evaluation-mode artifact concealed the training result
+   485 words  ## 4.4 Training under the released and the corrected configuration
+   433 words  ## 4.5 Planning at the reference goal offset
+   465 words  ## 5.1 A silent evaluation-domain gap
+   235 words  # Questions for the original authors
+   110 words  ## 5.2 A pre-registered effect that did not survive a change of checkpoint
+   232 words  ### The design
+   329 words  ### The three arms
+   181 words  ### What we take from it
+   798 words  ## 5.3 One-step accuracy does not predict long-horizon planning
+   389 words  ## 5.4 What the corrected pipeline does to the representation
+   211 words  ## 5.5 Scoring geometry within the training distribution
+     2 words  # 6 Discussion
+    73 words  ## 6.1 What was easy
+   293 words  ## 6.2 What was difficult
+   537 words  ## 6.3 Recommendations
+   111 words  ## 6.4 Communication with the original authors
+   861 words  # 7 Limitations
+   333 words  # 8 Conclusion
+
+=== STALE VALUES STILL IN THE DRAFT ===
+line   577  [0.8733] withdrawn pre-recalibration action decodability
+            | summed action from (z_t, z_{t+k}) | **0.9207** | 0.8733 |
+line   579  [11.9] Run 0 effective rank -> 18.6 both-recalibrated
+            | effective rank (of 192) | 11.9 | 16.5 |
+line   579  [16.5] withdrawn pre-recalibration effective rank
+            | effective rank (of 192) | 11.9 | 16.5 |
+line   595  [0.8733] withdrawn pre-recalibration action decodability
+            > 0.9946 and 0.8733 respectively (Table 2).
+line   606  [91.7] FABRICATED — delete
+            [71.5%, 91.7%], contains the reported figure. Our episode selection, goal
+line   676  [0.0004] phase2 data effect -> +0.0002 = noise; drop "held-out better"
+            The mode effect is +1.15 and +4.59. The data effect is +0.011 and **−0.0004**.
+line   730  [0.1845] Run 2 recal eval loss -> 0.1811
+            | already-calibrated control | 0.1846 | 0.1845 | 0.1811 (unchanged) | 1.0× → 1.0× |
+line   764  [0.0004] phase2 data effect -> +0.0002 = noise; drop "held-out better"
+            with a fitted slope of +0.0004 per epoch. Recalibrated held-out loss: **0.3061**.
+line   994  [61.6] pooled balanced-wall rate -> 59.5%
+            named: overall success across the three arms is 61.6%, 68.2% and 17.7%, so they
+line  1125  [11.9] Run 0 effective rank -> 18.6 both-recalibrated
+            dimensions the representation actually occupies — rises from **11.9 to 67.8 of
+line  1144  [16.5] withdrawn pre-recalibration effective rank
+            16.5 rather than 67.8, and appeared to lose action decodability (0.8733 rather
+line  1144  [0.8733] withdrawn pre-recalibration action decodability
+            16.5 rather than 67.8, and appeared to lose action decodability (0.8733 rather
+(12 hit(s))
+
+=== PERCENTAGES NOT MATCHING A DISK-VERIFIED SUCCESS RATE ===
+(R^2 values, CIs and effect sizes will show here legitimately —
+ this is a review list, not an error list)
+line   180: 83.8%  | [83.8%, 97.9%] that contains the reported figure (§4.5). Against the authors'
+line   180: 97.9%  | [83.8%, 97.9%] that contains the reported figure (§4.5). Against the authors'
+line   606: 71.5%  | [71.5%, 91.7%], contains the reported figure. Our episode selection, goal
+line   606: 91.7%  | [71.5%, 91.7%], contains the reported figure. Our episode selection, goal
+line   630: 46.0%  | scale, and produced **46.0%** — a number that arrived with every surrounding
+line   816: 93.8%  | reproduction reaches **47 of 50 = 94.0%** (non-trivial 45 of 48 = 93.8%). The
+line   817: 83.8%  | 95% Wilson interval is [83.8%, 97.9%] and contains the reported figure; a
+line   817: 97.9%  | 95% Wilson interval is [83.8%, 97.9%] and contains the reported figure; a
+line   834: 72.0%  | figure is 72.0% and the test reaches p = 0.0074, but that comparison confounds
+line   975: 79.1%  | | pre-correction checkpoint, as measured | 79.1% | 40.0% | **+39.1** [+27.2, +51.0] |
+line   975: 40.0%  | | pre-correction checkpoint, as measured | 79.1% | 40.0% | **+39.1** [+27.2, +51.0] |
+line   976: 74.5%  | | pre-correction checkpoint, action-scale corrected | 74.5% | 61.8% | +12.7 [+0.5, +2
+line   976: 61.8%  | | pre-correction checkpoint, action-scale corrected | 74.5% | 61.8% | +12.7 [+0.5, +2
+line   977: 14.5%  | | corrected checkpoint | 14.5% | 20.9% | −6.4 [−16.4, +3.7] | 0.248 |
+line   977: 20.9%  | | corrected checkpoint | 14.5% | 20.9% | −6.4 [−16.4, +3.7] | 0.248 |
+line   981: 79.1%  | 100% for both geometries, the planner reached 79.1% of same-room goals and 40.0%
+line   981: 40.0%  | 100% for both geometries, the planner reached 79.1% of same-room goals and 40.0%
+line   994: 61.6%  | named: overall success across the three arms is 61.6%, 68.2% and 17.7%, so they
+
+=== [REF:] MARKERS ===
+line    51: LeWorldModel [REF:paper] proposes a latent world model trained with a
+line    59: [REF:baselines]. A method's behaviour on its easiest diagnostic is informative,
+line   137: evaluation reports and gate outputs are available at [REF:repo].
+line   150: > the learned embedding at approximately R² 0.996 [REF:§x].
+line   167: > method planning [REF:§y].
+line   193: > The paper's appendix states ten training epochs [REF:appx]; the released
+line   194: > repository configuration specifies one hundred [REF:cfg].
+line   280: rate and reshapes them to `(history_len, frameskip × action_dim)` [REF:1],
+line   284: programmatically at training time [REF:2] rather than in the config. Third,
+line   285: pixels are ImageNet-normalised before resizing [REF:3]; we divided by 255 and
+line   287: NaN rows dropped [REF:4]; we used raw actions, and the dataset contains exactly
+line   523: learned embedding at approximately R² 0.996 [REF:C1]. We reproduce this. On
+line   683: [REF:cfg], carries a running variance of order 10⁻⁴ in all three of our
+line   814: cross-entropy-method planning over the learned model [REF:C2]. Under our
+line   940: goal requires moving *away* from it before approaching [REF:critique]. TwoRoom
+line  1159: [REF:critique]. §5.2 tests the behavioural prediction that follows from it.
+line  1420: outputs, at [REF:repo].
