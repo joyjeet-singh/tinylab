@@ -1,0 +1,57 @@
+arXiv submission -- form fields
+===============================
+
+Title
+  The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel on TwoRoom
+
+Authors
+  Joyjeet Singh
+
+Contact email
+  joyjeetsingh1@gmail.com
+
+ORCID
+  0009-0005-1512-7439
+
+Primary category
+  cs.LG (Machine Learning)
+
+Cross-list
+  cs.AI (Artificial Intelligence)
+  -- matches the categories of the author's existing submission, so no new
+     endorsement is required. A stat.ML cross-list would be reasonable on
+     subject grounds but is a category the author has not submitted to
+     before, so check endorsement before adding it.
+
+Endorsement
+  NOT required. arXiv keeps authors endorsed in a category they have already
+  submitted to, and the author's arXiv:2607.11116
+  is cs.LG primary with a cs.AI cross-list.
+
+License
+  CC BY 4.0 -- conventional for reproduction work, and it lets the original
+  authors reuse the material.
+
+Comments field
+  Independent reproduction of arXiv:2603.19312. Code, six checkpoints, every
+  evaluation report, the fidelity audit and the pre-registration:
+  github.com/joyjeet-singh/tinylab
+
+Abstract
+  Use ABSTRACT_for_arxiv_form.txt -- the paper's own abstract is
+  2396 characters and arXiv's field takes about 1920. The full
+  abstract, as it appears in the PDF, is in ABSTRACT.txt.
+
+Files to upload
+  arxiv_submission.tar.gz, or the contents of this directory except the
+  three .txt files. The main file is paper.tex.
+
+Notes
+  - The .bbl is included because arXiv does not run BibTeX. It is named
+    paper.bbl to match paper.tex, since \bibliography expands to
+    \jobname.bbl.
+  - tmlr.sty, tmlr.bst and fancyhdr.sty travel with the source; arXiv does
+    not supply them.
+  - The package was verified by compiling it in a scratch directory with
+    pdflatex alone, three passes, no bibtex and no latexmk -- which is what
+    arXiv does. Zero errors, zero undefined references, zero missing files.

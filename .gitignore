@@ -39,3 +39,5 @@ build/*.bbl
 build/*.blg
 build/*.pdf
 build/tmlr_template.tex
+build/arxiv/*.pdf
+build/arxiv_verified.pdf

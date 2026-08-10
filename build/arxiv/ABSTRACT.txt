@@ -1,0 +1,39 @@
+The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel on TwoRoom
+
+LeWorldModel trains a latent world model with a prediction loss and a single
+anti-collapse regulariser, and reports approximately 87% of goals reached on
+TwoRoom — its simplest diagnostic environment, where comparable methods report
+97–100%. We reproduce that result by independent reimplementation, on four
+rented GPU-runs costing about six dollars each, with all evaluation on one
+laptop CPU.
+
+We reach 94.0% at the repository's evaluation goal offset, against 84.0%
+for the authors' own released checkpoint measured under our protocol on
+identical episodes, and we reproduce the reported representation result directly
+(position probe Pearson r = 0.9988 against a reported 0.996). Reaching that
+point required correcting four conventions that determine the outcome and
+appear in no released configuration file: dense action gathering across a
+frameskip block, a programmatically-set action-encoder width, ImageNet pixel
+normalisation, and action z-scoring. A reproducer following the released
+configurations alone obtains a model whose predictor cannot converge.
+
+The evaluation protocol is itself contested by the released material, and we
+report which reading reproduces. The paper's appendix and the repository's
+evaluation configuration specify different goal offsets and step budgets; on the
+authors' own released weights these yield 14.0% and 84.0% respectively, and only
+the configuration's values reproduce the reported figure. On fifty identical
+episodes, changing nothing but how the goal is constructed moves that same
+checkpoint from 84.0% to 8.0%.
+
+Two findings generalise beyond this reproduction. First, one-step prediction
+accuracy does not predict long-horizon planning success: across three
+checkpoints spanning a sevenfold range in prediction error — including the
+authors' own — accuracy orders short-horizon success monotonically and fails to
+order long-horizon success at all, where the two most accurate checkpoints
+finish farther from the goal than a random-action policy. Second, a batch
+normalisation layer inflated our reported validation loss by a factor of up to 300, concealing for three training runs a training loss that was flat
+or descending throughout; we give the two conditions under which this occurs and
+a cheap check for it.
+
+We also report a pre-registered mechanism-level result that did not survive a
+change of checkpoint, and what we take from that.
