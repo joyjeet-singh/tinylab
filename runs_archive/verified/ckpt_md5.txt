@@ -1,3 +1,87 @@
+Checkpoint manifest
+===================
+
+Six files are released: three BatchNorm-recalibrated checkpoints and the
+three un-recalibrated originals they were made from. Both are needed to
+check the evaluation-mode artifact of §4.3 independently.
+
+Optimiser and RNG state are stripped. The weights are untouched: every
+tensor in each released file was verified bitwise identical to its source
+after a save/load round trip.
+
+tinylab-tworoom-run0.pt
+  Run 0, reference configuration, as trained
+  source          runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt.pt
+  md5 before      48e0aea3f34a935d534a3db3930058ab
+  md5 after       1a5fc805a7139c58033928f09d3b4df9
+  size            206.7 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    10 / 54190
+  batches_tracked [54190, 54190]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+tinylab-tworoom-run0-recal.pt
+  Run 0, BatchNorm-recalibrated
+  source          runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt_recal.pt
+  md5 before      8ee34f7bb096971acc4d50d2760929e5
+  md5 after       ad46d13559c33cb6b7be493799aed43d
+  size            206.8 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    10 / 54190
+  batches_tracked [108, 108]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+tinylab-tworoom-run2.pt
+  Run 2, exploratory, as trained
+  source          runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best.pt
+  md5 before      e90b5c0496073ad692357ac23d1e5b91
+  md5 after       985b1d779a66f8cfb55f3bcb3a2094be
+  size            206.8 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    6 / 36732
+  batches_tracked [36732, 36732]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+tinylab-tworoom-run2-recal.pt
+  Run 2, BatchNorm-recalibrated
+  source          runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best_recal.pt
+  md5 before      928f209a3d6cd88bb2f90f066b4688be
+  md5 after       953aeb6ac1fbe5709a7ff28c47e20182
+  size            206.8 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    6 / 36732
+  batches_tracked [208, 208]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+tinylab-tworoom-phase2.pt
+  phase2, corrected pipeline, as trained
+  source          runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best.pt
+  md5 before      7720afe1c573915057fb699c6defa42c
+  md5 after       eb2c9c1bac8369482ca02af5306d3b85
+  size            206.8 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    9 / 48771
+  batches_tracked [48771, 48771]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+tinylab-tworoom-phase2-recal.pt
+  phase2, BatchNorm-recalibrated
+  source          runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best_recal.pt
+  md5 before      a4ea49ab17f6cb262842eae071c37a60
+  md5 after       f1127023d44dacfce46c991df31dd590
+  size            206.8 MiB -> 68.9 MiB
+  dropped         cuda_rng_state, optim, pos_in_epoch, torch_rng_state
+  epoch / step    9 / 48771
+  batches_tracked [208, 208]
+  weights         303 state_dict entries, verified bitwise identical to the source after the round trip
+
+batches_tracked separates a precise-BN recalibration pass from a
+training exponential moving average. Read it from the file rather than
+trusting a range quoted anywhere else.
+
+----------------------------------------------------------------------
+The pre-strip manifest, as recorded before this run:
+
 MD5 (runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt.pt) = 48e0aea3f34a935d534a3db3930058ab
 MD5 (runs/rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515/ckpt_recal.pt) = 8ee34f7bb096971acc4d50d2760929e5
 MD5 (runs/phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214/ckpt_best.pt) = e90b5c0496073ad692357ac23d1e5b91

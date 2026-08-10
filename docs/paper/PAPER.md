@@ -1617,7 +1617,7 @@ prediction error is not a reliable way to select a world model for planning, and
 on this task at the longer horizon it would have selected the worst of the three
 available.
 
-We release the reimplementation, all four checkpoints, every evaluation report,
+We release the reimplementation, six checkpoints — three BatchNorm-recalibrated and the three un-recalibrated originals they were made from, so that the evaluation-mode artifact of §4.3 can be checked independently — every evaluation report,
 the fidelity audit against reference source, the pre-registration, and the gate
 outputs, at (github.com/joyjeet-singh/tinylab).
 
