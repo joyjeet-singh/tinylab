@@ -1,0 +1,32 @@
+{
+  "pixel_convention": "imagenet",
+  "imagenet_mean": [
+    0.485,
+    0.456,
+    0.406
+  ],
+  "imagenet_std": [
+    0.229,
+    0.224,
+    0.225
+  ],
+  "action_width": 10,
+  "action_slots": [
+    0,
+    1
+  ],
+  "history_size": 3,
+  "frameskip": 5,
+  "action_aggregation": "sum over each frameskip block",
+  "note": "SUPERSEDED CALIBRATION SETTING, reproduced deliberately for \u00a74.2's 'An earlier failure, recorded'. The planner emits per-step actions; this model was trained on block sums, so a scale of 1.0 understates how far an action moves the agent. The corrected spec is authors_driving_spec.json.",
+  "evidence": {
+    "derived_from": "authors_driving_spec.json",
+    "changed": [
+      "action_encoding",
+      "action_scale"
+    ]
+  },
+  "action_scale": 1.0,
+  "action_scale_note": "planner emits per-step actions; this model was trained on block sums (measured: ratio 0.448 at k=5 vs 0.976 at k=1)",
+  "action_encoding": "slots"
+}
