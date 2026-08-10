@@ -24,3 +24,6 @@ tinylab_phase2/
 *.bak*
 .DS_Store
 .DS_Store
+
+*.bak
+*.bak[0-9]
