@@ -621,6 +621,8 @@ presented once.*
 
 ---
 
+![Figure 1](../../fig1_representation.png)
+
 > **Figure 1: The representation carries what the predictor needs.**
 > **(a)** Position decoded by a ridge probe against true position, in arena
 > coordinates, for 800 held-out frames; the dividing wall and door are drawn for
@@ -680,8 +682,7 @@ which the authors used, and we do not assume; §6.4 records that we asked.
 The last row of the table draws the same fifty episodes as the first. Neither
 imposes a minimum episode length, and both sample with the same seed, so the
 two runs are a paired comparison on identical episodes, with identical weights,
-an identical planner and an identical driving convention. They differ only in
-how the goal is constructed. The result is 84.0% against 8.0%: 39 episodes are
+an identical planner and an identical driving convention. They differ in how the goal is constructed and, because each protocol carries its own step budget, in budget: 50 steps for the first and 150 for the second. That difference runs against the comparison rather than for it — the recorded-target arm was given 3 times as many steps and still collapsed. The result is 84.0% against 8.0%: 39 episodes are
 solved under the first and missed under the second, one is solved under the
 second alone, and a matched-pair test gives χ² = 34.2, p < 10⁻⁸. No property of
 the model changed between those two numbers.
@@ -705,9 +706,9 @@ before it do so because the data policy reached its target: all 3,944 of them
 are recorded as successful, and they finish a mean of 13.6 units from the
 target against a 16-unit success radius, whereas capped episodes finish a mean
 of 73.1 units away. Of the 6,056 eligible episodes, only 91 — 1.5% — were
-solved by the policy that generated them. Evaluating at an offset of 100
-therefore asks the planner to reach the point at which a failing policy ran out
-of time.
+solved by the policy that generated them. Evaluating at an offset of 100 therefore asks the planner to reach the point at which a failing policy ran out of time.
+
+This argument holds under the reading that the offset is exact. `stable-worldmodel` describes the offline protocol as constraining the *maximum* number of steps separating start and goal rather than fixing it, and under that reading all 10,000 episodes are eligible rather than 6,056, so the eligible set is no longer the data policy's failures and the argument above does not apply to it. We report the exact-offset reading because it is the one the appendix's own wording — a goal sampled 100 timesteps in the future — most directly supports, and because it is the reading under which the protocol is reproducible at all. We did not evaluate the alternative.
 
 The same appendix specifies that the initial state is sampled from within the
 trajectory rather than fixed at its first frame. On this dataset that
@@ -987,9 +988,7 @@ under the protocol the paper's appendix describes (§4.2).
 Our own earlier checkpoint, trained before the pipeline corrections of §3.2,
 reaches **39 of 50 = 78.0%**. Against it, the corrected checkpoint improves 11
 episodes and loses 3, **p = 0.0574** — again higher but not established at
-n = 50. We note that both checkpoints were normalisation-recalibrated before this comparison (§4.3); against the same checkpoint *without* recalibration the
-figure is 72.0% and the test reaches p = 0.0074, but that comparison confounds
-the pipeline correction with the recalibration and we do not rely on it.
+n = 50. We note that both checkpoints were normalisation-recalibrated before this comparison (§4.3). The same comparison against the un-recalibrated checkpoint would confound the pipeline correction with the recalibration, and we do not report it.
 
 One structural detail supports the reading that these are genuine model
 differences rather than measurement noise. Our corrected checkpoint fails on
@@ -1183,9 +1182,7 @@ frozen-world baseline, so a value below 1 means the model predicts better than
 assuming nothing moves. Because the released material specifies two different
 step budgets (§4.2), we report the long-horizon task under both.
 
-At goal offset 25 the ordering is monotone: as one-step error falls from 0.830
-to 0.410 to 0.116, success rises from 78.0% to 84.0% to 94.0%. Prediction
-accuracy behaves exactly as the proxy assumption expects.
+At goal offset 25 the ordering is monotone: as one-step error falls from 0.830 to 0.410 to 0.116, success rises from 78.0% to 84.0% to 94.0% (Figure 2a, upper line). Prediction accuracy behaves exactly as the proxy assumption expects.
 
 At goal offset 100 the ordering does not hold at all. Under the repository's
 50-step budget, success runs 54.0%, 12.0% and 20.0% over the same three
@@ -1207,8 +1204,7 @@ dissociation is sharper rather than weaker: one-step errors of 0.830, 0.410 and
 
 The failure mode is overshoot rather than stalling, and it is visible without
 any modelling. Under the 50-step budget the random-action control finishes a
-mean of 111.1 units from the goal, while the two accurate checkpoints finish at
-116.6 and 122.5 units — **farther away than random** — with individual final
+mean of 111.1 units from the goal, while the two accurate checkpoints finish at 116.6 and 122.5 units — **farther away than random** (Figure 2b) — with individual final
 distances of 140 to 193 units in an arena roughly 192 units across. The least
 accurate checkpoint finishes at 40.5 units. Neither accurate model is incapable
 of long goals: our corrected checkpoint reached a 173-unit goal in 45 of its 50
@@ -1264,8 +1260,9 @@ paper's.
 | our corrected checkpoint | 0.116 | **94.0%** | 20.0% | 26.0% | 116.6 | 3 |
 | random-action control | — | 18.0% | 0.0% | 2.0% | 111.1 | — |
 
-> **Figure 3: Prediction accuracy orders short-horizon planning success and
-> fails to order long-horizon planning success.** **(a)** Goals reached against
+![Figure 2](../../fig_horizon_dissociation.png)
+
+> **Figure 2: Prediction accuracy orders short-horizon planning success and fails to order long-horizon planning success.** **(a)** Goals reached against
 > one-step prediction error, with the axis running from worse to better
 > prediction. At goal offset 25 the relationship is monotone; at offset 100 it
 > is not, and the least accurate checkpoint is the strongest planner. **(b)**
@@ -1578,9 +1575,7 @@ it.
 the deviations block printed at the end of each planner report used hardcoded
 default values rather than the run's actual parameters, so reports from runs at
 a non-default goal offset, from the authors' checkpoint, or over the committed
-episode set misdescribe themselves in that block. The measurements in those
-reports are unaffected — the header of each report states the parameters
-correctly — and the repository records which reports predate the fix.
+episode set misdescribe themselves in that block. The measurements in those reports are unaffected — the header of each report records the protocol that was *requested*, accurately — and the repository records which reports predate the fix. The header is not a complete description of a run. Where the data constrain a requested instruction, the protocol actually realised can be narrower than the one the header names: initial-state sampling at a goal offset of 100 is requested and recorded, and has no effect (§4.2). And where two runs differ only in a driving convention the header does not print, the `spec_as_used.json` committed beside the report is what distinguishes them.
 
 **Scope.** All results concern the TwoRoom diagnostic environment. We make no
 claim about the original's embodied or zero-shot results, about its other
@@ -1644,8 +1639,10 @@ Lucas Maes, Quentin Le Lidec, Dan Haramati, Nassim Massaudi, Damien Scieur,
 Yann LeCun, and Randall Balestriero. stable-worldmodel-v1: Reproducible World
 Modeling Research and Evaluation. arXiv:2602.08968, 2026b.
 
-The `le-wm` code release accompanying Maes et al. (2026a). <URL>, accessed
-<DATE>, commit <HASH>.
+The `le-wm` code release accompanying Maes et al. (2026a).
+github.com/lucas-maes/le-wm, accessed 25 July 2026, commit `8edfeb336732b5f3ce7b8b210d0ba370a09e2cac`.
+Line numbers cited in Table 1 refer to this commit; it is recorded in
+our repository at `docs/lewm_audit_commit.txt`.
 
 Our reimplementation, checkpoints, evaluation reports, fidelity audit,
 pre-registration and gate outputs: github.com/joyjeet-singh/tinylab.

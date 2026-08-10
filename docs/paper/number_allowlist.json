@@ -1,0 +1,15 @@
+{
+  "1.5": "91 of 6056 offset-100-eligible episodes were solved by the data policy (runs_archive/verified/dataset_episode_lengths.txt)",
+  "14.5": "same-room goals, arm 3, the corrected checkpoint: 16 of 110, joined from exp_wall_recal/realenv_plan_cem.json and balanced_episodes.json",
+  "20.9": "cross-room goals, arm 3, the corrected checkpoint: 23 of 110, joined from exp_wall_recal/realenv_plan_cem.json and balanced_episodes.json",
+  "40.0": "cross-room goals, arm 1, the pre-correction checkpoint as measured: 44 of 110, joined from exp_balanced_wall/realenv_plan_cem.json and balanced_episodes.json",
+  "46.0": "NO REPORT RETAINED. The superseded mis-scaled calibration run of \u00a74.2, 'An earlier failure, recorded'. The only surviving on-disk record is the docstring of action_scale_check.py; there is no evaluation report behind this figure. Cite it with that caveat, or cut the sentence.",
+  "61.8": "cross-room goals, arm 2, the pre-correction checkpoint action-scale corrected: 68 of 110, joined from exp_wall_scaled/realenv_plan_cem.json and balanced_episodes.json",
+  "71.5": "95% Wilson lower bound for 42/50, the authors' released checkpoint at goal offset 25 (exp_authors/realenv_plan_authors_cem_report.txt)",
+  "74.5": "same-room goals, arm 2, the pre-correction checkpoint action-scale corrected: 82 of 110, joined from exp_wall_scaled/realenv_plan_cem.json and balanced_episodes.json",
+  "79.1": "same-room goals, arm 1, the pre-correction checkpoint as measured: 87 of 110, joined from exp_balanced_wall/realenv_plan_cem.json and balanced_episodes.json",
+  "83.8": "95% Wilson lower bound for 47/50, our corrected checkpoint at goal offset 25 (exp_phase2_recal_25/realenv_plan_cem_report.txt)",
+  "91.7": "95% Wilson upper bound for 42/50, the authors' released checkpoint at goal offset 25 (exp_authors/realenv_plan_authors_cem_report.txt)",
+  "93.8": "non-trivial success rate, our corrected checkpoint at goal offset 25 (exp_phase2_recal_25/realenv_plan_cem_report.txt)",
+  "97.9": "95% Wilson upper bound for 47/50, our corrected checkpoint at goal offset 25 (exp_phase2_recal_25/realenv_plan_cem_report.txt)"
+}
