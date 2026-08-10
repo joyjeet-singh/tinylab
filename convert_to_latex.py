@@ -188,6 +188,48 @@ def latexify_unicode(tex: str) -> str:
     return tex
 
 
+# TMLR rejects a non-anonymous submission without review, so the anonymous
+# build must not name the author or the repository. Longest patterns first.
+ANONYMISE = [
+    ("https://github.com/joyjeet-singh/tinylab",
+     "https://anonymous.4open.science/r/anonymous-repository"),
+    ("github.com/joyjeet-singh/tinylab",
+     "anonymous repository, URL withheld for review"),
+    ("tinylab_repo", "anon_repo"),
+    # the bib title reads "tinylab: reimplementation, checkpoints, ..."; the
+    # generic substitution below would make that "this reimplementation:
+    # reimplementation, ...".
+    ("tinylab: reimplementation", "Reimplementation"),
+    ("tinylab", "this reimplementation"),
+    ("0009-0005-1512-7439", "withheld"),
+    ("joyjeetsingh1@gmail.com", "anonymous@example.com"),
+    ("Joyjeet Singh", "Anonymous Author(s)"),
+]
+
+# Anything matching these in an anonymous artefact is a de-anonymisation.
+IDENTIFYING = re.compile(
+    r"joyjeet|tinylab|0009-0005-1512-7439|Singh", re.I)
+
+
+def anonymise(text: str) -> str:
+    for src, dst in ANONYMISE:
+        text = text.replace(src, dst)
+    return text
+
+
+def check_anonymous(text: str, what: str):
+    """Return the identifying fragments still present, with context."""
+    hits = []
+    for m in IDENTIFYING.finditer(text):
+        s = max(0, m.start() - 40)
+        hits.append(text[s:m.end() + 40].replace("\n", " "))
+    if hits:
+        print(f"  {what}: {len(hits)} identifying fragment(s) remain")
+        for h in hits[:5]:
+            print(f"    ...{h}...")
+    return hits
+
+
 def pandoc(markdown: str, extra=()) -> str:
     """Markdown fragment -> LaTeX fragment (no preamble)."""
     p = subprocess.run(
@@ -273,18 +315,36 @@ def main():
 
     for name, option in (("paper_preprint", "preprint"),
                          ("paper_submission", "")):
+        anon = not option
+        bib = "paper_anon" if anon else "paper"
         tex = (PREAMBLE
                .replace("%OPTION%", option)
                .replace("%TITLE%", title)
-               .replace("%AUTHOR%", author)
-               .replace("%EMAIL%", EMAIL)
-               .replace("%AFFIL%", AFFIL)
-               .replace("%ABSTRACT%", abstract_tex)
-               .replace("%BODY%", body_tex))
-        if not option:
+               .replace("%AUTHOR%", "Anonymous Author(s)" if anon else author)
+               .replace("%EMAIL%", "anonymous@example.com" if anon else EMAIL)
+               .replace("%AFFIL%", "Anonymous Institution" if anon else AFFIL)
+               .replace("%ABSTRACT%", anonymise(abstract_tex) if anon else abstract_tex)
+               .replace("%BODY%", anonymise(body_tex) if anon else body_tex)
+               .replace("\\bibliography{paper}", f"\\bibliography{{{bib}}}"))
+        if anon:
             tex = tex.replace("\\usepackage[]{tmlr}", "\\usepackage{tmlr}")
+            leak = check_anonymous(tex, f"{name}.tex")
+            assert not leak, f"{name}.tex still identifies the author: {leak}"
         (OUT / f"{name}.tex").write_text(tex)
-        print(f"wrote {OUT / name}.tex")
+        print(f"wrote {OUT / name}.tex" + ("  [anonymous]" if anon else ""))
+
+    # The anonymous build needs its own bibliography: paper.bib names the
+    # author and the repository in the tinylab entry, and \nocite{*} would
+    # print it.
+    src = Path("docs/paper/paper.bib").read_text()
+    anon_bib = anonymise(src)
+    anon_bib = re.sub(r"author\s*=\s*\{Singh, Joyjeet\}",
+                      "author       = {Anonymous Author(s)}", anon_bib)
+    leak = check_anonymous(anon_bib, "paper_anon.bib")
+    assert not leak, f"paper_anon.bib still identifies the author: {leak}"
+    (OUT / "paper_anon.bib").write_text(anon_bib)
+    shutil.copy2("docs/paper/paper.bib", OUT / "paper.bib")
+    print(f"wrote {OUT / 'paper_anon.bib'}  [anonymous]")
 
 
 if __name__ == "__main__":

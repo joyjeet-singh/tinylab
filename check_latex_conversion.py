@@ -85,6 +85,33 @@ if LOG.exists():
 else:
     check("build log present", False, str(LOG))
 
+# --- anonymity of the submission build -------------------------------
+# TMLR rejects a non-anonymous submission without review, so this is a
+# rejection risk rather than a cosmetic one.
+IDENT = re.compile(r"joyjeet|tinylab|0009-0005-1512-7439|Singh", re.I)
+print()
+for art in ("build/paper_submission.tex", "build/paper_anon.bib"):
+    p = Path(art)
+    if not p.exists():
+        check(f"{art} exists", False)
+        continue
+    hits = IDENT.findall(p.read_text())
+    check(f"{art} is anonymous", not hits,
+          f"{len(hits)} identifying fragment(s)" if hits else "")
+
+pdf = Path("build/paper_submission.pdf")
+if pdf.exists():
+    raw = pdf.read_bytes()
+    # the embedded text and the document metadata are both leak surfaces
+    leaks = [w for w in (b"joyjeet", b"tinylab", b"0009-0005-1512-7439")
+             if w in raw.lower()]
+    check("submission PDF text carries no identity", not leaks,
+          str([w.decode() for w in leaks]) if leaks else "")
+    meta = re.search(rb"/Author\(([^)]*)\)", raw)
+    check("submission PDF metadata has no author",
+          not (meta and meta.group(1).strip()),
+          meta.group(1).decode(errors="replace") if meta and meta.group(1).strip() else "")
+
 print()
 if fail:
     print(f"{len(fail)} check(s) failed:")
