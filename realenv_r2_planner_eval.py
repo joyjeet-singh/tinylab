@@ -87,6 +87,19 @@ def main():
                    help="authors_driving_spec.json: evaluate the AUTHORS' "
                         "released checkpoint instead of ours, with every "
                         "other protocol element unchanged")
+    p.add_argument("--cem-steps", type=int, default=30,
+               help="CEM iterations; App. D specifies 10 for TwoRoom")
+    p.add_argument("--random-start", action="store_true",
+                   help="draw the start state uniformly from within the "
+                        "trajectory rather than using its first frame, as "
+                        "App. F.1 of the reference describes")
+    p.add_argument("--goal-target", action="store_true",
+                   help="use the episode's recorded target position as the "
+                        "goal, rather than a state --goal-offset frames later; "
+                        "this is the environment's own task")
+    p.add_argument("--successful-only", action="store_true",
+                   help="restrict to episodes in which the data policy reached "
+                        "the target (terminated rather than timed out)")
     p.add_argument("--ckpt", default=None,
                    help="checkpoint filename inside the run dir; defaults to "
                         "ckpt_best.pt, else ckpt.pt")
@@ -261,25 +274,65 @@ def main():
         say(f"episode set: {args.episodes} "
             f"({spec.get('n_pairs')} matched pairs, "
             f"selection: {spec.get('selection', 'n/a')})")
+    if args.random_start and getattr(args, "episodes", None):
+        raise SystemExit(
+            "--random-start cannot be combined with --episodes: a committed "
+            "episode set fixes its starts as part of the pre-registration, and "
+            "redrawing them would invalidate the matching the design rests on.")
     with h5py.File(h5_path, "r") as f:
         off = np.asarray(f["ep_offset"][:])
         ln = np.asarray(f["ep_len"][:])
         if meta is None:
-            ok = np.where(ln > args.goal_offset)[0]
+            if args.goal_target:
+                ok = np.arange(len(ln))     # every episode has a target
+            else:
+                ok = np.where(ln > args.goal_offset)[0]
+            if args.successful_only:
+                term = np.asarray(f["terminated"][:])
+                reached = np.array([bool(term[int(o) + int(l) - 1])
+                                    for o, l in zip(off, ln)])
+                ok = np.array([e for e in ok if reached[e]])
+                if len(ok) == 0:
+                    raise SystemExit("no episodes satisfy --successful-only")
             eps = rng.choice(ok, size=min(args.num_eval, len(ok)),
                              replace=False)
             meta = [{} for _ in eps]
-        starts, goals = [], []
+        starts, goals, start_shifts = [], [], []
         for e in eps:
-            starts.append(np.asarray(f["pos_agent"][off[e]], dtype=np.float32))
-            goals.append(np.asarray(f["pos_agent"][off[e] + args.goal_offset],
-                                    dtype=np.float32))
-    say(f"\nepisodes: {len(eps)} sampled (seed {args.seed}); start = episode "
-        f"frame 0; goal = frame {args.goal_offset} of the same episode")
+            # App. F.1: the initial state is sampled from within the
+            # trajectory, not fixed at its first frame. For the offset-100
+            # population -- only episodes longer than 100 steps -- frame 0 is
+            # the hardest available segment, so this is not a neutral choice.
+            s0 = int(off[e])
+            if args.random_start:
+                span = int(ln[e]) - args.goal_offset - 1
+                if span > 0:
+                    s0 += int(rng.integers(0, span))
+            start_shifts.append(s0 - int(off[e]))
+            starts.append(np.asarray(f["pos_agent"][s0], dtype=np.float32))
+            goals.append(np.asarray(
+                f["pos_target"][s0] if args.goal_target
+                else f["pos_agent"][s0 + args.goal_offset],
+                dtype=np.float32))
+    PROTO_FILTER = ' [policy-successful only]' if args.successful_only else ''
+    PROTO_START = ('a uniformly random frame' if args.random_start
+                   else 'episode frame 0')
+    if args.random_start:
+        _moved = sum(1 for sh in start_shifts if sh > 0)
+        PROTO_START += (f" (realised: {_moved}/{len(eps)} starts actually moved"
+                        f"; max shift {max(start_shifts) if start_shifts else 0}"
+                        f" frames)")
+    PROTO_GOAL = ("the episode's recorded TARGET position" if args.goal_target
+                  else f"{args.goal_offset} frames later in the same episode")
+    PROTO_OFFSET = ("goal = recorded target" if args.goal_target
+                    else f"goal_offset {args.goal_offset}")
+    say(f"\nepisodes: {len(eps)} sampled (seed {args.seed}){PROTO_FILTER}"
+        f"; start = {PROTO_START}; goal = {PROTO_GOAL}")
 
     planner = None
     if not args.random:
-        planner = CEMPlanner(model, horizon=5, num_samples=300, n_steps=30,
+        planner = CEMPlanner(model, horizon=5, num_samples=300,
+                             n_steps=args.cem_steps,
                              topk=30, var_scale=1.0,
                              action_dim=m["action_dim"])
 
@@ -369,9 +422,9 @@ def main():
     say("  - episode/start selection ours ("
         + (f"committed set {Path(args.episodes).name}"
            if getattr(args, "episodes", None)
-           else f"random {args.num_eval} eps seed {args.seed}")
+           else f"random {args.num_eval} eps seed {args.seed}{PROTO_FILTER}")
         + ", start =")
-    say(f"    frame 0, goal = frame {args.goal_offset}); reference's "
+    say(f"    {PROTO_START}, goal = {PROTO_GOAL}); reference's "
         f"exact selection unknown")
     say(f"  - receding_horizon {args.receding} read as: execute "
         f"{args.receding} planned actions, replan")
@@ -383,13 +436,19 @@ def main():
             f"model (the environment receives the unscaled action)")
     say("  - success = the registered env's terminated rule (distance < 16)")
     say("  matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,")
-    say(f"  budget {args.budget}, goal_offset {args.goal_offset}, "
+    say(f"  budget {args.budget}, {PROTO_OFFSET}, "
         f"img 224, goal-image")
     say("  convention.")
 
     out = {"tag": tag, "guard": guard, "results": results,
            "success_rate": succ / n, "n": n, "trivial_starts": n_triv,
            "action_scale": args.action_scale,
+           "goal_construction": PROTO_GOAL, "budget": args.budget,
+           "goal_offset": args.goal_offset,
+           "goal_target": bool(args.goal_target),
+           "successful_only": bool(args.successful_only),
+           "random_start": bool(args.random_start),
+           "authors_spec": getattr(args, "authors_spec", None),
            "protocol": {"num_eval": args.num_eval, "budget": args.budget,
                         "goal_offset": args.goal_offset,
                         "receding": args.receding,
