@@ -1,0 +1,10 @@
+======================================================================
+HOW MUST phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214 BE DRIVEN?
+======================================================================
+  manifest loader_convention: {'dense_actions': False, 'imagenet_pixels': False, 'zscore_actions': False} (absent (assumed all off))
+  checkpoint: ckpt_best_recal.pt
+  model: action_dim 2, history_size 1, epoch field 6
+  loader convention (absent (assumed all off)): all off -- driving the model directly, no adapter
+
+  No transforms recorded -- this checkpoint is driven directly and
+  needs no measurement. Nothing to do.

@@ -1182,13 +1182,10 @@ spanning a sevenfold range in one-step prediction error, we find that the proxy
 holds at short horizons and fails at long ones — and that the two most accurate
 models plan **worse than a random-action control** at the longer horizon.
 
-Table 3 gives the comparison. All three checkpoints are evaluated under one
-protocol on identical episodes; one-step error is reported relative to a
-frozen-world baseline, so a value below 1 means the model predicts better than
-assuming nothing moves. Because the released material specifies two different
+Table 3 gives the comparison. All three checkpoints are evaluated under one planning protocol on identical episodes; one-step error is reported relative to a frozen-world baseline, so a value below 1 means the model predicts better than assuming nothing moves. The one-step figures are separate in-domain measurements on real validation clips, each taken under the constant-action encoding a planner actually emits, and each committed: `runs_archive/verified/driving_spec_phase2_recal.txt` for the corrected checkpoint, `runs_archive/verified/repeat_encoding_authors.txt` for the authors' released weights, and `runs_archive/verified/check_a_step0_run2.txt` for the pre-correction checkpoint. They come from three different instruments at different sample draws, so the third decimal is not comparable across rows; the ordering, which is all the argument uses, is unaffected. Because the released material specifies two different
 step budgets (§4.2), we report the long-horizon task under both.
 
-At goal offset 25 the ordering is monotone: as one-step error falls from 0.830 to 0.410 to 0.116, success rises from 78.0% to 84.0% to 94.0% (Figure 2a, upper line). Prediction accuracy behaves exactly as the proxy assumption expects.
+At goal offset 25 the ordering is monotone: as one-step error falls from 0.829 to 0.410 to 0.116, success rises from 78.0% to 84.0% to 94.0% (Figure 2a, upper line). Prediction accuracy behaves exactly as the proxy assumption expects.
 
 At goal offset 100 the ordering does not hold at all. Under the repository's
 50-step budget, success runs 54.0%, 12.0% and 20.0% over the same three
@@ -1205,7 +1202,7 @@ checkpoint from 54.0% to **80.0%** — twenty-six points — while moving the
 authors' checkpoint two points and our corrected checkpoint six. Extra time
 rescues a planner that was running out of it, and does almost nothing for
 planners that are travelling in the wrong direction. At the longer budget the
-dissociation is sharper rather than weaker: one-step errors of 0.830, 0.410 and
+dissociation is sharper rather than weaker: one-step errors of 0.829, 0.410 and
 0.116 map to 80.0%, 14.0% and 26.0%.
 
 The failure mode is overshoot rather than stalling, and it is visible without
@@ -1261,7 +1258,7 @@ paper's.
 
 | checkpoint | one-step error | offset 25, budget 50 | offset 100, budget 50 | offset 100, budget 150 | mean final dist. @100/50 | context frames |
 |---|---|---|---|---|---|---|
-| our pre-correction checkpoint | 0.830 | 78.0% | **54.0%** | **80.0%** | **40.5** | 1 |
+| our pre-correction checkpoint | 0.829 | 78.0% | **54.0%** | **80.0%** | **40.5** | 1 |
 | authors' released | 0.410 | 84.0% | **12.0%** | **14.0%** | 122.5 | 3 |
 | our corrected checkpoint | 0.116 | **94.0%** | 20.0% | 26.0% | 116.6 | 3 |
 | random-action control | — | 18.0% | 0.0% | 2.0% | 111.1 | — |

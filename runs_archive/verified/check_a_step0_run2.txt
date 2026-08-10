@@ -1,0 +1,64 @@
+======================================================================
+LOADER CONVENTION for phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214
+======================================================================
+  absent from the manifest -- assumed all off, as the run predates the flags
+  DENSE_ACTIONS      False
+  IMAGENET_PIXELS    False
+  ZSCORE_ACTIONS     False
+
+driving bridge_step0_check.py under the convention above
+
+======================================================================
+BRIDGE + DOMAIN CHECKS v2  --  phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214
+======================================================================
+
+checkpoint files in the run dir:
+  ckpt.pt        md5 e90b5c0496073ad692357ac23d1e5b91
+  ckpt_best.pt   md5 e90b5c0496073ad692357ac23d1e5b91
+  ckpt_final.pt  md5 783c17bef057603e71783c6a7590251e
+
+data: /Users/joyjeetsingh/Downloads/tworoom.h5
+  clips 870809  train 783728  val 87081
+  data fingerprint MATCHES the training manifest -- same clips, same order.
+
+Check A uses the first 512 validation clips (4 batches of 128), same slices as the train log.
+
+CHECK A on ckpt_best.pt  (epoch field 6 -- stores epoch+1 -- step 36732)
+  step0_err 5.668   real_step 6.8377   ratio 0.829
+
+CHECK A on ckpt_final.pt  (epoch field 10 -- stores epoch+1 -- step 61220)
+  step0_err 31.2071   real_step 4.9718   ratio 6.277
+
+remaining checks use ckpt_best.pt
+
+CHECK M: the real data's own motion (file units, no convention assumed)
+  positions span x [14.1, 208.1] y [17.8, 208.1] (first 200 episodes)
+  per-step move: median 6.17  mean 5.92; per-5-frame move: median 13.42
+  relative speed: 3.2% of the arena per step
+  toy world for contrast: ~5 units/step over a 32-unit arena = 15.6% per step
+
+CHECK B: toy renders vs the real latent cloud (200 frames per side)
+  distance between the two clouds' centers : 67.15
+  toy frame -> nearest real latent : median 61.03  mean 60.69
+  yardsticks -- real -> nearest other real: 2.43; toy -> nearest other toy: 2.01
+
+CHECK C: step0_latent_error() verbatim on 512 toy clips, toy dynamics
+  step0_err 57.537   real_step 14.7996   ratio 3.888   (toy mean move/step 4.67 units)
+
+CHECK C2: same clips recipe, toy dot slowed to the real relative speed
+  speed factor = real relative speed / toy relative speed = 0.220
+  step0_err 57.4102   real_step 8.0487   ratio 7.133   (mean move/step 1.04 units)
+
+======================================================================
+HOW TO READ
+======================================================================
+M : if the real dot covers a much smaller fraction of its arena per step
+    than the toy dot does, the eval world's dynamics are scaled wrong for
+    this model, independent of how the frames look.
+B : toy->nearest-real far beyond the real cloud's own spacing means toy
+    frames land OFF the latent region the predictor was trained on --
+    a rendering-style gap measured with no coordinate assumptions.
+C : the training-time metric on toy clips at toy speed. Compare with the
+    train log's best value and with the planner-side ~56.
+C2: the same at real speed. C2 ~ train log -> motion scale was the killer;
+    C2 ~ C ~ 56 -> rendering style alone reproduces the planner-side error.

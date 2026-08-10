@@ -113,7 +113,10 @@ def main():
     a.set_ylim(0, 105)
     a.set_title("(a) accuracy orders short-horizon success,\nbut not "
                 "long-horizon success", fontsize=10)
-    a.legend(fontsize=9, loc="center left")
+    # "center left" sat on top of the leftmost long-horizon data label and hid
+    # it; anchor the legend outside the data instead.
+    a.legend(fontsize=9, loc="upper center", bbox_to_anchor=(0.5, 0.62),
+             framealpha=0.9)
     a.grid(alpha=0.3)
 
     b = ax[1]

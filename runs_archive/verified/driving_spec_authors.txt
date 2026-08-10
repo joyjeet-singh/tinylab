@@ -1,0 +1,46 @@
+
+======================================================================
+1. rebuild the checkpoint (same recipe v4 used)
+======================================================================
+  loaded; history_size 3, action width 10
+
+======================================================================
+A. which action channels carry signal? (from the weights)
+======================================================================
+  per-input-channel weight norms:
+    channel 0:   0.517  ############################
+    channel 1:   0.527  ############################
+    channel 2:   0.442  ########################
+    channel 3:   0.514  ############################
+    channel 4:   0.585  ###############################
+    channel 5:   0.635  ##################################
+    channel 6:   0.747  ########################################
+    channel 7:   0.606  ################################
+    channel 8:   0.643  ##################################
+    channel 9:   0.637  ##################################
+
+  median 0.595
+  no channel stands out -- either all channels were trained
+  (so the action was not zero-padded) or the effect is subtle.
+  weight evidence -> inconclusive
+
+======================================================================
+B. paired re-measurement, 200 samples
+======================================================================
+  frozen-world baseline : 16.435
+  first-2 padded        : 6.654  ratio 0.405
+  last-2 padded         : 6.543  ratio 0.398
+
+  per-sample: last-2 better on 109, first-2 better on 91  ->  sign test p = 0.2292
+  measurement evidence -> no significant difference
+
+======================================================================
+VERDICT
+======================================================================
+  Neither test discriminates. The two placements are
+  interchangeable for this model, so either drives it equally
+  well -- writing 'first' and noting the ambiguity as a stated
+  deviation.
+  action slots: [0, 1]   (first-2 and last-2 padding were indistinguishable; stated as a deviation)
+  wrote runs_archive/verified/authors_driving_spec_rerun.json -- commit it; it is the record of how their
+  checkpoint was driven, and the calibration run will read it.

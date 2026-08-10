@@ -1,0 +1,31 @@
+======================================================================
+LOADER CONVENTION for phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214
+======================================================================
+  absent from the manifest -- assumed all off, as the run predates the flags
+  DENSE_ACTIONS      False
+  IMAGENET_PIXELS    False
+  ZSCORE_ACTIONS     False
+
+======================================================================
+IN-DOMAIN ROLLOUT, HORIZON 5  --  phase1_run2_cosine_phase1_run2_cosine_seed0_20260722_110214  (ckpt_best_recal.pt)
+======================================================================
+real validation clips: first 512 (4 batches of 128); actions = the recorded ones
+  batch 1 done
+  batch 2 done
+  batch 3 done
+  batch 4 done
+
+ horizon  imagined err  real step  err/step  static err  err/static
+       1         5.165      6.615     0.781       6.615       0.781
+       2         6.859      6.689     1.025       9.699       0.707
+       3         8.061      6.876     1.172      11.888       0.678
+       4         9.054      6.681     1.355      13.714       0.660
+       5         9.840      6.914     1.423      15.116       0.651
+
+HOW TO READ
+  horizon 1 should match Check A / the train log (internal control).
+  err/static < 1 : imagining beats assuming the world froze -- the
+    prediction carries usable information at that horizon.
+  err/static ~ 1 : by that horizon the rollout knows no more than
+    'nothing moved'; a planner gains nothing from imagining that far.
+  err/step is the same scale-free ratio Check A used, per horizon.

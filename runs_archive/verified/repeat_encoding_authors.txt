@@ -1,0 +1,18 @@
+  authors' checkpoint: 18.03 M params, history_size 3, actions -> repeat into 10, pixels imagenet
+  driving spec: authors_driving_spec.json (first-2 and last-2 padding were indistinguishable; stated as a deviation)
+
+150 windows; frozen-world baseline 16.135
+  encoding                                  err    ratio
+  ------------------------------------------------------
+  slots + scale (the 84% run)             6.704    0.415
+  repeat (constant-action planner)        6.618    0.410
+  dense, true actions (ceiling)           5.969    0.370
+  ------------------------------------------------------
+
+READ
+  the two are equivalent (0.415 vs 0.410); the rerun would not change the number. Skip it and note the
+  encoding question as settled either way.
+  the true dense input scores 0.370. The distance from
+  0.410 to 0.370 is what a planner gives up by
+  holding one action constant across the whole block -- it
+  cannot express within-block variation that the model can use.

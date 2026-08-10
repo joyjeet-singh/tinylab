@@ -1,0 +1,33 @@
+======================================================================
+HOW MUST phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632 BE DRIVEN?
+======================================================================
+  manifest loader_convention: {'dense_actions': True, 'imagenet_pixels': True, 'zscore_actions': True} (manifest)
+  checkpoint: ckpt_best_recal.pt
+  model: action_dim 10, history_size 3, epoch field 9
+  loader convention (manifest): dense=True imagenet=True zscore=True
+  ADAPTER ACTIVE: pixels ImageNet, actions 2 -> 10 by repeat + z-score, history_size 3
+
+STATISTICS CROSS-CHECK (adapter vs the loader's own)
+  adapter mu [ 0.0031 -0.053 ] sd [0.8675 0.8686]
+  loader  mu [ 0.0031 -0.053 ] sd [0.8675 0.8686]
+  identical: True
+
+150 windows; frozen-world baseline 15.668
+  encoding                                err    ratio
+  ----------------------------------------------------
+  repeat of MEAN (displacement-matched)    1.823    0.116
+  repeat of mean, no z-score            5.279    0.337
+  repeat of FIRST (not matched)        18.166    1.159
+  first-2 padded + z-score             15.550    0.992
+  zeros                                15.492    0.989
+  random                               17.777    1.135
+  dense true actions (ceiling)          1.071    0.068
+  ----------------------------------------------------
+
+VERDICT
+  GO. repeat + z-score scores 0.116, clearly better than the no-action controls (1.135).
+  Dense-true ceiling 0.068. The gap +0.048 is what a constant-action
+  planner gives up by not varying the action within a block -- a stated limitation,
+  not a surprise.
+  Z-scoring is worth +0.221 (no-z-score 0.337 vs 0.116); if that is ~0,
+  the model is insensitive to action scale and the normalisation row can be relaxed.
