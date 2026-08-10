@@ -1,3 +1,9 @@
+---
+title: |
+  The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel on TwoRoom
+author: Joyjeet Singh
+---
+
 # Abstract
 
 LeWorldModel trains a latent world model with a prediction loss and a single

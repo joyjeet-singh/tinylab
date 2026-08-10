@@ -125,6 +125,13 @@ n_params = note("parameters",
                 json.load(open("runs_archive/phase1_run2_cosine_seed0/manifest.json"))["n_params"],
                 "runs_archive/phase1_run2_cosine_seed0/manifest.json")
 
+paper_md = Path("docs/paper/PAPER.md").read_text()
+m_title = re.search(r"^---\ntitle: \|\n\s+(.+?)\nauthor: (.+?)\n---",
+                    paper_md, re.S | re.M)
+assert m_title, "PAPER.md has no title metadata block -- run patch_paper_title.py"
+paper_title = note("paper title", m_title.group(1).strip(), "docs/paper/PAPER.md")
+paper_author = note("paper author", m_title.group(2).strip(), "docs/paper/PAPER.md")
+
 lewm = Path("docs/lewm_audit_commit.txt").read_text()
 lewm_commit = note("le-wm commit", re.search(r"commit\s+:\s+(\w+)", lewm).group(1),
                    "docs/lewm_audit_commit.txt")
@@ -321,7 +328,7 @@ This is a reproduction. The original work is the authors'.
 
 ```bibtex
 @article{{singh2026tinylab,
-  title  = {{<PAPER_TITLE>}},
+  title  = {{{paper_title}}},
   author = {{Singh, Joyjeet}},
   year   = {{2026}},
   eprint = {{{ARXIV}}},

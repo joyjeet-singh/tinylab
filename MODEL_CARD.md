@@ -181,7 +181,7 @@ This is a reproduction. The original work is the authors'.
 
 ```bibtex
 @article{singh2026tinylab,
-  title  = {<PAPER_TITLE>},
+  title  = {The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel on TwoRoom},
   author = {Singh, Joyjeet},
   year   = {2026},
   eprint = {<ARXIV_ID>},
