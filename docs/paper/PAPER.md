@@ -764,12 +764,9 @@ be read. Our first attempt at this calibration supplied the action at the wrong
 scale, and produced **46.0%** — a number that arrived with every surrounding
 check passing: the domain guard passed, the random-action control replicated
 exactly, and the run completed without error. What identified it as an artifact
-was not any check but the *shape* of the failures: successes came unusually fast
-(median 5 steps against our checkpoint's 18) while misses were extreme
-overshoots, with 22 of 27 finishing farther from the goal than they started.
+was not any check but the *shape* of the failures: successes came unusually fast (median 5 steps against our checkpoint's 21) while misses were extreme overshoots, with 22 of 27 finishing farther from the goal than they started.
 That is the signature of a planner whose model understates how far an action
-moves the agent. Measuring the action scale directly then confirmed it, and the
-corrected figure is the 84.0% above. We report the episode as evidence that a
+moves the agent. Measuring the action scale directly then confirmed it, and the corrected figure is the 84.0% above. The superseded run is committed rather than described: `exp_wrongscale_25/`, driven by a spec identical to the corrected one but for the two fields that were wrong. We report the episode as evidence that a
 completed run with passing checks is not the same as a correct measurement, and
 that a wrong answer of this kind is more readily caught by inspecting the
 distribution of failures than by any single summary statistic.

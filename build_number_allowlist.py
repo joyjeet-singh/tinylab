@@ -99,16 +99,22 @@ for d, arm in WALL.items():
 # recomputed from any committed artifact. It is allowlisted with that stated
 # plainly rather than silently: the entry is the disclosure. The alternative
 # is to cut the sentence, which is the author's call.
-print("\nRecorded but not recomputable -- allowlisted with the gap stated:")
+print("\n§4.2's superseded calibration figure:")
 m = re.search(r"produced \*\*(\d+\.\d)%\*\* — a number that arrived", PAPER)
 assert m, "§4.2's superseded-calibration figure is no longer where it was"
-allow[m.group(1)] = (
-    "NO REPORT RETAINED. The superseded mis-scaled calibration run of §4.2, "
-    "'An earlier failure, recorded'. The only surviving on-disk record is the "
-    "docstring of action_scale_check.py; there is no evaluation report behind "
-    "this figure. Cite it with that caveat, or cut the sentence."
-)
-print(f"  {m.group(1):>6}%  {allow[m.group(1)][:72]}...")
+disk_pcts = {f"{float(r['pct']):.1f}" for r in
+             csv.DictReader(open("docs/paper/results_from_disk.csv"))
+             if r["nested_copy"] == "no"}
+if m.group(1) in disk_pcts:
+    print(f"  {m.group(1):>6}%  now a disk figure -- the run was reproduced and "
+          f"committed, so it needs no allowlist entry")
+else:
+    allow[m.group(1)] = (
+        "NO REPORT RETAINED. The superseded mis-scaled calibration run of §4.2, "
+        "'An earlier failure, recorded'. The only surviving on-disk record is "
+        "the docstring of action_scale_check.py. Cite it with that caveat, or "
+        "cut the sentence.")
+    print(f"  {m.group(1):>6}%  {allow[m.group(1)][:72]}...")
 
 # ----------------------------------------------- what cannot be recomputed
 print("\nNumbers with no committed measurement artifact:")
