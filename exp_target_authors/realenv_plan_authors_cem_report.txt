@@ -1,0 +1,79 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (AUTHORS_CEM)  --  ..
+======================================================================
+MODEL: the AUTHORS' released checkpoint (calibration run)
+  every other protocol element is unchanged from our own run
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.012 (threshold 1.0) -> pass
+
+episodes: 50 sampled (seed 42) [policy-successful only]; start = episode frame 0; goal = the episode's recorded TARGET position
+  ep  1/50 (# 3993): missed  in 150 steps, final dist  109.1, start-goal  134.9
+  ep  2/50 (# 5066): missed  in 150 steps, final dist  118.8, start-goal  191.5
+  ep  3/50 (# 4431): missed  in 150 steps, final dist  193.2, start-goal  126.8
+  ep  4/50 (#  809): REACHED in 46 steps, final dist   14.0, start-goal  140.7
+  ep  5/50 (# 7774): missed  in 150 steps, final dist   81.0, start-goal  128.8
+  ep  6/50 (# 9692): missed  in 150 steps, final dist  226.2, start-goal  190.6
+  ep  7/50 (# 6403): missed  in 150 steps, final dist  154.7, start-goal  103.7
+  ep  8/50 (# 6984): missed  in 150 steps, final dist  105.0, start-goal  140.0
+  ep  9/50 (# 2788): missed  in 150 steps, final dist   95.0, start-goal   88.0
+  ep 10/50 (# 4407): missed  in 150 steps, final dist  127.7, start-goal  113.3
+  ep 11/50 (# 3510): missed  in 150 steps, final dist  131.7, start-goal  133.3
+  ep 12/50 (# 6778): missed  in 150 steps, final dist  110.2, start-goal  106.0
+  ep 13/50 (# 4245): missed  in 150 steps, final dist  117.4, start-goal  205.2
+  ep 14/50 (#  644): missed  in 150 steps, final dist  157.9, start-goal   93.3
+  ep 15/50 (# 7788): missed  in 150 steps, final dist  168.9, start-goal  162.2
+  ep 16/50 (# 5189): missed  in 150 steps, final dist  137.3, start-goal  124.4
+  ep 17/50 (# 4932): missed  in 150 steps, final dist  140.1, start-goal  135.6
+  ep 18/50 (# 7535): REACHED in 42 steps, final dist   13.9, start-goal  176.0
+  ep 19/50 (# 1984): REACHED in 42 steps, final dist   15.4, start-goal  125.2
+  ep 20/50 (# 8331): missed  in 150 steps, final dist  116.1, start-goal  166.8
+  ep 21/50 (# 5508): missed  in 150 steps, final dist   94.3, start-goal   89.9
+  ep 22/50 (# 8182): missed  in 150 steps, final dist  127.7, start-goal  136.6
+  ep 23/50 (# 1617): missed  in 150 steps, final dist  168.2, start-goal  123.5
+  ep 24/50 (# 6898): missed  in 150 steps, final dist  120.0, start-goal  162.3
+  ep 25/50 (# 8832): missed  in 150 steps, final dist  114.5, start-goal  106.9
+  ep 26/50 (# 8912): missed  in 150 steps, final dist  188.8, start-goal  113.5
+  ep 27/50 (# 4298): missed  in 150 steps, final dist  154.5, start-goal  205.1
+  ep 28/50 (#  841): missed  in 150 steps, final dist  108.6, start-goal   84.1
+  ep 29/50 (# 8486): REACHED in 44 steps, final dist   12.3, start-goal  111.4
+  ep 30/50 (# 9191): missed  in 150 steps, final dist   56.2, start-goal   97.0
+  ep 31/50 (# 6315): missed  in 150 steps, final dist   43.2, start-goal   48.1
+  ep 32/50 (# 6477): REACHED in 42 steps, final dist   15.3, start-goal  159.5
+  ep 33/50 (# 7270): missed  in 150 steps, final dist  170.2, start-goal  158.4
+  ep 34/50 (# 4444): REACHED in 44 steps, final dist   15.6, start-goal  118.5
+  ep 35/50 (# 9659): missed  in 150 steps, final dist  181.4, start-goal  157.0
+  ep 36/50 (# 7098): missed  in 150 steps, final dist  111.0, start-goal  164.3
+  ep 37/50 (#  603): missed  in 150 steps, final dist  150.6, start-goal  136.9
+  ep 38/50 (# 7512): missed  in 150 steps, final dist   82.9, start-goal  126.4
+  ep 39/50 (# 4370): missed  in 150 steps, final dist   79.4, start-goal  129.6
+  ep 40/50 (# 8549): missed  in 150 steps, final dist  136.1, start-goal  184.4
+  ep 41/50 (# 5424): missed  in 150 steps, final dist  128.8, start-goal  203.5
+  ep 42/50 (# 2235): missed  in 150 steps, final dist  122.1, start-goal  140.1
+  ep 43/50 (#  789): missed  in 150 steps, final dist  149.8, start-goal  136.6
+  ep 44/50 (# 7764): missed  in 150 steps, final dist  115.4, start-goal  158.8
+  ep 45/50 (# 7622): missed  in 150 steps, final dist  162.4, start-goal  142.4
+  ep 46/50 (# 1793): missed  in 150 steps, final dist  147.1, start-goal  129.4
+  ep 47/50 (# 3647): missed  in 150 steps, final dist   78.9, start-goal   85.1
+  ep 48/50 (# 1230): REACHED in 42 steps, final dist   15.3, start-goal  139.6
+  ep 49/50 (#  858): missed  in 150 steps, final dist  168.0, start-goal  118.6
+  ep 50/50 (# 8243): missed  in 150 steps, final dist  155.7, start-goal   66.0
+
+======================================================================
+SUMMARY (authors_cem)
+======================================================================
+  success rate           : 7/50 = 14.0%
+  mean final distance    : 114.16
+  trivial starts (<16)   : 0/50
+  non-trivial success    : 7/50 = 14.0%
+  wall-clock             : 149.1 min
+
+DEVIATIONS from the reference protocol (state wherever quoted):
+  - episode/start selection ours (random 50 eps seed 42, start =
+    frame 0, goal = frame 25); reference's exact selection unknown
+  - receding_horizon 5 read as: execute 5 planned actions, replan
+  - the AUTHORS' released weights, driven through our harness
+  - success = the registered env's terminated rule (distance < 16)
+  matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,
+  budget 150, goal_offset 25, img 224, goal-image
+  convention.
