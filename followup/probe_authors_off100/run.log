@@ -1,0 +1,15 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (AUTHORS_CEM)  --  ..
+======================================================================
+MODEL: the AUTHORS' released checkpoint (calibration run)
+  authors' checkpoint: 18.03 M params, history_size 3, actions -> repeat into 10, pixels imagenet
+  driving spec: ../../authors_driving_spec.json (first-2 and last-2 padding were indistinguishable; stated as a deviation)
+  every other protocol element is unchanged from our own run
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.012 (threshold 1.0) -> pass
+
+episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
+
+fitting position probe on 400 rendered positions
+  probe fit R^2 0.9971 (in-sample), mean abs error 1.50 arena units

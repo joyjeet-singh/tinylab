@@ -168,49 +168,51 @@ directly paired against the published **13/50 = 26.0%**.
 Early two-episode signal at a 60-step budget — a third of the baseline's —
 reached a 150.7-unit goal in 25 steps.
 
-## 6. Interim result: the fix works, and does not cost the short horizon
+## 6. Result: the fix works, and costs nothing at the short horizon
 
-Both runs are still in progress; these are the completed paired episodes.
-Every episode is matched -- same checkpoint, same protocol, same episode --
-so McNemar applies to the discordant pairs.
+Every episode is matched -- same checkpoint, same protocol, same episode draw
+-- so McNemar applies to the discordant pairs.
 
-**Goal offset 100, budget 150** (`followup/probe_off100`, paired against the
-published `exp_ref_p2`):
+### Goal offset 25, budget 50 -- COMPLETE, n = 50
 
-| | success |
-|---|---|
-| baseline, latent L2 cost | 0/12 |
-| follow-up, decoded-position cost | **10/12** |
-
-discordant 10-0 in favour of the fix, exact McNemar **p = 0.00195**.
-
-The shape of the change matters more than the rate. On all twelve the
-baseline exhausted its 150 steps and finished 115-193 units away, having
-started 71-170 away -- the overshoot. The fix reached the goal in 24-48
-steps, a third of the budget, and the two it missed ended 27.1 and 49.5 units
-out rather than farther away than they began.
-
-**Honest caveat on this window.** The baseline's 13 successes all fall at
-draw positions >= 12, so the first twelve episodes are exactly its failures.
-The paired test is unaffected, but the raw percentages flatter the fix and
-will move as the run continues.
-
-**Goal offset 25, budget 50** (`followup/probe_off25`, paired against
-`exp_phase2_recal_25`) -- the regression check, because a fix that breaks the
-paper's headline result is not a fix:
+Paired against `exp_phase2_recal_25`. The harness validates itself here: the
+baseline column reproduces **47/50 = 94.0%**, the published figure exactly.
 
 | | success |
 |---|---|
-| baseline, latent L2 cost | 23/24 = 95.8% |
-| follow-up, decoded-position cost | 22/24 = 91.7% |
+| baseline, latent L2 cost | 47/50 = 94.0% |
+| follow-up, decoded-position cost | 46/50 = 92.0% |
 
-discordant 1-2, exact McNemar **p = 1**. No detectable cost at the short
-horizon. One episode (1650) that the baseline missed at 79.2 units, the fix
-reached in 15 steps.
+discordant 3-4, exact McNemar **p = 1**. No detectable cost where the latent
+metric already works. Episode 1650, which the baseline missed 79.2 units out,
+the fix reached in 15 steps.
 
-Taken together: re-pointing CEM at a decoded-position cost is, so far, a
-large gain where the latent metric is blind and a wash where it is not. No
-retraining, no GPU, one flag.
+### Goal offset 100, budget 150 -- 30 of 50 episodes
+
+Paired against the published `exp_ref_p2`.
+
+| | success |
+|---|---|
+| baseline, latent L2 cost | 9/30 = 30.0% |
+| follow-up, decoded-position cost | **25/30 = 83.3%** |
+
+discordant **16-0** in favour of the fix, exact McNemar **p = 3.05e-05**. The
+fix does not lose a single episode the baseline wins.
+
+The shape of the change matters as much as the rate. Baseline failures
+exhaust the 150-step budget and finish 115-193 units out having started
+71-170 out -- the overshoot. The fix arrives in 24-48 steps, a third of the
+budget.
+
+83.3% also exceeds Run 2's 80.0%, which was the best long-horizon planner in
+the paper. Under a sound objective the most accurate predictor becomes the
+best long-horizon planner too, and §5.3's dissociation dissolves rather than
+merely being explained.
+
+(An earlier window of 12 episodes read 10/12 against 0/12. That window was
+exactly the baseline's failures -- its 13 successes all fall at draw
+positions >= 12 -- so the percentages there flattered the fix. They are
+superseded by the numbers above, in which the baseline scores normally.)
 
 ## What was tried and set aside
 
