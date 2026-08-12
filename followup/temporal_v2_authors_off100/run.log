@@ -1,0 +1,35 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (AUTHORS_CEM)  --  ..
+======================================================================
+MODEL: the AUTHORS' released checkpoint (calibration run)
+  authors' checkpoint: 18.03 M params, history_size 3, actions -> repeat into 10, pixels imagenet
+  driving spec: ../../authors_driving_spec.json (first-2 and last-2 padding were indistinguishable; stated as a deviation)
+  every other protocol element is unchanged from our own run
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.012 (threshold 1.0) -> pass
+
+episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
+
+cost: LEARNED TEMPORAL DISTANCE from ../../followup/temporal_head_v2_authors.pt
+  trained on within-episode frame separation; no position supervision
+  ep  1/50 (# 4022): missed  in 150 steps, final dist  104.4, start-goal  105.5
+  ep  2/50 (# 5113): missed  in 150 steps, final dist  153.1, start-goal  139.2
+  ep  3/50 (# 4514): missed  in 150 steps, final dist   26.6, start-goal  118.6
+  ep  4/50 (#  925): missed  in 150 steps, final dist  107.1, start-goal   86.8
+  ep  5/50 (# 9999): missed  in 150 steps, final dist  139.8, start-goal  169.8
+  ep  6/50 (# 9702): REACHED in 120 steps, final dist   14.6, start-goal   72.2
+  ep  7/50 (# 6399): missed  in 150 steps, final dist   96.6, start-goal   84.7
+  ep  8/50 (# 7000): missed  in 150 steps, final dist  112.4, start-goal   87.7
+  ep  9/50 (# 2745): missed  in 150 steps, final dist   79.8, start-goal  120.7
+  ep 10/50 (# 4482): missed  in 150 steps, final dist  110.2, start-goal  164.1
+  ep 11/50 (# 3564): REACHED in 53 steps, final dist   15.9, start-goal  129.1
+  ep 12/50 (# 6770): missed  in 150 steps, final dist   56.7, start-goal   71.0
+  ep 13/50 (# 4327): missed  in 150 steps, final dist   56.0, start-goal  103.6
+  ep 14/50 (#  701): REACHED in 21 steps, final dist   13.9, start-goal  113.8
+  ep 15/50 (# 7818): REACHED in 25 steps, final dist   14.9, start-goal  123.2
+  ep 16/50 (# 5237): missed  in 150 steps, final dist  108.1, start-goal   96.1
+  ep 17/50 (# 4999): missed  in 150 steps, final dist  107.6, start-goal  133.5
+  ep 18/50 (# 7586): missed  in 150 steps, final dist  101.7, start-goal  124.3
+  ep 19/50 (# 2002): REACHED in 54 steps, final dist   13.7, start-goal   81.2
+  ep 20/50 (# 8359): REACHED in 24 steps, final dist   14.6, start-goal   64.2

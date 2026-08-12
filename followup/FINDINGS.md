@@ -313,6 +313,50 @@ cost has to be trained on the distribution the planner will evaluate it on. We
 found it only because the repair failed on a second checkpoint; on ours the
 two distributions happened to coincide and the requirement was invisible.
 
+## 9. Efficiency: the same gain under a third of the budget
+
+Goal offset 100 under the repository's own 50-step budget, paired against the
+published `exp_phase2_recal`, whose baseline column reproduces 10/50 = 20.0%
+exactly:
+
+| | success |
+|---|---|
+| baseline, latent L2 cost | 10/50 = 20.0% |
+| temporal cost | **46/50 = 92.0%** |
+
+discordant 37-1, exact McNemar **p = 2.8e-10**.
+
+92% of hundred-step goals are reached inside fifty environment steps. The
+repair is not buying success with time.
+
+## 10. Where the learned cost does NOT win
+
+On the authors' released checkpoint the learned cost underperforms the linear
+position probe, and the v2 fix of §8 does not close it:
+
+| objective on the authors' weights | offset 100, budget 150 |
+|---|---|
+| published latent L2 | 7/50 = 14.0% |
+| decoded position (linear probe) | **35/50 = 70.0%** |
+| learned temporal head v1 | far worse; stopped early |
+| learned temporal head v2 | 6/20 = 30.0% (partial) |
+
+v2 removed the distribution mismatch -- +11% degradation on imagined pairs
+instead of +74% -- and planning improved over v1, but not to the probe's
+level.
+
+The reading we take from this: **a learned cost is the better objective only
+where the predictor is good enough to support it.** Our checkpoint's one-step
+error is 0.116 and the learned cost wins decisively. The authors' is 0.410;
+imagination drifts, and a two-parameter-per-output linear map is more robust
+to that drift than an MLP, however well the MLP is trained. Fixing the
+training distribution helps and does not rescue it.
+
+This is a limitation of the repair, not of the diagnosis. The diagnosis --
+that the published objective saturates and inverts, and is the binding
+constraint -- holds on both checkpoints. What differs is which replacement
+objective is safe to use.
+
 ## What was tried and set aside
 
 - **Planning horizon 15** (`--plan-horizon 15`): motivated by §1, stopped

@@ -1,0 +1,35 @@
+  authors' checkpoint: 18.03 M params, history_size 3, actions -> repeat into 10, pixels imagenet
+  driving spec: authors_driving_spec.json (first-2 and last-2 padding were indistinguishable; stated as a deviation)
+  20/120 episodes, 3,240 pairs
+  40/120 episodes, 6,480 pairs
+  60/120 episodes, 9,720 pairs
+  80/120 episodes, 12,960 pairs
+  100/120 episodes, 16,200 pairs
+  120/120 episodes, 19,440 pairs
+
+19,440 pairs: 7,920 real x real, 11,520 imagined x real
+train 13,608 | held out 5,832 (disjoint episodes)
+  epoch   20 train   8.426 held-out   9.86 best   9.86
+  epoch   40 train   6.469 held-out   8.35 best   8.35
+  epoch   60 train   5.717 held-out   7.94 best   7.94
+  epoch   80 train   4.979 held-out   7.90 best   7.87
+  epoch  100 train   3.974 held-out   8.11 best   7.87
+  epoch  108 train   3.749 held-out   8.16 best   7.87
+  early stop at 108
+======================================================================
+TEMPORAL HEAD v2 (real + imagined pairs)  --  authors_driving_spec.json
+======================================================================
+  7,920 real x real, 11,520 imagined x real
+  held-out MAE overall            : 7.87 frames
+  held-out MAE, real x real      : 7.37 frames  (2,376 pairs)
+  held-out MAE, imagined x real  : 8.21 frames  (3,456 pairs)
+
+  The second number is the one that matters: it is the distribution CEM
+  scores at planning time.
+
+  v1 head (followup/temporal_head_authors.pt), trained on real pairs only,
+  evaluated on these same held-out pairs:
+    v1 MAE, real x real      : 10.37 frames
+    v1 MAE, imagined x real  : 18.04 frames
+
+wrote followup/temporal_head_v2_authors.txt and followup/temporal_head_v2_authors.pt

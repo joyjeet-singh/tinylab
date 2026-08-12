@@ -1,0 +1,15 @@
+======================================================================
+TEMPORAL HEAD v2 (real + imagined pairs)  --  authors_driving_spec.json
+======================================================================
+  7,920 real x real, 11,520 imagined x real
+  held-out MAE overall            : 7.87 frames
+  held-out MAE, real x real      : 7.37 frames  (2,376 pairs)
+  held-out MAE, imagined x real  : 8.21 frames  (3,456 pairs)
+
+  The second number is the one that matters: it is the distribution CEM
+  scores at planning time.
+
+  v1 head (followup/temporal_head_authors.pt), trained on real pairs only,
+  evaluated on these same held-out pairs:
+    v1 MAE, real x real      : 10.37 frames
+    v1 MAE, imagined x real  : 18.04 frames
