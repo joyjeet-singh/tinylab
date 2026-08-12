@@ -15,3 +15,6 @@ directory with 50/50 episodes.
 | `probe_h10_off100` | 3/50 | planning horizon 10 with the probe cost; superseded once the temporal cost reached 98.0% at horizon 5, so the extra lookahead had nothing left to buy |
 | `sub3_off100` | 3/50 | oracle subgoal decomposition. It worked in a smoke test, but subgoals came from the recorded trajectory — privileged information a deployed planner would not have. The probe and temporal costs need none, so this was dropped |
 | `temporal_authors_off100` | 8/50 | the v1 temporal head on the authors' weights. Superseded by the v2 head once the v1 head was shown to degrade 69% on imagined embeddings, which is the distribution the planner scores |
+| `h15_off100` | 0/50 | planning horizon 15. Stopped after ~35 minutes without completing an episode; the objective was still the blind one at that point, so a longer reach could not have helped much |
+| `smoke` | 3 episodes | two-episode-scale smoke test of the subgoal harness, run only to check the code path |
+| `probe_smoke` | 2 episodes | smoke test of the probe-cost harness, likewise |
