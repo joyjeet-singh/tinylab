@@ -19,3 +19,22 @@ fitting position probe on 400 rendered positions
   ep  4/50 (#  925): missed  in 150 steps, final dist   36.9, start-goal   86.8
   ep  5/50 (# 9999): REACHED in 35 steps, final dist   13.5, start-goal  169.8
   ep  6/50 (# 9702): missed  in 150 steps, final dist   45.8, start-goal   72.2
+  ep  7/50 (# 6399): missed  in 150 steps, final dist   46.8, start-goal   84.7
+  ep  8/50 (# 7000): REACHED in 43 steps, final dist   15.9, start-goal   87.7
+  ep  9/50 (# 2745): REACHED in 118 steps, final dist   13.3, start-goal  120.7
+  ep 10/50 (# 4482): REACHED in 43 steps, final dist   15.1, start-goal  164.1
+  ep 11/50 (# 3564): REACHED in 100 steps, final dist   15.5, start-goal  129.1
+  ep 12/50 (# 6770): missed  in 150 steps, final dist   86.2, start-goal   71.0
+  ep 13/50 (# 4327): REACHED in 20 steps, final dist   13.7, start-goal  103.6
+  ep 14/50 (#  701): REACHED in 23 steps, final dist   11.1, start-goal  113.8
+  ep 15/50 (# 7818): REACHED in 24 steps, final dist   13.0, start-goal  123.2
+  ep 16/50 (# 5237): REACHED in 18 steps, final dist   12.9, start-goal   96.1
+  ep 17/50 (# 4999): REACHED in 38 steps, final dist   13.6, start-goal  133.5
+  ep 18/50 (# 7586): missed  in 150 steps, final dist  101.7, start-goal  124.3
+  ep 19/50 (# 2002): REACHED in 44 steps, final dist   16.0, start-goal   81.2
+  ep 20/50 (# 8359): REACHED in 22 steps, final dist   13.5, start-goal   64.2
+  ep 21/50 (# 5542): missed  in 150 steps, final dist  103.2, start-goal   94.9
+  ep 22/50 (# 8204): REACHED in 23 steps, final dist   12.4, start-goal   65.5
+  ep 23/50 (# 1674): REACHED in 24 steps, final dist   14.2, start-goal  141.0
+  ep 24/50 (# 6922): REACHED in 46 steps, final dist   12.0, start-goal  149.0
+  ep 25/50 (# 8872): missed  in 150 steps, final dist  110.8, start-goal  155.0

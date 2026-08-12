@@ -219,6 +219,22 @@ exactly the baseline's failures -- its 13 successes all fall at draw
 positions >= 12 -- so the percentages there flattered the fix. Superseded by
 the complete run above.)
 
+### The authors' own released weights, goal offset 100 -- 25 of 50 episodes
+
+Paired against the published `exp_ref_protocol` (7/50 = 14.0%). These are the
+original authors' weights, not ours; only the planner's objective differs.
+
+| | success |
+|---|---|
+| baseline, latent L2 cost | 3/25 = 12.0% |
+| follow-up, decoded-position cost | **16/25 = 64.0%** |
+
+discordant **13-0**, exact McNemar **p = 2.4e-04**.
+
+So this is not a repair for a defect we introduced. The metric pathology is in
+the released method (§3b), and re-pointing the objective repairs planning on
+the authors' own checkpoint too.
+
 ### Summary
 
 | protocol | baseline | decoded-position cost | McNemar |
