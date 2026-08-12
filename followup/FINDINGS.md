@@ -187,32 +187,47 @@ discordant 3-4, exact McNemar **p = 1**. No detectable cost where the latent
 metric already works. Episode 1650, which the baseline missed 79.2 units out,
 the fix reached in 15 steps.
 
-### Goal offset 100, budget 150 -- 30 of 50 episodes
+### Goal offset 100, budget 150 -- COMPLETE, n = 50
 
-Paired against the published `exp_ref_p2`.
+Paired against the published `exp_ref_p2`. The baseline column reproduces
+**13/50 = 26.0%**, the published figure exactly, as it did at offset 25.
 
 | | success |
 |---|---|
-| baseline, latent L2 cost | 9/30 = 30.0% |
-| follow-up, decoded-position cost | **25/30 = 83.3%** |
+| baseline, latent L2 cost | 13/50 = 26.0% |
+| follow-up, decoded-position cost | **44/50 = 88.0%** |
 
-discordant **16-0** in favour of the fix, exact McNemar **p = 3.05e-05**. The
-fix does not lose a single episode the baseline wins.
+discordant **31-0** in favour of the fix, exact McNemar **p = 9.3e-10**. It
+wins 31 episodes the baseline lost and loses none that the baseline won.
 
 The shape of the change matters as much as the rate. Baseline failures
 exhaust the 150-step budget and finish 115-193 units out having started
-71-170 out -- the overshoot. The fix arrives in 24-48 steps, a third of the
-budget.
+71-170 out -- the overshoot. The fix typically arrives in 24-49 steps, a
+third of the budget.
 
-83.3% also exceeds Run 2's 80.0%, which was the best long-horizon planner in
-the paper. Under a sound objective the most accurate predictor becomes the
-best long-horizon planner too, and §5.3's dissociation dissolves rather than
-merely being explained.
+Two comparisons worth stating plainly:
+
+- 88.0% beats **Run 2's 80.0%**, the best long-horizon planner in the paper.
+  Under a sound objective the most accurate predictor becomes the best
+  long-horizon planner as well, so §5.3's dissociation does not merely get
+  explained -- it dissolves.
+- 88.0% at offset 100 approaches the paper's **94.0% at offset 25**. The
+  long-horizon deficit was mostly the objective, not the horizon.
 
 (An earlier window of 12 episodes read 10/12 against 0/12. That window was
 exactly the baseline's failures -- its 13 successes all fall at draw
-positions >= 12 -- so the percentages there flattered the fix. They are
-superseded by the numbers above, in which the baseline scores normally.)
+positions >= 12 -- so the percentages there flattered the fix. Superseded by
+the complete run above.)
+
+### Summary
+
+| protocol | baseline | decoded-position cost | McNemar |
+|---|---|---|---|
+| offset 25, budget 50 | 47/50 = 94.0% | 46/50 = 92.0% | p = 1 |
+| offset 100, budget 150 | 13/50 = 26.0% | **44/50 = 88.0%** | **p = 9.3e-10** |
+
+No retraining, no GPU, one flag. The encoder and predictor are the released
+weights, unmodified; only the planner's objective changed.
 
 ## What was tried and set aside
 

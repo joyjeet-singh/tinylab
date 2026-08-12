@@ -13,3 +13,9 @@ episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later
 
 fitting position probe on 400 rendered positions
   probe fit R^2 0.9971 (in-sample), mean abs error 1.50 arena units
+  ep  1/50 (# 4022): missed  in 150 steps, final dist  119.1, start-goal  105.5
+  ep  2/50 (# 5113): REACHED in 42 steps, final dist   14.4, start-goal  139.2
+  ep  3/50 (# 4514): missed  in 150 steps, final dist   92.1, start-goal  118.6
+  ep  4/50 (#  925): missed  in 150 steps, final dist   36.9, start-goal   86.8
+  ep  5/50 (# 9999): REACHED in 35 steps, final dist   13.5, start-goal  169.8
+  ep  6/50 (# 9702): missed  in 150 steps, final dist   45.8, start-goal   72.2
