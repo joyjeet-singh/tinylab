@@ -87,13 +87,18 @@ def main():
                    help="authors_driving_spec.json: evaluate the AUTHORS' "
                         "released checkpoint instead of ours, with every "
                         "other protocol element unchanged")
-    p.add_argument("--cost", choices=["latent", "probe"], default="latent",
+    p.add_argument("--cost", choices=["latent", "probe", "temporal"],
+                   default="latent",
                    help="CEM objective. 'latent' is squared L2 between "
                         "embeddings, the published behaviour. 'probe' decodes "
                         "position from the imagined embedding with a ridge "
                         "probe and measures distance there -- latent L2 "
                         "saturates by ~80 units and inverts past ~120, which "
                         "is where offset-100 planning overshoots.")
+    p.add_argument("--temporal-head", default=None,
+                   help="checkpoint written by followup_temporal_head.py; "
+                        "a cost learned from frame separation alone, with "
+                        "no position supervision anywhere")
     p.add_argument("--probe-fit", type=int, default=400,
                    help="positions sampled to fit the probe")
     p.add_argument("--plan-horizon", type=int, default=5,
@@ -363,7 +368,53 @@ def main():
     say(f"\nepisodes: {len(eps)} sampled (seed {args.seed}){PROTO_FILTER}"
         f"; start = {PROTO_START}; goal = {PROTO_GOAL}")
 
-    if args.cost == "probe" and not args.random:
+    if args.cost == "temporal" and not args.random:
+        import torch.nn as _nn
+        assert args.temporal_head, "--cost temporal needs --temporal-head"
+
+        class _TemporalHead(_nn.Module):
+            def __init__(self, d):
+                super().__init__()
+                self.net = _nn.Sequential(
+                    _nn.Linear(2 * d, 256), _nn.ReLU(),
+                    _nn.Linear(256, 128), _nn.ReLU(),
+                    _nn.Linear(128, 1), _nn.Softplus())
+
+            def forward(self, za, zb):
+                return 0.5 * (self.net(torch.cat([za, zb], -1))
+                              + self.net(torch.cat([zb, za], -1))).squeeze(-1)
+
+        _blob = torch.load(args.temporal_head, map_location="cpu")
+        _head = _TemporalHead(_blob["dim"])
+        _head.load_state_dict(_blob["state_dict"])
+        _head.eval()
+        say(f"\ncost: LEARNED TEMPORAL DISTANCE from {args.temporal_head}")
+        say("  trained on within-episode frame separation; no position "
+            "supervision")
+
+        class TemporalCostCEMPlanner(CEMPlanner):
+            """CEM scoring predicted steps-to-reach, not embedding distance."""
+
+            def __init__(self, *a, head=None, **kw):
+                super().__init__(*a, **kw)
+                self.head = head
+
+            @torch.no_grad()
+            def _imagine_cost(self, ctx_emb, ctx_act, cand, goal_emb):
+                S = cand.size(0)
+                emb = ctx_emb.expand(S, -1, -1).clone()
+                act = ctx_act.expand(S, -1, -1).clone()
+                for t in range(self.horizon):
+                    act = torch.cat([act, cand[:, t:t + 1]], dim=1)
+                    act_emb = self.model.action_encoder(act)
+                    HS = self.model.history_size
+                    pred = self.model.predict(emb[:, -HS:],
+                                              act_emb[:, -HS:])[:, -1:]
+                    emb = torch.cat([emb, pred], dim=1)
+                return self.head(emb[:, -1], goal_emb.expand(S, -1))
+
+        _PlannerCls, _extra = TemporalCostCEMPlanner, {"head": _head}
+    elif args.cost == "probe" and not args.random:
         # Fit a ridge probe embedding -> position on rendered real positions.
         # Frozen encoder; nothing about the world model changes.
         say(f"\nfitting position probe on {args.probe_fit} rendered positions")

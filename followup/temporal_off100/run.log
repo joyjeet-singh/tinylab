@@ -11,8 +11,8 @@ domain guard (precondition):
 
 episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
 
-fitting position probe on 400 rendered positions
-  probe fit R^2 0.9994 (in-sample), mean abs error 0.68 arena units
-  ep  1/50 (# 4022): REACHED in 95 steps, final dist   15.0, start-goal  105.5
-  ep  2/50 (# 5113): missed  in 150 steps, final dist   41.0, start-goal  139.2
-  ep  3/50 (# 4514): missed  in 150 steps, final dist   26.9, start-goal  118.6
+cost: LEARNED TEMPORAL DISTANCE from ../../followup/temporal_head_phase2.pt
+  trained on within-episode frame separation; no position supervision
+  ep  1/50 (# 4022): REACHED in 44 steps, final dist   14.6, start-goal  105.5
+  ep  2/50 (# 5113): REACHED in 24 steps, final dist   13.9, start-goal  139.2
+  ep  3/50 (# 4514): REACHED in 65 steps, final dist   15.6, start-goal  118.6

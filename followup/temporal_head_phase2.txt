@@ -1,0 +1,31 @@
+======================================================================
+LEARNED TEMPORAL-DISTANCE HEAD  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+trained on within-episode frame separation only; no position supervision
+
+  held-out pairs (disjoint episodes) : 2,160
+  held-out MAE                        : 12.80 frames
+
+  Pearson r vs TRUE SPATIAL distance
+    latent L2 (the current objective) : 0.4844
+    learned temporal head             : 0.8191
+
+      true dist   pairs   latent L2   temporal head
+     0-20          520       15.53           10.97
+    20-40          531       19.33           24.64
+    40-60          480       19.73           40.06
+    60-80          321       20.13           49.52
+    80-100         147       20.47           56.24
+   100-120         102       21.30           72.43
+   120-150          54       21.07           80.58
+
+  VERDICT
+  latent L2 monotone in true distance   : False
+  temporal head monotone                : True
+  spread across 80-150 units:
+    latent L2         +2.9%
+    temporal head    +43.3%
+
+  The repair does not depend on TwoRoom's readable state. A cost
+  learned from temporal separation alone orders distance where the
+  embedding metric does not.
