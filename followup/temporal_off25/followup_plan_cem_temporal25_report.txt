@@ -1,8 +1,6 @@
 ======================================================================
 REAL-ENVIRONMENT PLANNER EVAL (CEM)  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
 ======================================================================
-  loader convention (manifest): dense=True imagenet=True zscore=True
-  ADAPTER ACTIVE: pixels ImageNet, actions 2 -> 10 by repeat + z-score, history_size 3
   planner action space pinned to 2-D (the environment's); the adapter widens each action to the model's 10-D input
 model: vit at 224px (ckpt_best_recal.pt, epoch field 9)
 
@@ -82,5 +80,3 @@ DEVIATIONS from the reference protocol (state wherever quoted):
   matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,
   budget 50, goal_offset 25, img 224, goal-image
   convention.
-
-wrote followup_plan_cem_temporal25.json and followup_plan_cem_temporal25_report.txt

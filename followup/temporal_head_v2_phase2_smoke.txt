@@ -1,0 +1,15 @@
+======================================================================
+TEMPORAL HEAD v2 (real + imagined pairs)  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  1,980 real x real, 2,880 imagined x real
+  held-out MAE overall            : 10.69 frames
+  held-out MAE, real x real      : 10.78 frames  (594 pairs)
+  held-out MAE, imagined x real  : 10.63 frames  (864 pairs)
+
+  The second number is the one that matters: it is the distribution CEM
+  scores at planning time.
+
+  v1 head (followup/temporal_head_phase2.pt), trained on real pairs only,
+  evaluated on these same held-out pairs:
+    v1 MAE, real x real      : 12.47 frames
+    v1 MAE, imagined x real  : 12.86 frames

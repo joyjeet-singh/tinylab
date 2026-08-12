@@ -282,6 +282,37 @@ because it is not an approximation.
 offset 25 under the published objective. The long-horizon deficit was not a
 horizon problem.
 
+## 8. The learned cost must be trained on what the planner scores
+
+The v1 head is trained on pairs of ENCODED REAL frames. At planning time CEM
+scores (IMAGINED embedding, encoded goal). Those coincide only to the extent
+the predictor is accurate, and that is checkable.
+
+Evaluated on identical held-out pairs, split by which kind:
+
+| checkpoint | one-step error | v1 head, real x real | v1 head, imagined x real | degradation |
+|---|---|---|---|---|
+| ours, phase2 recal | 0.116 | 12.47 | 12.86 | **+3%** |
+| authors' released | 0.410 | 10.38 | **17.55** | **+69%** |
+
+Our predictor is accurate enough that imagined embeddings stay near the
+manifold the head was fit on, so a head trained on real pairs transfers.
+The authors' predictor drifts further, the head extrapolates, and the cost
+becomes unreliable exactly where planning needs it. That is why the same
+recipe gave 98.0% on our weights and underperformed a linear position probe
+on theirs -- a linear map degrades off-manifold far more gracefully than an
+MLP.
+
+`followup_temporal_head_v2.py` trains on both kinds of pair, rolling the
+predictor forward under the recorded block-mean actions exactly as the planner
+drives it. On the authors' checkpoint that removes the gap: 10.85 real against
+11.17 imagined, a +3% degradation instead of +69%.
+
+**This is a real condition on the method, not a detail.** A learned planning
+cost has to be trained on the distribution the planner will evaluate it on. We
+found it only because the repair failed on a second checkpoint; on ours the
+two distributions happened to coincide and the requirement was invisible.
+
 ## What was tried and set aside
 
 - **Planning horizon 15** (`--plan-horizon 15`): motivated by §1, stopped

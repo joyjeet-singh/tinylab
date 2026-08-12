@@ -1,20 +1,3 @@
-  authors' checkpoint: 18.03 M params, history_size 3, actions -> repeat into 10, pixels imagenet
-  driving spec: authors_driving_spec.json (first-2 and last-2 padding were indistinguishable; stated as a deviation)
-encoded 2100 real frames from 150 episodes
-13,650 within-episode pairs, separation 1-100 frames
-train pairs 9,555 | held-out pairs 4,095 (disjoint episodes)
-  epoch   10  train  21.075  held-out MAE  21.59  best  20.92
-  epoch   20  train  18.439  held-out MAE  19.20  best  19.20
-  epoch   30  train  16.013  held-out MAE  17.49  best  17.49
-  epoch   40  train  13.272  held-out MAE  15.61  best  15.61
-  epoch   50  train  10.720  held-out MAE  13.79  best  13.79
-  epoch   60  train   8.918  held-out MAE  12.49  best  12.49
-  epoch   70  train   7.808  held-out MAE  11.91  best  11.91
-  epoch   80  train   7.032  held-out MAE  11.80  best  11.79
-  epoch   90  train   6.238  held-out MAE  11.82  best  11.79
-  epoch  100  train   5.672  held-out MAE  11.89  best  11.79
-  epoch  107  train   5.386  held-out MAE  11.91  best  11.79
-  early stop at epoch 107; best held-out MAE 11.79
 ======================================================================
 LEARNED TEMPORAL-DISTANCE HEAD  --  authors_driving_spec.json
 ======================================================================
@@ -47,5 +30,3 @@ trained on within-episode frame separation only; no position supervision
   The repair does not depend on TwoRoom's readable state. A cost
   learned from temporal separation alone orders distance where the
   embedding metric does not.
-
-wrote followup/temporal_head_authors.txt and followup/temporal_head_authors.pt
