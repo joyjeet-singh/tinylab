@@ -29,7 +29,9 @@ ap.add_argument("--ckpt", default="ckpt_best_recal.pt")
 ap.add_argument("--h5", default="~/Downloads/tworoom.h5")
 ap.add_argument("--episodes", type=int, default=60)
 ap.add_argument("--per-episode", type=int, default=16)
-ap.add_argument("--epochs", type=int, default=400)
+ap.add_argument("--epochs", type=int, default=300)
+ap.add_argument("--batch", type=int, default=4096)
+ap.add_argument("--patience", type=int, default=30)
 ap.add_argument("--seed", type=int, default=7)
 ap.add_argument("--save", default="followup/temporal_head.pt")
 ap.add_argument("--out", default="followup/temporal_head.txt")
@@ -136,20 +138,44 @@ class TemporalHead(nn.Module):
 
 head = TemporalHead(Z.shape[1])
 opt = torch.optim.Adam(head.parameters(), lr=1e-3)
+sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, factor=0.5, patience=12)
 Za, Zb = Z[ii], Z[jj]
 y = torch.from_numpy(delta)
 Za_tr, Zb_tr, y_tr = Za[tr], Zb[tr], y[tr]
+ntr = len(y_tr)
 
+# Minibatch SGD with early stopping on the held-out episodes. Full-batch
+# descent for a fixed step count leaves the head under-fit on larger samples
+# and gives no signal about when to stop.
+best, best_state, patience = float("inf"), None, 0
 for ep_i in range(args.epochs):
-    opt.zero_grad()
-    loss = nn.functional.smooth_l1_loss(head(Za_tr, Zb_tr), y_tr)
-    loss.backward()
-    opt.step()
-    if (ep_i + 1) % 100 == 0:
-        with torch.no_grad():
-            v = nn.functional.l1_loss(head(Za[te], Zb[te]), y[te])
-        print(f"  epoch {ep_i+1:>4}  train {loss.item():7.3f}  held-out MAE {v.item():6.2f} frames")
+    perm = torch.randperm(ntr)
+    tot = 0.0
+    for k in range(0, ntr, args.batch):
+        b = perm[k:k + args.batch]
+        opt.zero_grad()
+        loss = nn.functional.smooth_l1_loss(head(Za_tr[b], Zb_tr[b]), y_tr[b])
+        loss.backward()
+        opt.step()
+        tot += loss.item() * len(b)
+    with torch.no_grad():
+        v = nn.functional.l1_loss(head(Za[te], Zb[te]), y[te]).item()
+    sched.step(v)
+    if v < best - 1e-3:
+        best, best_state, patience = v, {k: t.clone() for k, t in
+                                         head.state_dict().items()}, 0
+    else:
+        patience += 1
+    if (ep_i + 1) % 10 == 0 or patience >= args.patience:
+        print(f"  epoch {ep_i+1:>4}  train {tot/ntr:7.3f}  "
+              f"held-out MAE {v:6.2f}  best {best:6.2f}")
+    if patience >= args.patience:
+        print(f"  early stop at epoch {ep_i+1}; best held-out MAE {best:.2f}")
+        break
 
+if best_state is not None:
+    head.load_state_dict(best_state)
+head.eval()
 torch.save({"state_dict": head.state_dict(), "dim": Z.shape[1]}, args.save)
 
 # ---- evaluate the resulting METRIC against true spatial distance ------
