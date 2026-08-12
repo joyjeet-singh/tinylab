@@ -14,3 +14,26 @@ episodes: 50 sampled (seed 42); start = episode frame 0; goal = 25 frames later 
 fitting position probe on 400 rendered positions
   probe fit R^2 0.9994 (in-sample), mean abs error 0.68 arena units
   ep  1/50 (# 4014): missed  in 50 steps, final dist   19.3, start-goal   44.6
+  ep  2/50 (# 5115): REACHED in 15 steps, final dist   15.5, start-goal   53.3
+  ep  3/50 (# 4490): REACHED in 22 steps, final dist   15.4, start-goal   46.5
+  ep  4/50 (#  888): REACHED in 22 steps, final dist   11.3, start-goal   58.9
+  ep  5/50 (# 7783): REACHED in  4 steps, final dist   14.8, start-goal   28.4
+  ep  6/50 (# 9703): REACHED in 17 steps, final dist   15.9, start-goal   26.8
+  ep  7/50 (# 6423): REACHED in 23 steps, final dist   15.0, start-goal   54.0
+  ep  8/50 (# 7000): REACHED in 23 steps, final dist   12.4, start-goal   34.6
+  ep  9/50 (# 2764): REACHED in  6 steps, final dist   15.8, start-goal   17.2
+  ep 10/50 (# 4455): REACHED in 22 steps, final dist   14.0, start-goal   55.4
+  ep 11/50 (# 3543): missed  in 50 steps, final dist   52.3, start-goal   47.4
+  ep 12/50 (# 6778): REACHED in 20 steps, final dist   14.9, start-goal   48.7
+  ep 13/50 (# 4310): REACHED in 20 steps, final dist   16.0, start-goal   34.7
+  ep 14/50 (#  678): REACHED in 23 steps, final dist   14.1, start-goal   31.3
+  ep 15/50 (# 7833): REACHED in 15 steps, final dist   14.5, start-goal   49.4
+  ep 16/50 (# 5244): REACHED in 18 steps, final dist   16.0, start-goal   48.3
+  ep 17/50 (# 4989): REACHED in 21 steps, final dist   14.4, start-goal   35.8
+  ep 18/50 (# 7574): REACHED in 21 steps, final dist   13.9, start-goal   61.4
+  ep 19/50 (# 2006): REACHED in 22 steps, final dist   15.5, start-goal   65.4
+  ep 20/50 (# 8371): REACHED in 13 steps, final dist   15.9, start-goal   44.4
+  ep 21/50 (# 5536): REACHED in 24 steps, final dist   14.2, start-goal   32.8
+  ep 22/50 (# 8209): REACHED in 14 steps, final dist   15.6, start-goal   61.3
+  ep 23/50 (# 1650): REACHED in 15 steps, final dist   15.6, start-goal   56.9
+  ep 24/50 (# 6944): REACHED in 12 steps, final dist   14.3, start-goal   22.0

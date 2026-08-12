@@ -15,3 +15,14 @@ fitting position probe on 400 rendered positions
   probe fit R^2 0.9994 (in-sample), mean abs error 0.68 arena units
   ep  1/50 (# 4022): REACHED in 48 steps, final dist   10.4, start-goal  105.5
   ep  2/50 (# 5113): REACHED in 24 steps, final dist   13.2, start-goal  139.2
+  ep  3/50 (# 4514): missed  in 150 steps, final dist   27.1, start-goal  118.6
+  ep  4/50 (#  925): REACHED in 28 steps, final dist   14.1, start-goal   86.8
+  ep  5/50 (# 9999): REACHED in 33 steps, final dist   15.6, start-goal  169.8
+  ep  6/50 (# 9702): REACHED in 47 steps, final dist   14.0, start-goal   72.2
+  ep  7/50 (# 6399): REACHED in 47 steps, final dist   12.1, start-goal   84.7
+  ep  8/50 (# 7000): REACHED in 24 steps, final dist   15.2, start-goal   87.7
+  ep  9/50 (# 2745): REACHED in 47 steps, final dist   15.1, start-goal  120.7
+  ep 10/50 (# 4482): REACHED in 47 steps, final dist   12.7, start-goal  164.1
+  ep 11/50 (# 3564): REACHED in 25 steps, final dist   11.3, start-goal  129.1
+  ep 12/50 (# 6770): missed  in 150 steps, final dist   49.5, start-goal   71.0
+  ep 13/50 (# 4327): REACHED in 23 steps, final dist   10.8, start-goal  103.6

@@ -112,6 +112,28 @@ ones -- phase2 and the authors' own -- use the reference pipeline, with
 prediction appear to cost the metric its long-range ordering. That is a
 hypothesis from four checkpoints, not a demonstrated cause.
 
+## 3c. A partial account of the extra rank dimensions
+
+§1 also lists "any account of what the extra rank dimensions encode" as **not
+claimed**. Two already-committed numbers now line up with the metric quality
+measured here:
+
+| checkpoint | effective rank (of 192) | Spearman | monotone |
+|---|---|---|---|
+| Run 0 recal | 18.6 | 0.846 | yes |
+| phase2 recal | 67.8 | 0.445 | no |
+
+`runs_archive/verified/encoder_probe_both_recal.txt` records the ranks; the
+Spearman values are from this work. The corrected pipeline spreads the
+representation over roughly 3.6x as many effective dimensions, and the
+distance ordering degrades over the same interval.
+
+This does not say what those dimensions encode. It says that whatever they
+encode, it is not distance-relevant, and it dilutes an L2 metric computed over
+all 192 of them — which is consistent with the probe result, since a two-
+dimensional linear read-out recovers position at R² 0.99 from the same vector
+that L2 cannot order. Two checkpoints; suggestive, not established.
+
 ## 4. The information is present; only the metric fails
 
 `followup/probe_metric_phase2_recal.txt` — a ridge probe fit on frozen
@@ -145,6 +167,50 @@ directly paired against the published **13/50 = 26.0%**.
 
 Early two-episode signal at a 60-step budget — a third of the baseline's —
 reached a 150.7-unit goal in 25 steps.
+
+## 6. Interim result: the fix works, and does not cost the short horizon
+
+Both runs are still in progress; these are the completed paired episodes.
+Every episode is matched -- same checkpoint, same protocol, same episode --
+so McNemar applies to the discordant pairs.
+
+**Goal offset 100, budget 150** (`followup/probe_off100`, paired against the
+published `exp_ref_p2`):
+
+| | success |
+|---|---|
+| baseline, latent L2 cost | 0/12 |
+| follow-up, decoded-position cost | **10/12** |
+
+discordant 10-0 in favour of the fix, exact McNemar **p = 0.00195**.
+
+The shape of the change matters more than the rate. On all twelve the
+baseline exhausted its 150 steps and finished 115-193 units away, having
+started 71-170 away -- the overshoot. The fix reached the goal in 24-48
+steps, a third of the budget, and the two it missed ended 27.1 and 49.5 units
+out rather than farther away than they began.
+
+**Honest caveat on this window.** The baseline's 13 successes all fall at
+draw positions >= 12, so the first twelve episodes are exactly its failures.
+The paired test is unaffected, but the raw percentages flatter the fix and
+will move as the run continues.
+
+**Goal offset 25, budget 50** (`followup/probe_off25`, paired against
+`exp_phase2_recal_25`) -- the regression check, because a fix that breaks the
+paper's headline result is not a fix:
+
+| | success |
+|---|---|
+| baseline, latent L2 cost | 23/24 = 95.8% |
+| follow-up, decoded-position cost | 22/24 = 91.7% |
+
+discordant 1-2, exact McNemar **p = 1**. No detectable cost at the short
+horizon. One episode (1650) that the baseline missed at 79.2 units, the fix
+reached in 15 steps.
+
+Taken together: re-pointing CEM at a decoded-position cost is, so far, a
+large gain where the latent metric is blind and a wash where it is not. No
+retraining, no GPU, one flag.
 
 ## What was tried and set aside
 
