@@ -254,6 +254,34 @@ baseline won: 31-0 and 28-0 on the discordant pairs.
 No retraining, no GPU, one flag. The encoder and predictor are the released
 weights, unmodified; only the planner's objective changed.
 
+## 7. Reachability, not proximity, is what the objective must measure
+
+The learned temporal head (§5) predicts spatial distance WORSE than the
+position probe -- r = 0.819 against 0.9897 -- and plans BETTER:
+
+| objective | r vs spatial distance | cross/same wall ratio | offset 100 |
+|---|---|---|---|
+| squared latent distance | 0.437 | **0.96** | 13/50 = 26.0% |
+| decoded position | 0.9897 | 1.00 by construction | 44/50 = 88.0% |
+| learned temporal head | 0.819 | **1.24** | **49/50 = 98.0%** |
+
+`followup/wall_reachability.txt`, 460,320 pairs matched on true spatial
+distance and split by whether they cross TwoRoom's dividing wall: at the same
+spatial separation the temporal head charges 24% more to cross the wall, while
+squared latent distance charges 4% LESS -- not merely blind to the wall but
+biased the wrong way.
+
+Planning success orders by the wall ratio, not by accuracy against spatial
+distance. The decoded-position cost cannot represent the wall at all --
+Euclidean distance between positions is identical whether or not a barrier
+lies between them -- and it recovers most of the gap because proximity
+approximates reachability in open space. The temporal head recovers the rest
+because it is not an approximation.
+
+98.0% at offset 100 also exceeds the 94.0% the same checkpoint reaches at
+offset 25 under the published objective. The long-horizon deficit was not a
+horizon problem.
+
 ## What was tried and set aside
 
 - **Planning horizon 15** (`--plan-horizon 15`): motivated by §1, stopped

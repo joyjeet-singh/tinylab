@@ -38,10 +38,17 @@ cost that orders distance correctly lifts goals reached at offset 100 from
 26.0% to 88.0% on our checkpoint (McNemar p = 9.3×10⁻¹⁰) and from 14.0% to
 70.0% on the authors' own weights (p = 7.5×10⁻⁹), while costing nothing at
 the short horizon where the embedding metric already worked (94.0% against
-92.0%, p = 1). The repair does not require a readable state: a cost learned
-only from how many steps apart two observed frames were, with no position
-supervision anywhere, orders distance at r = 0.819 where the embedding metric
-manages 0.484.
+92.0%, p = 1).
+
+The best objective is not the most accurate one. A cost learned only from how
+many steps apart two observed frames were — no position supervision anywhere —
+predicts *spatial* distance worse than a position probe (r = 0.819 against
+0.9897) and yet plans better, reaching **98.0%** of offset-100 goals against
+the probe's 88.0% and the baseline's 26.0%. The reason is measurable: at
+matched spatial separation it charges 24% more to cross the environment's
+dividing wall, where squared latent distance charges 4% *less*. It has learned
+reachability rather than proximity, and planning success across the three
+objectives orders exactly by how well each captures it.
 
 Nothing here was retrained and no GPU was used. The encoder and predictor are
 the released weights, unmodified; only the objective changed.
@@ -90,6 +97,11 @@ explanation, and it is not about prediction.
 
 6. **A repair with no retraining**, effective on the authors' own weights, and
    not dependent on the environment having a readable state (§7, §8).
+
+7. **Reachability, not proximity, is the right objective.** A cost that
+   predicts spatial distance worse plans better, because it charges for the
+   wall. Planning success across three objectives orders by how well each
+   captures reachability (§7.3, §8).
 
 ## Scope
 
@@ -325,6 +337,43 @@ A cost learned from temporal separation alone orders distance where the
 embedding metric does not. The repair is not a consequence of TwoRoom having
 a readable state.
 
+## 7.3 The better objective is the less accurate one
+
+The temporal head predicts spatial distance *worse* than the position probe —
+r = 0.819 against 0.9897 — and yet plans better: **98.0%** of offset-100 goals
+against the probe's 88.0% (§8). Spatial distance is not what a planner needs.
+
+TwoRoom has a dividing wall with a door, so two states can be close in space
+and far in reachability. We tested whether the temporal head knows this, by
+matching pairs on true spatial distance and splitting them by whether they lie
+in the same room or across the wall:
+
+| true distance | pairs same/cross | temporal head same → cross | ratio | latent L2 ratio |
+|---|---|---|---|---|
+| 20–40 | 62,142 / 21,713 | 23.5 → 27.2 | 1.16 | 0.87 |
+| 40–60 | 54,071 / 43,397 | 35.1 → 45.2 | 1.29 | 0.95 |
+| 60–80 | 36,724 / 51,276 | 45.0 → 56.4 | 1.25 | 0.99 |
+| 80–100 | 21,568 / 42,075 | 54.5 → 68.9 | 1.26 | 1.02 |
+
+*From `followup/wall_reachability.txt`, 460,320 pairs.*
+
+At matched spatial separation the temporal head charges **24% more** to cross
+the wall. Squared latent distance charges **4% less** — it is not merely blind
+to the wall, it is biased slightly the wrong way.
+
+This orders the three objectives exactly as their planning results do:
+
+| objective | cross/same cost ratio | offset 100 |
+|---|---|---|
+| squared latent distance | 0.96 | 26.0% |
+| decoded position | 1.00 by construction | 88.0% |
+| learned temporal head | **1.24** | **98.0%** |
+
+The decoded-position cost cannot represent the wall at all: Euclidean distance
+between positions is the same whether or not a barrier lies between them. It
+recovers most of the gap because proximity is a good proxy for reachability in
+open space. The temporal head recovers the rest because it is not a proxy.
+
 ---
 
 # 8 Results
@@ -335,25 +384,34 @@ three baseline columns reproduce their published figures exactly — 94.0%,
 26.0% and 14.0% — which is what makes the harness trustworthy rather than
 merely self-consistent. McNemar is exact on the discordant pairs.
 
-| checkpoint | protocol | baseline | decoded-position cost | discordant | McNemar |
-|---|---|---|---|---|---|
-| ours, phase2 recal | offset 25, budget 50 | 47/50 = 94.0% | 46/50 = 92.0% | 3–4 | p = 1 |
-| ours, phase2 recal | offset 100, budget 150 | 13/50 = 26.0% | **44/50 = 88.0%** | 31–0 | p = 9.3×10⁻¹⁰ |
-| authors' released | offset 100, budget 150 | 7/50 = 14.0% | **35/50 = 70.0%** | 28–0 | p = 7.5×10⁻⁹ |
+| checkpoint | protocol | objective | baseline | repaired | discordant | McNemar |
+|---|---|---|---|---|---|---|
+| ours, phase2 recal | offset 25, budget 50 | decoded position | 47/50 = 94.0% | 46/50 = 92.0% | 3–4 | p = 1 |
+| ours, phase2 recal | offset 100, budget 150 | decoded position | 13/50 = 26.0% | **44/50 = 88.0%** | 31–0 | p = 9.3×10⁻¹⁰ |
+| ours, phase2 recal | offset 100, budget 150 | **temporal head** | 13/50 = 26.0% | **49/50 = 98.0%** | 37–1 | p = 2.8×10⁻¹⁰ |
+| authors' released | offset 100, budget 150 | decoded position | 7/50 = 14.0% | **35/50 = 70.0%** | 28–0 | p = 7.5×10⁻⁹ |
 
-In neither long-horizon comparison does the repair lose a single episode the
-baseline won.
+The temporal head, which uses no position supervision at all, is the strongest
+of the three. In the decoded-position comparisons the repair never loses an
+episode the baseline won; the temporal head loses one and wins thirty-seven.
 
 **The shape of the change.** Baseline failures exhaust the 150-step budget and
 finish 115–193 units from the goal having started 71–170 away. The repair
 typically arrives in 24–49 steps, a third of the budget.
 
-**Two comparisons worth stating.** 88.0% exceeds Run 2's 80.0%, the best
-long-horizon planner among the released checkpoints; under a sound objective
-the most accurate predictor becomes the best long-horizon planner, and the
-dissociation of §5.2 dissolves rather than merely being explained. And 88.0%
-at offset 100 approaches the 94.0% the same checkpoint achieves at offset 25:
-the long-horizon deficit was mostly the objective, not the horizon.
+**Three comparisons worth stating.** 88.0% already exceeds Run 2's 80.0%, the
+best long-horizon planner among the released checkpoints; under a sound
+objective the most accurate predictor becomes the best long-horizon planner,
+and the dissociation of §5.2 dissolves rather than merely being explained.
+
+98.0% at offset 100 **exceeds the 94.0% the same checkpoint achieves at offset
+25** under the published objective. The long-horizon deficit was not a horizon
+problem at all.
+
+And the ordering 26.0% → 88.0% → 98.0% tracks the cross/same ratio of §7.3
+(0.96 → 1.00 → 1.24) rather than accuracy against spatial distance
+(0.437 → 0.9897 → 0.819). What a planning objective must get right is
+reachability.
 
 ---
 
@@ -414,9 +472,18 @@ objective the planner minimises stops distinguishing states beyond about
 eighty units and reverses beyond a hundred and twenty.
 
 Fixing the objective, and nothing else, takes goals reached at the long
-horizon from 26.0% to 88.0% on our checkpoint and from 14.0% to 70.0% on the
+horizon from 26.0% to 98.0% on our checkpoint and from 14.0% to 70.0% on the
 original authors'. It costs nothing at the short horizon. It does not require
-retraining, a GPU, or an environment with a readable state.
+retraining, a GPU, or an environment with a readable state — the best of the
+three objectives we tried uses no state supervision at all.
+
+The sharper lesson is what the objective must measure. Ranked by how well
+they predict spatial distance, the three objectives run 0.437, 0.9897, 0.819;
+ranked by planning success they run 26.0%, 88.0%, 98.0%. The ordering follows
+neither accuracy nor proximity but reachability — whether the cost charges
+for the wall between two states. A planner needs to know how far away
+something is in *steps*, and a metric that is excellent at Euclidean distance
+is merely a good approximation to that in open space.
 
 The practical consequence is a selection criterion. Choosing a world model by
 prediction loss selected, in these runs, against the property planning

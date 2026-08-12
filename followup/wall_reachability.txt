@@ -1,0 +1,25 @@
+========================================================================
+REACHABILITY vs PROXIMITY -- does the temporal head see the wall?
+========================================================================
+wall at x = 111.2; 460,320 pairs, 225,639 cross-wall
+
+Pairs matched on TRUE SPATIAL distance, split by whether they cross the
+wall. A cost that measures reachability should charge more to cross the
+wall at the same spatial separation; Euclidean position distance cannot.
+
+     true dist    pairs s/c |          temporal head |          latent L2
+                            |      same   cross ratio |    same  cross ratio
+     20-40      62142/21713 |      23.5    27.2 1.16 |   20.03  17.43 0.87
+     40-60      54071/43397 |      35.1    45.2 1.29 |   20.52  19.46 0.95
+     60-80      36724/51276 |      45.0    56.4 1.25 |   20.54  20.37 0.99
+     80-100     21568/42075 |      54.5    68.9 1.26 |   20.49  20.98 1.02
+
+  VERDICT
+  mean cross/same ratio, temporal head : 1.24
+  mean cross/same ratio, latent L2     : 0.96
+
+  At matched spatial distance the temporal head charges 24% more to
+  cross the wall. It has learned reachability, not proximity --
+  which is why it outplans a cost built from true position, and
+  why predicting spatial distance WORSE makes it a better
+  planning objective.

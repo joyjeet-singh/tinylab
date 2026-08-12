@@ -134,7 +134,8 @@ for label, path in (("baseline offset 25", "exp_phase2_recal_25/realenv_plan_cem
 
 for label, d in (("follow-up offset 25", "followup/probe_off25"),
                  ("follow-up offset 100", "followup/probe_off100"),
-                 ("follow-up authors offset 100", "followup/probe_authors_off100")):
+                 ("follow-up authors offset 100", "followup/probe_authors_off100"),
+                 ("temporal-head offset 100", "followup/temporal_off100")):
     log = Path(f"{d}/run.log")
     if not log.exists():
         continue
@@ -142,6 +143,14 @@ for label, d in (("follow-up offset 25", "followup/probe_off25"),
     k, n = sum(r == "REACHED" for r in rows), len(rows)
     if n:
         check(label, f"{k}/{n}", str(log), f"  ({100*k/n:.1f}%)")
+
+# ---- §7.3 reachability
+f = "followup/wall_reachability.txt"
+if Path(f).exists():
+    check("temporal head cross/same ratio",
+          grab(f, r"temporal head : ([\d.]+)"), f)
+    check("latent L2 cross/same ratio",
+          grab(f, r"latent L2     : ([\d.]+)"), f)
 
 print()
 if fail:
