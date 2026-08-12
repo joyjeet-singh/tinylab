@@ -1,0 +1,58 @@
+{
+  "tag": "cem",
+  "guard": {
+    "status": "pass",
+    "paired_median": 0.008634017780423164
+  },
+  "results": [
+    {
+      "episode": 933,
+      "success": false,
+      "steps": 60,
+      "final_dist": 38.26,
+      "start_goal_dist": 66.33,
+      "trivial_start": false,
+      "plans": 3,
+      "hops": 0
+    },
+    {
+      "episode": 7740,
+      "success": true,
+      "steps": 25,
+      "final_dist": 15.61,
+      "start_goal_dist": 150.72,
+      "trivial_start": false,
+      "plans": 1,
+      "hops": 0
+    }
+  ],
+  "success_rate": 0.5,
+  "n": 2,
+  "trivial_starts": 0,
+  "action_scale": 1.0,
+  "goal_construction": "100 frames later in the same episode",
+  "budget": 60,
+  "goal_offset": 100,
+  "goal_target": false,
+  "successful_only": false,
+  "random_start": false,
+  "authors_spec": null,
+  "protocol": {
+    "num_eval": 2,
+    "budget": 60,
+    "goal_offset": 100,
+    "receding": 5,
+    "frameskip": 5,
+    "seed": 42,
+    "success_rule": "env terminated (dist<16)",
+    "cem": {
+      "num_samples": 300,
+      "n_steps": 30,
+      "topk": 30,
+      "var_scale": 1.0,
+      "horizon": 5
+    }
+  },
+  "ckpt": "../../runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best_recal.pt",
+  "epoch_field": 9
+}

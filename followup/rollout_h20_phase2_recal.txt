@@ -1,0 +1,15 @@
+======================================================================
+LOADER CONVENTION for phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  read from the manifest
+  DENSE_ACTIONS      True
+  IMAGENET_PIXELS    True
+  ZSCORE_ACTIONS     True
+
+driving eval_rollout_horizon.py under the convention above
+
+======================================================================
+IN-DOMAIN ROLLOUT, HORIZON 20  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632  (ckpt_best_recal.pt)
+======================================================================
+real validation clips: first 0 (2 batches of 128); actions = the recorded ones
+no full-length batches available; nothing measured.

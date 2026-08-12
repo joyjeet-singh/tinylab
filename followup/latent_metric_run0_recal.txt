@@ -1,0 +1,26 @@
+====================================================================
+LATENT DISTANCE vs TRUE DISTANCE  --  rental_tworoom_vit224_rental_tworoom_vit224_seed0_20260719_143515 (ckpt_recal.pt)
+====================================================================
+7,140 pairs from 120 sampled real positions
+
+  Pearson r over all pairs        : 0.8195
+  Spearman (rank) over all pairs  : 0.8456
+
+  Binned by TRUE distance -- if the planner can still tell distances
+  apart in a band, latent distance must keep rising across it:
+
+       true dist   pairs  mean latent  r within band
+      0-20          648       10.647          0.676
+     20-40         1288       15.993          0.688  rising
+     40-60         1208       19.170          0.236  rising
+     60-80         1329       20.418          0.121  rising
+     80-100         960       21.801          0.163  rising
+    100-120         733       23.666          0.215  rising
+    120-150         691       26.396          0.229  rising
+    150-300         283       29.418          0.492  rising
+
+  VERDICT
+  mean latent distance is MONOTONE in true distance across the sampled range
+  across the far bands (80-300 units) mean latent distance changes by +34.9%
+  -- a planner minimising latent distance can only distinguish states in that
+     range to the extent this number is large.

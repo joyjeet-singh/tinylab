@@ -1,0 +1,32 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (CEM)  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  planner action space pinned to 2-D (the environment's); the adapter widens each action to the model's 10-D input
+model: vit at 224px (ckpt_best_recal.pt, epoch field 9)
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.009 (threshold 1.0) -> pass
+
+episodes: 3 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
+  ep  1/3 (# 6532): REACHED in 72 steps, final dist   14.3, start-goal   77.6
+  ep  2/3 (#  933): REACHED in 93 steps, final dist   14.9, start-goal   66.3
+  ep  3/3 (# 7738): missed  in 150 steps, final dist  126.5, start-goal  115.8
+
+======================================================================
+SUMMARY (cem)
+======================================================================
+  success rate           : 2/3 = 66.7%
+  mean final distance    : 51.90
+  trivial starts (<16)   : 0/3
+  non-trivial success    : 2/3 = 66.7%
+  wall-clock             : 9.6 min
+
+DEVIATIONS from the reference protocol (state wherever quoted):
+  - episode/start selection ours (random 3 eps seed 42, start =
+    episode frame 0, goal = 100 frames later in the same episode); reference's exact selection unknown
+  - receding_horizon 5 read as: execute 5 planned actions, replan
+  - OUR reproduction checkpoint, not the authors' released weights
+  - success = the registered env's terminated rule (distance < 16)
+  matched: env, CEM 300/30/30/1.0, horizon 5, action_block 5,
+  budget 150, goal_offset 100, img 224, goal-image
+  convention.

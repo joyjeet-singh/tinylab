@@ -1,0 +1,41 @@
+======================================================================
+LOADER CONVENTION for phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  read from the manifest
+  DENSE_ACTIONS      True
+  IMAGENET_PIXELS    True
+  ZSCORE_ACTIONS     True
+
+driving eval_rollout_horizon.py under the convention above
+
+======================================================================
+IN-DOMAIN ROLLOUT, HORIZON 15  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632  (ckpt_best_recal.pt)
+======================================================================
+real validation clips: first 256 (2 batches of 128); actions = the recorded ones
+  batch 1 done
+  batch 2 done
+
+ horizon  imagined err  real step  err/step  static err  err/static
+       1         0.989     14.871     0.066      14.871       0.066
+       2         1.176     15.235     0.077      17.323       0.068
+       3         1.388     15.677     0.089      18.492       0.075
+       4         1.563     15.889     0.098      19.593       0.080
+       5         1.791     16.043     0.112      19.973       0.090
+       6         2.035     16.222     0.125      19.770       0.103
+       7         2.180     16.063     0.136      19.958       0.109
+       8         2.535     16.519     0.153      20.107       0.126
+       9         2.755     15.756     0.175      19.875       0.139
+      10         3.021     16.155     0.187      19.927       0.152
+      11         3.208     15.847     0.202      19.852       0.162
+      12         3.398     16.376     0.208      20.028       0.170
+      13         3.601     16.423     0.219      20.213       0.178
+      14         3.720     16.078     0.231      20.174       0.184
+      15         3.841     15.534     0.247      20.289       0.189
+
+HOW TO READ
+  horizon 1 should match Check A / the train log (internal control).
+  err/static < 1 : imagining beats assuming the world froze -- the
+    prediction carries usable information at that horizon.
+  err/static ~ 1 : by that horizon the rollout knows no more than
+    'nothing moved'; a planner gains nothing from imagining that far.
+  err/step is the same scale-free ratio Check A used, per horizon.

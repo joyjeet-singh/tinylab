@@ -1,0 +1,68 @@
+{
+  "tag": "cem",
+  "guard": {
+    "status": "pass",
+    "paired_median": 0.008634017780423164
+  },
+  "results": [
+    {
+      "episode": 6532,
+      "success": true,
+      "steps": 72,
+      "final_dist": 14.34,
+      "start_goal_dist": 77.64,
+      "trivial_start": false,
+      "plans": 3,
+      "hops": 3
+    },
+    {
+      "episode": 933,
+      "success": true,
+      "steps": 93,
+      "final_dist": 14.91,
+      "start_goal_dist": 66.33,
+      "trivial_start": false,
+      "plans": 4,
+      "hops": 3
+    },
+    {
+      "episode": 7738,
+      "success": false,
+      "steps": 150,
+      "final_dist": 126.46,
+      "start_goal_dist": 115.77,
+      "trivial_start": false,
+      "plans": 6,
+      "hops": 1
+    }
+  ],
+  "success_rate": 0.6666666666666666,
+  "n": 3,
+  "trivial_starts": 0,
+  "action_scale": 1.0,
+  "goal_construction": "100 frames later in the same episode",
+  "budget": 150,
+  "goal_offset": 100,
+  "goal_target": false,
+  "successful_only": false,
+  "random_start": false,
+  "authors_spec": null,
+  "protocol": {
+    "num_eval": 3,
+    "budget": 150,
+    "goal_offset": 100,
+    "receding": 5,
+    "frameskip": 5,
+    "seed": 42,
+    "success_rule": "env terminated (dist<16)",
+    "cem": {
+      "num_samples": 300,
+      "n_steps": 30,
+      "topk": 30,
+      "var_scale": 1.0,
+      "horizon": 5
+    }
+  },
+  "ckpt": "../../runs/phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632/ckpt_best_recal.pt",
+  "epoch_field": 9
+}
