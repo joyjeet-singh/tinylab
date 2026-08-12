@@ -85,6 +85,33 @@ paper's central dissociation, and it is testable rather than speculative.
 Caveat: three checkpoints, one seed each. This is a correspondence across the
 three models we have, not an established law.
 
+## 3b. The pathology is the method's, not the reproduction's
+
+The authors' own released checkpoint, measured the same way
+(`followup/latent_metric_authors.txt`):
+
+| | Pearson | Spearman | monotone | 80-300 spread |
+|---|---|---|---|---|
+| authors' released | 0.388 | 0.423 | **no** | **-2.2%** |
+
+That is phase2's pathology almost exactly, on weights we did not train. Adding
+it to the table gives four checkpoints and a perfect rank correspondence
+between metric quality and long-horizon planning:
+
+| checkpoint | offset 100 / budget 150 | Spearman | monotone | 80-300 spread |
+|---|---|---|---|---|
+| Run 2 recal | 80.0% | 0.872 | yes | +38.6% |
+| Run 0 recal | 66.0% | 0.846 | yes | +34.9% |
+| phase2 recal | 26.0% | 0.445 | no | -3.3% |
+| authors' released | 14.0% | 0.423 | no | -2.2% |
+
+The split is not arbitrary. The two checkpoints with usable geometry (Run 0,
+Run 2) were trained with `history_size` 1 and `action_dim` 2. Both pathological
+ones -- phase2 and the authors' own -- use the reference pipeline, with
+`history_size` 3 and dense 10-wide actions. The conventions that fix one-step
+prediction appear to cost the metric its long-range ordering. That is a
+hypothesis from four checkpoints, not a demonstrated cause.
+
 ## 4. The information is present; only the metric fails
 
 `followup/probe_metric_phase2_recal.txt` — a ridge probe fit on frozen
@@ -97,6 +124,13 @@ embeddings of 350 rendered positions, evaluated on 150 held out:
 
 The encoder already represents position almost perfectly. Nothing about the
 world model needs to change; the objective does.
+
+The same holds on the authors' checkpoint
+(`followup/probe_metric_authors.txt`): probe R^2 **0.9627** held out, 4.13
+units mean error, decoded-position distance monotone at r = **0.9573**
+(+57.5% across the far bands) where their latent L2 is neither
+(r = 0.4236, +1.2%). Whatever this fix is worth, it is available to the
+original work too.
 
 ## 5. Intervention under test
 

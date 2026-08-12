@@ -9,9 +9,8 @@ model: vit at 224px (ckpt_best_recal.pt, epoch field 9)
 domain guard (precondition):
   paired ||z_real - z_env|| median over 10 frames: 0.009 (threshold 1.0) -> pass
 
-episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
+episodes: 50 sampled (seed 42); start = episode frame 0; goal = 25 frames later in the same episode
 
 fitting position probe on 400 rendered positions
   probe fit R^2 0.9994 (in-sample), mean abs error 0.68 arena units
-  ep  1/50 (# 4022): REACHED in 48 steps, final dist   10.4, start-goal  105.5
-  ep  2/50 (# 5113): REACHED in 24 steps, final dist   13.2, start-goal  139.2
+  ep  1/50 (# 4014): missed  in 50 steps, final dist   19.3, start-goal   44.6

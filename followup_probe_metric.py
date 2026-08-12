@@ -21,7 +21,8 @@ from pathlib import Path
 import numpy as np
 
 ap = argparse.ArgumentParser()
-ap.add_argument("--run", required=True)
+ap.add_argument("--run", default=None)
+ap.add_argument("--authors-spec", default=None)
 ap.add_argument("--ckpt", default="ckpt_best_recal.pt")
 ap.add_argument("--h5", default="~/Downloads/tworoom.h5")
 ap.add_argument("--n", type=int, default=600)
@@ -38,21 +39,29 @@ from toy_model import ToyJEPA
 from toy_plan import frame_to_tensor
 from dense_action_adapter import wrap_if_needed
 
-run_dir = Path(args.run)
-cfg = json.loads((run_dir / "manifest.json").read_text())["config"]
-m = cfg["model"]
-model = ToyJEPA(embed_dim=m["embed_dim"], action_dim=m["action_dim"],
-                history_size=m["history_size"], depth=m["depth"],
-                heads=m["heads"], dim_head=m["dim_head"], mlp_dim=m["mlp_dim"],
-                proj_hidden=m["proj_hidden"], dropout=m["dropout"],
-                enc_width=m["enc_width"], encoder=m.get("encoder", "cnn"),
-                img_size=m.get("img_size", 32), patch_size=m.get("patch_size", 4),
-                enc_depth=m.get("enc_depth", 12), enc_heads=m.get("enc_heads", 3))
-ck = torch.load(run_dir / args.ckpt, map_location="cpu")
-model.load_state_dict(ck.get("model") or ck["state_dict"])
-model.eval()
-model = wrap_if_needed(model, run_dir, str(Path(args.h5).expanduser()),
-                       frameskip=cfg["data"]["frameskip"])
+if args.authors_spec:
+    from authors_adapter import load_authors_model
+    model = load_authors_model(args.authors_spec)
+    model.eval()
+    run_dir = Path(args.authors_spec)
+    cfg = None
+else:
+    run_dir = Path(args.run)
+    cfg = json.loads((run_dir / "manifest.json").read_text())["config"]
+if cfg is not None:
+  m = cfg["model"]
+  model = ToyJEPA(embed_dim=m["embed_dim"], action_dim=m["action_dim"],
+                  history_size=m["history_size"], depth=m["depth"],
+                  heads=m["heads"], dim_head=m["dim_head"], mlp_dim=m["mlp_dim"],
+                  proj_hidden=m["proj_hidden"], dropout=m["dropout"],
+                  enc_width=m["enc_width"], encoder=m.get("encoder", "cnn"),
+                  img_size=m.get("img_size", 32), patch_size=m.get("patch_size", 4),
+                  enc_depth=m.get("enc_depth", 12), enc_heads=m.get("enc_heads", 3))
+  ck = torch.load(run_dir / args.ckpt, map_location="cpu")
+  model.load_state_dict(ck.get("model") or ck["state_dict"])
+  model.eval()
+  model = wrap_if_needed(model, run_dir, str(Path(args.h5).expanduser()),
+                         frameskip=cfg["data"]["frameskip"])
 
 env = gym.make("swm/TwoRoom-v1", render_mode="rgb_array")
 u = env.unwrapped

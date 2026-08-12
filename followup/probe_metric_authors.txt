@@ -1,0 +1,31 @@
+====================================================================
+DECODED-POSITION COST vs LATENT L2  --  authors_driving_spec.json (ckpt_best_recal.pt)
+====================================================================
+400 positions, ridge probe fit on 280, evaluated on 120
+
+  probe position R^2 (held out) : 0.9627
+  mean absolute error           : 4.13 arena units
+
+  Pearson r vs true distance, latent L2        : 0.4236
+  Pearson r vs true distance, decoded position : 0.9573
+
+      true dist   pairs   latent L2    decoded
+     0-20          670       16.87      15.58
+    20-40         1307       18.82      31.34
+    40-60         1296       19.49      50.64
+    60-80         1280       19.77      70.39
+    80-100        1072       20.11      89.40
+   100-120         717       20.36     108.04
+   120-150         594       20.21     124.43
+   150-300         204       20.35     140.77
+
+  VERDICT
+  latent L2 monotone in true distance          : False
+  decoded-position distance monotone           : True
+  spread across the far bands (80-300 units):
+    latent L2           +1.2%
+    decoded position   +57.5%
+
+  The world model already encodes what the planner needs; the objective
+  is what fails. Re-pointing CEM at the decoded-position cost requires no
+  retraining.
