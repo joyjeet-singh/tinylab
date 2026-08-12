@@ -219,28 +219,37 @@ exactly the baseline's failures -- its 13 successes all fall at draw
 positions >= 12 -- so the percentages there flattered the fix. Superseded by
 the complete run above.)
 
-### The authors' own released weights, goal offset 100 -- 25 of 50 episodes
+### The authors' own released weights, goal offset 100 -- COMPLETE, n = 50
 
-Paired against the published `exp_ref_protocol` (7/50 = 14.0%). These are the
-original authors' weights, not ours; only the planner's objective differs.
+Paired against the published `exp_ref_protocol`, whose baseline column
+reproduces **7/50 = 14.0%** exactly. These are the original authors' weights,
+not ours; only the planner's objective differs.
 
 | | success |
 |---|---|
-| baseline, latent L2 cost | 3/25 = 12.0% |
-| follow-up, decoded-position cost | **16/25 = 64.0%** |
+| baseline, latent L2 cost | 7/50 = 14.0% |
+| follow-up, decoded-position cost | **35/50 = 70.0%** |
 
-discordant **13-0**, exact McNemar **p = 2.4e-04**.
+discordant **28-0**, exact McNemar **p = 7.5e-09**.
 
-So this is not a repair for a defect we introduced. The metric pathology is in
-the released method (§3b), and re-pointing the objective repairs planning on
-the authors' own checkpoint too.
+So this is not a repair for a defect the reproduction introduced. The metric
+pathology is in the released method (§3b), and re-pointing the objective
+repairs planning on the authors' own checkpoint.
 
 ### Summary
 
-| protocol | baseline | decoded-position cost | McNemar |
-|---|---|---|---|
-| offset 25, budget 50 | 47/50 = 94.0% | 46/50 = 92.0% | p = 1 |
-| offset 100, budget 150 | 13/50 = 26.0% | **44/50 = 88.0%** | **p = 9.3e-10** |
+Three paired comparisons, 50 episodes each, every baseline column reproducing
+its published figure exactly -- which is what makes the harness trustworthy
+rather than merely self-consistent.
+
+| checkpoint | protocol | baseline | decoded-position cost | McNemar |
+|---|---|---|---|---|
+| ours, phase2 recal | offset 25, budget 50 | 47/50 = 94.0% | 46/50 = 92.0% | p = 1 |
+| ours, phase2 recal | offset 100, budget 150 | 13/50 = 26.0% | **44/50 = 88.0%** | p = 9.3e-10 |
+| **authors' released** | offset 100, budget 150 | 7/50 = 14.0% | **35/50 = 70.0%** | p = 7.5e-09 |
+
+In neither long-horizon comparison does the fix lose a single episode the
+baseline won: 31-0 and 28-0 on the discordant pairs.
 
 No retraining, no GPU, one flag. The encoder and predictor are the released
 weights, unmodified; only the planner's objective changed.

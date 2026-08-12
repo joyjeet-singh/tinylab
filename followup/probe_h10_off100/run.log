@@ -1,0 +1,14 @@
+======================================================================
+REAL-ENVIRONMENT PLANNER EVAL (CEM)  --  phase2_dense_reference_phase2_dense_reference_seed0_20260727_115632
+======================================================================
+  loader convention (manifest): dense=True imagenet=True zscore=True
+  ADAPTER ACTIVE: pixels ImageNet, actions 2 -> 10 by repeat + z-score, history_size 3
+  planner action space pinned to 2-D (the environment's); the adapter widens each action to the model's 10-D input
+model: vit at 224px (ckpt_best_recal.pt, epoch field 9)
+
+domain guard (precondition):
+  paired ||z_real - z_env|| median over 10 frames: 0.009 (threshold 1.0) -> pass
+
+episodes: 50 sampled (seed 42); start = episode frame 0; goal = 100 frames later in the same episode
+
+fitting position probe on 400 rendered positions
