@@ -33,3 +33,4 @@ cost: LEARNED TEMPORAL DISTANCE from ../../followup/temporal_head_v2_authors.pt
   ep 18/50 (# 7586): missed  in 150 steps, final dist  101.7, start-goal  124.3
   ep 19/50 (# 2002): REACHED in 54 steps, final dist   13.7, start-goal   81.2
   ep 20/50 (# 8359): REACHED in 24 steps, final dist   14.6, start-goal   64.2
+  ep 21/50 (# 5542): missed  in 150 steps, final dist  112.5, start-goal   94.9
