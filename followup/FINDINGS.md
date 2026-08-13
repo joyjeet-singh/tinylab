@@ -339,7 +339,7 @@ position probe, and the v2 fix of §8 does not close it:
 | published latent L2 | 7/50 = 14.0% |
 | decoded position (linear probe) | **35/50 = 70.0%** |
 | learned temporal head v1 | far worse; stopped early |
-| learned temporal head v2 | 6/20 = 30.0% (partial) |
+| learned temporal head v2 | **17/50 = 34.0%** (p = 0.021) |
 
 v2 removed the distribution mismatch -- +11% degradation on imagined pairs
 instead of +74% -- and planning improved over v1, but not to the probe's

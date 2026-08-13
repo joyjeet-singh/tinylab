@@ -48,7 +48,18 @@ the probe's 88.0% and the baseline's 26.0%. The reason is measurable: at
 matched spatial separation it charges 24% more to cross the environment's
 dividing wall, where squared latent distance charges 4% *less*. It has learned
 reachability rather than proximity, and planning success across the three
-objectives orders exactly by how well each captures it.
+objectives orders exactly by how well each captures it. Under this cost
+planning also stops depending on the horizon — 98.0% at both offset 25 and
+offset 100, where the published objective falls from 94.0% to 26.0% — and
+reaches 92.0% of hundred-step goals inside a fifty-step budget.
+
+We also report where the repair fails. On the authors' checkpoint the learned
+cost is beaten by the linear one (34.0% against 70.0%), because a head fit on
+encoded frames is evaluated on imagined ones and their predictor drifts far
+enough for an MLP to extrapolate badly (+74% error, against +3% on ours). A
+learned planning cost must be trained on the distribution the planner scores,
+and where the predictor cannot support one, the robust choice is the simplest
+objective that orders distance monotonically.
 
 Nothing here was retrained and no GPU was used. The encoder and predictor are
 the released weights, unmodified; only the objective changed.
@@ -102,6 +113,14 @@ explanation, and it is not about prediction.
    predicts spatial distance worse plans better, because it charges for the
    wall. Planning success across three objectives orders by how well each
    captures reachability (§7.3, §8).
+
+8. **A learned cost must be trained on what the planner scores** — imagined
+   embeddings, not encoded frames. Invisible on the checkpoint the method was
+   developed on; decisive on the other (§7.4).
+
+9. **A conditional prescription, including where the repair loses.** The
+   learned cost wins where the predictor supports it and loses to a linear one
+   where it does not (§8.2).
 
 ## Scope
 
@@ -374,6 +393,34 @@ between positions is the same whether or not a barrier lies between them. It
 recovers most of the gap because proximity is a good proxy for reachability in
 open space. The temporal head recovers the rest because it is not a proxy.
 
+## 7.4 A learned cost must be trained on what the planner scores
+
+The head above is fit on pairs of encoded **real** frames. At planning time
+CEM scores (**imagined** embedding, encoded goal). Those coincide only to the
+extent the predictor is accurate, and the difference is measurable. Evaluated
+on identical held-out pairs:
+
+| checkpoint | one-step error | head on real × real | head on imagined × real | degradation |
+|---|---|---|---|---|
+| ours, phase2 recal | 0.116 | 12.47 | 12.86 | **+3%** |
+| authors' released | 0.410 | 10.37 | **18.04** | **+74%** |
+
+*From `followup/temporal_head_v2_*.txt`, MAE in frames.*
+
+Our predictor keeps imagined states close enough to the encoding manifold that
+a head fit on real pairs transfers. The authors' does not, and the cost
+becomes unreliable exactly where planning needs it.
+
+Training on both kinds of pair — rolling the predictor forward under the
+recorded block-mean actions, precisely as the planner drives it — removes the
+mismatch on the authors' checkpoint: 7.37 real against 8.21 imagined, +11%
+rather than +74%.
+
+We report this because it was invisible on the checkpoint we developed the
+method on, where the two distributions happened to coincide. It took a second
+checkpoint to surface, and it is a condition on any learned planning cost, not
+a detail of this one.
+
 ---
 
 # 8 Results
@@ -387,13 +434,48 @@ merely self-consistent. McNemar is exact on the discordant pairs.
 | checkpoint | protocol | objective | baseline | repaired | discordant | McNemar |
 |---|---|---|---|---|---|---|
 | ours, phase2 recal | offset 25, budget 50 | decoded position | 47/50 = 94.0% | 46/50 = 92.0% | 3–4 | p = 1 |
+| ours, phase2 recal | offset 25, budget 50 | **temporal head** | 47/50 = 94.0% | **49/50 = 98.0%** | 3–1 | p = 0.625 |
 | ours, phase2 recal | offset 100, budget 150 | decoded position | 13/50 = 26.0% | **44/50 = 88.0%** | 31–0 | p = 9.3×10⁻¹⁰ |
 | ours, phase2 recal | offset 100, budget 150 | **temporal head** | 13/50 = 26.0% | **49/50 = 98.0%** | 37–1 | p = 2.8×10⁻¹⁰ |
+| ours, phase2 recal | offset 100, **budget 50** | **temporal head** | 10/50 = 20.0% | **46/50 = 92.0%** | 37–1 | p = 2.8×10⁻¹⁰ |
 | authors' released | offset 100, budget 150 | decoded position | 7/50 = 14.0% | **35/50 = 70.0%** | 28–0 | p = 7.5×10⁻⁹ |
+| authors' released | offset 100, budget 150 | temporal head v2 | 7/50 = 14.0% | 17/50 = 34.0% | 13–3 | p = 0.021 |
 
-The temporal head, which uses no position supervision at all, is the strongest
-of the three. In the decoded-position comparisons the repair never loses an
-episode the baseline won; the temporal head loses one and wins thirty-seven.
+All five baseline columns reproduce their published figures exactly — 94.0%,
+26.0%, 20.0%, 14.0% and 14.0%.
+
+## 8.1 Planning becomes horizon-independent
+
+Under the published objective, success falls from 94.0% at goal offset 25 to
+26.0% at offset 100. Under the temporal cost it is **98.0% at both**. The
+horizon dependence was a property of the objective, not of the model or the
+task.
+
+It is also not bought with time. At offset 100 under the repository's own
+50-step budget — a third of the appendix budget — the temporal cost reaches
+**92.0%** against a 20.0% baseline. Hundred-step goals are being reached
+inside fifty environment steps.
+
+## 8.2 Where the learned cost loses, and why
+
+On the authors' released checkpoint the ordering reverses: the linear
+decoded-position cost reaches 70.0% and the learned temporal head only 34.0%.
+Both beat the 14.0% baseline; the crude objective wins.
+
+The reason is §7.4. The learned head is an MLP evaluated on imagined
+embeddings, and the authors' predictor drifts far enough off the manifold of
+real encodings that the head extrapolates. A linear map degrades far more
+gracefully under the same drift. Training the head on imagined pairs (v2)
+narrows the gap in metric terms — +11% degradation instead of +74% — and
+lifts planning from the v1 head's showing to 34.0%, but does not close it.
+
+**The prescription is therefore conditional.** A learned reachability cost is
+the strongest objective where the predictor is accurate enough to keep its
+imagined states near the encoding manifold — our checkpoint, one-step error
+0.116. Where it is not — theirs, 0.410 — the robust choice is the simplest
+cost that orders distance monotonically. What does not change is the
+diagnosis: on both checkpoints the published objective saturates and inverts,
+and on both, replacing it is worth a large, significant gain.
 
 **The shape of the change.** Baseline failures exhaust the 150-step budget and
 finish 115–193 units from the goal having started 71–170 away. The repair

@@ -127,6 +127,8 @@ def rate(path, key="results"):
 
 for label, path in (("baseline offset 25", "exp_phase2_recal_25/realenv_plan_cem.json"),
                     ("baseline offset 100", "exp_ref_p2/realenv_plan_cem.json"),
+                    ("baseline offset 100 budget 50",
+                     "exp_phase2_recal/realenv_plan_cem.json"),
                     ("baseline authors offset 100",
                      "exp_ref_protocol/realenv_plan_authors_cem.json")):
     k, n = rate(path)
@@ -135,7 +137,12 @@ for label, path in (("baseline offset 25", "exp_phase2_recal_25/realenv_plan_cem
 for label, d in (("follow-up offset 25", "followup/probe_off25"),
                  ("follow-up offset 100", "followup/probe_off100"),
                  ("follow-up authors offset 100", "followup/probe_authors_off100"),
-                 ("temporal-head offset 100", "followup/temporal_off100")):
+                 ("temporal-head offset 100", "followup/temporal_off100"),
+                 ("temporal-head offset 25", "followup/temporal_off25"),
+                 ("temporal-head offset 100 budget 50",
+                  "followup/temporal_off100_b50"),
+                 ("temporal-head v2 authors offset 100",
+                  "followup/temporal_v2_authors_off100")):
     log = Path(f"{d}/run.log")
     if not log.exists():
         continue
@@ -143,6 +150,23 @@ for label, d in (("follow-up offset 25", "followup/probe_off25"),
     k, n = sum(r == "REACHED" for r in rows), len(rows)
     if n:
         check(label, f"{k}/{n}", str(log), f"  ({100*k/n:.1f}%)")
+
+# ---- §7.4 the distribution condition
+for label, f, pat in (
+        ("v1 head on ours, real", "followup/temporal_head_v2_phase2_smoke.txt",
+         r"v1 MAE, real x real\s+:\s+([\d.]+)"),
+        ("v1 head on ours, imagined", "followup/temporal_head_v2_phase2_smoke.txt",
+         r"v1 MAE, imagined x real\s+:\s+([\d.]+)"),
+        ("v1 head on authors, real", "followup/temporal_head_v2_authors.txt",
+         r"v1 MAE, real x real\s+:\s+([\d.]+)"),
+        ("v1 head on authors, imagined", "followup/temporal_head_v2_authors.txt",
+         r"v1 MAE, imagined x real\s+:\s+([\d.]+)"),
+        ("v2 head on authors, real", "followup/temporal_head_v2_authors.txt",
+         r"held-out MAE, real x real\s+:\s+([\d.]+)"),
+        ("v2 head on authors, imagined", "followup/temporal_head_v2_authors.txt",
+         r"held-out MAE, imagined x real\s+:\s+([\d.]+)")):
+    if Path(f).exists():
+        check(label, grab(f, pat), f)
 
 # ---- §7.3 reachability
 f = "followup/wall_reachability.txt"
