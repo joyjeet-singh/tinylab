@@ -1,0 +1,59 @@
+arXiv submission -- form fields
+===============================
+
+Title
+  The Objective Is the Bottleneck: Latent World Models Encode What Their
+  Planners Cannot Use
+
+Authors
+  Joyjeet Singh
+
+Contact email
+  joyjeetsingh1@gmail.com
+
+ORCID
+  0009-0005-1512-7439
+
+Primary category
+  cs.LG (Machine Learning)
+
+Cross-list
+  cs.AI (Artificial Intelligence)
+  -- both categories the author has already submitted to, so no new
+     endorsement is required.
+
+Endorsement
+  NOT required. arXiv keeps an author endorsed in a category they have
+  already submitted to; arXiv:2607.11116 and arXiv:2608.10145 are both
+  cs.LG.
+
+License
+  CC BY 4.0, matching arXiv:2608.10145.
+
+Comments field
+  Follow-up to arXiv:2608.10145. All experiments run on a laptop CPU; no
+  model was trained or fine-tuned. Code, checkpoints and every measurement:
+  github.com/joyjeet-singh/tinylab
+
+Abstract
+  Use ABSTRACT_for_arxiv_form.txt (1,914 characters). The paper's own
+  abstract is 2,203 characters and arXiv's field takes about 1,920; the
+  form version states no figure the paper does not.
+
+Files to upload
+  arxiv_paper2.tar.gz, or the four files in this directory that are not
+  .txt. The main file is paper2.tex.
+
+Relationship to the earlier paper
+  This is a SEPARATE submission, not a replacement. arXiv:2608.10145 is the
+  reproduction and stands unchanged -- nothing in it is contradicted here.
+  This paper cites it as the work it builds on, and supplies the mechanism
+  that one deliberately declined to offer.
+
+Notes
+  - No BibTeX pass is needed: the References section is prose, so no .bbl
+    is required and none is shipped.
+  - No figures. tmlr.sty, tmlr.bst and fancyhdr.sty travel with the source
+    because arXiv does not supply them.
+  - Verified by compiling in a scratch directory with pdflatex alone, three
+    passes: zero errors, zero undefined references, zero missing files.

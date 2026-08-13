@@ -6,63 +6,41 @@ author: Joyjeet Singh
 
 # Abstract
 
-A latent world model is usually judged by how well it predicts. When planning
-over such a model fails at long horizons, the natural reading is that the
-predictor degrades as it imagines further ahead. On a reproduction of
-LeWorldModel on TwoRoom we show that reading is wrong, and that the binding
-constraint is the planner's objective rather than the model.
+Latent world models are judged by how well they predict, so when planning over
+one fails at long horizons the natural reading is that the predictor degrades.
+On a reproduction of LeWorldModel on TwoRoom we show the binding constraint is
+the planner's objective instead.
 
-Three measurements make the case. First, the predictor is not the limiting
-factor: rolled out autoregressively on real validation clips, its imagined
-state at fifteen planner steps — seventy-five environment steps — is still
-only 0.189 as wrong as assuming the world froze, while the planner never
-imagines more than five. Second, the objective is: cross-entropy-method
-planning minimises squared Euclidean distance between embeddings, and that
-quantity correlates with true distance at r = 0.426, stops rising by about
-eighty arena units, and **decreases** beyond about a hundred and twenty. A
-planner minimising it can be led away from its goal. Third, the information
-the planner needs is present the whole time — a ridge probe recovers position
+The predictor is not the limit: rolled out on real validation clips, its
+imagined state seventy-five environment steps ahead is still only 0.189 as
+wrong as assuming the world froze, while the planner never imagines beyond
+twenty-five. The objective is the limit. Cross-entropy-method planning
+minimises squared latent distance, which tracks true distance at r = 0.426,
+stops rising by about eighty arena units, and **decreases** beyond about a
+hundred and twenty — so moving away from the goal can lower the planner's
+cost. The information is present throughout: a ridge probe recovers position
 from the same frozen embedding at R² 0.9922.
 
-We then show the failure is not a property of our reimplementation. The
-authors' own released checkpoint carries the same pathology (Spearman 0.423,
-non-monotone), and across four checkpoints long-horizon planning success
-rank-orders exactly with the quality of this metric and inversely with
-one-step prediction accuracy. That supplies a mechanism for a dissociation
-reported but left unexplained in the reproduction: the most accurate
-predictor is the worst long-horizon planner because accuracy and metric
-usability are traded against each other.
+The pathology belongs to the method rather than to one reimplementation. It is
+present in the authors' released weights, and across four checkpoints
+long-horizon success rank-orders exactly with the quality of this metric and
+inversely with one-step prediction accuracy — a mechanism for a dissociation
+the reproduction reports and leaves unexplained.
 
-Finally we repair it without touching the model. Re-pointing the planner at a
-cost that orders distance correctly lifts goals reached at offset 100 from
-26.0% to 88.0% on our checkpoint (McNemar p = 9.3×10⁻¹⁰) and from 14.0% to
-70.0% on the authors' own weights (p = 7.5×10⁻⁹), while costing nothing at
-the short horizon where the embedding metric already worked (94.0% against
-92.0%, p = 1).
+Replacing only the objective, with nothing retrained and no GPU, lifts goals
+reached at offset 100 from 26.0% to **98.0%**, equals the 98.0% reached at
+offset 25, and still reaches 92.0% under a third of the budget: planning stops
+depending on the horizon. The best cost is not the most accurate one. A head
+learned from frame separation alone predicts *spatial* distance worse than a
+position probe (r = 0.819 against 0.9897) yet plans better, because it charges
+24% more to cross the environment's dividing wall where squared latent
+distance charges 4% *less*. It has learned reachability, not proximity.
 
-The best objective is not the most accurate one. A cost learned only from how
-many steps apart two observed frames were — no position supervision anywhere —
-predicts *spatial* distance worse than a position probe (r = 0.819 against
-0.9897) and yet plans better, reaching **98.0%** of offset-100 goals against
-the probe's 88.0% and the baseline's 26.0%. The reason is measurable: at
-matched spatial separation it charges 24% more to cross the environment's
-dividing wall, where squared latent distance charges 4% *less*. It has learned
-reachability rather than proximity, and planning success across the three
-objectives orders exactly by how well each captures it. Under this cost
-planning also stops depending on the horizon — 98.0% at both offset 25 and
-offset 100, where the published objective falls from 94.0% to 26.0% — and
-reaches 92.0% of hundred-step goals inside a fifty-step budget.
-
-We also report where the repair fails. On the authors' checkpoint the learned
-cost is beaten by the linear one (34.0% against 70.0%), because a head fit on
+We also report where the repair fails: on the authors' weights the learned
+cost is beaten by the linear one, 34.0% against 70.0%, because a head fit on
 encoded frames is evaluated on imagined ones and their predictor drifts far
-enough for an MLP to extrapolate badly (+74% error, against +3% on ours). A
-learned planning cost must be trained on the distribution the planner scores,
-and where the predictor cannot support one, the robust choice is the simplest
-objective that orders distance monotonically.
-
-Nothing here was retrained and no GPU was used. The encoder and predictor are
-the released weights, unmodified; only the objective changed.
+enough for an MLP to extrapolate. A learned planning cost must be trained on
+the distribution the planner scores.
 
 ---
 
