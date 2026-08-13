@@ -132,6 +132,30 @@ assert m_title, "PAPER.md has no title metadata block -- run patch_paper_title.p
 paper_title = note("paper title", m_title.group(1).strip(), "docs/paper/PAPER.md")
 paper_author = note("paper author", m_title.group(2).strip(), "docs/paper/PAPER.md")
 
+# ---- follow-up: the planning objective ---------------------------------
+def _rate(d):
+    import re as _re
+    log = Path(f"followup/{d}/run.log")
+    rows = _re.findall(r"ep\s+\d+/\d+ \(#\s*\d+\): (REACHED|missed )",
+                       log.read_text())
+    k, n = sum(r == "REACHED" for r in rows), len(rows)
+    return f"{k}/{n} = {100*k/n:.1f}%"
+
+fu = {}
+for key, d in (("t25", "temporal_off25"), ("t100", "temporal_off100"),
+               ("t100b50", "temporal_off100_b50"),
+               ("auth_probe", "probe_authors_off100"),
+               ("auth_temporal", "temporal_v2_authors_off100")):
+    if Path(f"followup/{d}/run.log").exists():
+        fu[key] = note(f"follow-up {d}", _rate(d), f"followup/{d}/run.log")
+
+p25 = by_dir[("exp_phase2_recal_25", "cem")]
+p100 = by_dir[("exp_ref_p2", "cem")]
+p100b50 = by_dir[("exp_phase2_recal", "cem")]
+pub25 = f"{p25['succ']} = {p25['pct']}%"
+pub100 = f"{p100['succ']} = {p100['pct']}%"
+pub100b50 = f"{p100b50['succ']} = {p100b50['pct']}%"
+
 lewm = Path("docs/lewm_audit_commit.txt").read_text()
 lewm_commit = note("le-wm commit", re.search(r"commit\s+:\s+(\w+)", lewm).group(1),
                    "docs/lewm_audit_commit.txt")
@@ -226,6 +250,42 @@ after:
 carries tens of thousands, a precise-BN pass carries hundreds. Read it from the
 file rather than trusting any range quoted elsewhere, including here.
 
+## Planning objective — read this if you plan with these weights
+
+The planning numbers below were produced with the released objective:
+cross-entropy-method search minimising squared Euclidean distance between the
+imagined embedding and the goal embedding. **That objective is the limiting
+factor at long horizons, not these weights.**
+
+Measured on this checkpoint: latent distance tracks true distance only at
+short range, stops rising beyond about eighty arena units, and *decreases*
+beyond about a hundred and twenty — so moving away from the goal can lower the
+planner's cost. Position is meanwhile recoverable from the same frozen
+embedding at R² 0.9922.
+
+Replacing only the objective, with the encoder and predictor untouched:
+
+| protocol | released objective | reachability cost |
+|---|---|---|
+| goal offset 25, budget 50 | {pub25} | **{fu['t25']}** |
+| goal offset 100, budget 150 | {pub100} | **{fu['t100']}** |
+| goal offset 100, budget 50 | {pub100b50} | **{fu['t100b50']}** |
+
+`temporal_head_phase2.pt` in this repository is that cost: a small head
+predicting how many steps apart two states are, trained only on frame
+separation within recorded episodes — no position, no reward, no privileged
+state. `plan_with_temporal_cost.py` shows the one-line substitution.
+
+**Two conditions, both measured.** The head must be trained on the embeddings
+the planner actually scores — imagined ones, not encoded frames — or it
+extrapolates off-manifold. And it helps only where the predictor is accurate
+enough to keep those close: on the original authors' released weights, whose
+one-step error is higher, a plain linear position cost does better
+({fu['auth_probe']}) than the learned one ({fu['auth_temporal']}).
+
+Full method and evidence: `followup/` in the code repository. One seed, one
+environment; treat it as a strong result on TwoRoom rather than a general law.
+
 ## Planning results, with the protocol attached
 
 **A success rate without its protocol is meaningless here.** The released
@@ -311,9 +371,14 @@ Trained on the authors' TwoRoom dataset: {int(n_eps):,} episodes, mean length
   Nothing here is a claim about the asymptote.
 - **TwoRoom only.** No claim is made about the original's other environments,
   its embodied or zero-shot results, or scales other than this one.
-- **Long-horizon planning is poor, and one-step accuracy does not predict it.**
-  The most accurate predictor here is not the best long-horizon planner. Do not
-  select a checkpoint on prediction loss.
+- **One-step accuracy does not predict long-horizon planning.** The most
+  accurate predictor here is not the best long-horizon planner under the
+  published objective. Do not select a checkpoint on prediction loss.
+- **Long-horizon planning is weak under the published planning objective, and
+  that is a property of the objective rather than of these weights** — see
+  "Planning objective" above. Under the published cost these checkpoints reach
+  {pub100} of goals 100 frames away; with a reachability cost and the same frozen
+  weights, {fu['t100']}.
 - The checkpoint-versus-checkpoint differences we report are not established at
   n = 50; see the paper.
 

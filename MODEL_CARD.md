@@ -74,6 +74,42 @@ after:
 carries tens of thousands, a precise-BN pass carries hundreds. Read it from the
 file rather than trusting any range quoted elsewhere, including here.
 
+## Planning objective — read this if you plan with these weights
+
+The planning numbers below were produced with the released objective:
+cross-entropy-method search minimising squared Euclidean distance between the
+imagined embedding and the goal embedding. **That objective is the limiting
+factor at long horizons, not these weights.**
+
+Measured on this checkpoint: latent distance tracks true distance only at
+short range, stops rising beyond about eighty arena units, and *decreases*
+beyond about a hundred and twenty — so moving away from the goal can lower the
+planner's cost. Position is meanwhile recoverable from the same frozen
+embedding at R² 0.9922.
+
+Replacing only the objective, with the encoder and predictor untouched:
+
+| protocol | released objective | reachability cost |
+|---|---|---|
+| goal offset 25, budget 50 | 47/50 = 94.0% | **49/50 = 98.0%** |
+| goal offset 100, budget 150 | 13/50 = 26.0% | **49/50 = 98.0%** |
+| goal offset 100, budget 50 | 10/50 = 20.0% | **46/50 = 92.0%** |
+
+`temporal_head_phase2.pt` in this repository is that cost: a small head
+predicting how many steps apart two states are, trained only on frame
+separation within recorded episodes — no position, no reward, no privileged
+state. `plan_with_temporal_cost.py` shows the one-line substitution.
+
+**Two conditions, both measured.** The head must be trained on the embeddings
+the planner actually scores — imagined ones, not encoded frames — or it
+extrapolates off-manifold. And it helps only where the predictor is accurate
+enough to keep those close: on the original authors' released weights, whose
+one-step error is higher, a plain linear position cost does better
+(35/50 = 70.0%) than the learned one (17/50 = 34.0%).
+
+Full method and evidence: `followup/` in the code repository. One seed, one
+environment; treat it as a strong result on TwoRoom rather than a general law.
+
 ## Planning results, with the protocol attached
 
 **A success rate without its protocol is meaningless here.** The released
@@ -164,9 +200,14 @@ Trained on the authors' TwoRoom dataset: 10,000 episodes, mean length
   Nothing here is a claim about the asymptote.
 - **TwoRoom only.** No claim is made about the original's other environments,
   its embodied or zero-shot results, or scales other than this one.
-- **Long-horizon planning is poor, and one-step accuracy does not predict it.**
-  The most accurate predictor here is not the best long-horizon planner. Do not
-  select a checkpoint on prediction loss.
+- **One-step accuracy does not predict long-horizon planning.** The most
+  accurate predictor here is not the best long-horizon planner under the
+  published objective. Do not select a checkpoint on prediction loss.
+- **Long-horizon planning is weak under the published planning objective, and
+  that is a property of the objective rather than of these weights** — see
+  "Planning objective" above. Under the published cost these checkpoints reach
+  13/50 = 26.0% of goals 100 frames away; with a reachability cost and the same frozen
+  weights, 49/50 = 98.0%.
 - The checkpoint-versus-checkpoint differences we report are not established at
   n = 50; see the paper.
 
