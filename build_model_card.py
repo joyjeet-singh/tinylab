@@ -18,7 +18,8 @@ import yaml
 OUT = Path("MODEL_CARD.md")
 RELEASE = Path("runs_archive/release")
 VERIFIED = Path("runs_archive/verified")
-ARXIV = "<ARXIV_ID>"          # filled after posting (work order §9.1)
+ARXIV = "<ARXIV_ID>"          # the reproduction; filled at upload
+ARXIV_FOLLOWUP = "2608.12959"  # the planning-objective follow-up
 
 sources = []
 
@@ -283,8 +284,10 @@ enough to keep those close: on the original authors' released weights, whose
 one-step error is higher, a plain linear position cost does better
 ({fu['auth_probe']}) than the learned one ({fu['auth_temporal']}).
 
-Full method and evidence: `followup/` in the code repository. One seed, one
-environment; treat it as a strong result on TwoRoom rather than a general law.
+Full method, evidence and limitations: **arXiv:{ARXIV_FOLLOWUP}**, *The
+Objective Is the Bottleneck: Latent World Models Encode What Their Planners
+Cannot Use*. One seed, one environment; treat it as a strong result on
+TwoRoom rather than a general law.
 
 ## Planning results, with the protocol attached
 
@@ -392,6 +395,15 @@ This is a reproduction. The original work is the authors'.
 ## Citation
 
 ```bibtex
+@article{{singh2026objective,
+  title  = {{The Objective Is the Bottleneck: Latent World Models Encode What
+            Their Planners Cannot Use}},
+  author = {{Singh, Joyjeet}},
+  year   = {{2026}},
+  eprint = {{{ARXIV_FOLLOWUP}}},
+  note   = {{The planning-objective result and the released cost head}}
+}}
+
 @article{{singh2026tinylab,
   title  = {{{paper_title}}},
   author = {{Singh, Joyjeet}},

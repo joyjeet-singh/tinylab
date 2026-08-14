@@ -107,8 +107,10 @@ enough to keep those close: on the original authors' released weights, whose
 one-step error is higher, a plain linear position cost does better
 (35/50 = 70.0%) than the learned one (17/50 = 34.0%).
 
-Full method and evidence: `followup/` in the code repository. One seed, one
-environment; treat it as a strong result on TwoRoom rather than a general law.
+Full method, evidence and limitations: **arXiv:2608.12959**, *The
+Objective Is the Bottleneck: Latent World Models Encode What Their Planners
+Cannot Use*. One seed, one environment; treat it as a strong result on
+TwoRoom rather than a general law.
 
 ## Planning results, with the protocol attached
 
@@ -221,6 +223,15 @@ This is a reproduction. The original work is the authors'.
 ## Citation
 
 ```bibtex
+@article{singh2026objective,
+  title  = {The Objective Is the Bottleneck: Latent World Models Encode What
+            Their Planners Cannot Use},
+  author = {Singh, Joyjeet},
+  year   = {2026},
+  eprint = {2608.12959},
+  note   = {The planning-objective result and the released cost head}
+}
+
 @article{singh2026tinylab,
   title  = {The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel on TwoRoom},
   author = {Singh, Joyjeet},

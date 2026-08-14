@@ -83,6 +83,7 @@ tags:
   - reproducibility
   - reproduction-study
   - arxiv:{args.arxiv}
+  - arxiv:2608.12959
 ---
 
 """
@@ -94,6 +95,15 @@ STAGE.mkdir(parents=True)
 shutil.copy2(MANIFEST, STAGE / "ckpt_md5.txt")
 for p in files:
     shutil.copy2(p, STAGE / p.name)
+
+# The planning-cost head and its usage example. Without these the card
+# describes a capability the repository does not ship.
+EXTRA = [("followup/temporal_head_phase2.pt", "temporal_head_phase2.pt"),
+         ("followup/plan_with_temporal_cost.py", "plan_with_temporal_cost.py")]
+for src, dst in EXTRA:
+    assert Path(src).exists(), f"missing release artifact: {src}"
+    shutil.copy2(src, STAGE / dst)
+    print(f"  + {dst} ({Path(src).stat().st_size/1024:.0f} KB)")
 
 total = sum(f.stat().st_size for f in STAGE.iterdir())
 print(f"\nstaged {STAGE}  ({total / 1e6:.0f} MB)")
@@ -123,6 +133,8 @@ url = api.create_repo(args.repo, repo_type="model", exist_ok=True,
                       private=args.private)
 print(f"repo: {url}")
 api.upload_folder(folder_path=str(STAGE), repo_id=args.repo, repo_type="model",
-                  commit_message=f"Release six checkpoints for arXiv:{args.arxiv}")
+                  commit_message=(f"Card update for arXiv:2608.12959: the long-horizon "
+                                  f"limit is the planning objective, not these "
+                                  f"weights; ship the reachability cost head"))
 print(f"\nuploaded to https://huggingface.co/{args.repo}"
       f"  ({'private' if args.private else 'PUBLIC'})")
